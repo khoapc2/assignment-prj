@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PitchBooking.Business.Services
 {
-    class PitchService
+    public class PitchService
     {
     }
 }
