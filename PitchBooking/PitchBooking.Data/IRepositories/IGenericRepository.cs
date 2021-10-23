@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace AdvisoryLawyer.Data.IRepositories
+namespace PitchBooking.Data.IRepositories
 {
     public interface IGenericRepository<T> where T : class
     {

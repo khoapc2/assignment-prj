@@ -1,23 +1,22 @@
-﻿using AdvisoryLawyer.Data.IRepositories;
-using AdvisoryLawyer.Data.Models;
-using Cqrs.Repositories.Queries;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PitchBooking.Data.IRepositories;
+using PitchBooking.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace AdvisoryLawyer.Data.Repositories
+namespace PitchBooking.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private AdvisoryLawyerContext _context;
+        private PitchBookingContext _context;
         private DbSet<T> _dbSet = null;
 
 
-        public GenericRepository(AdvisoryLawyerContext context)
+        public GenericRepository(PitchBookingContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
