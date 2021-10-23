@@ -40,6 +40,8 @@ namespace PitchBooking.Data.Models
             {
                 entity.ToTable("Booking");
 
+                entity.Property(e => e.CancelReason).HasMaxLength(500);
+
                 entity.Property(e => e.DateBooking).HasColumnType("date");
 
                 entity.Property(e => e.Price)
@@ -93,10 +95,6 @@ namespace PitchBooking.Data.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Time)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
                 entity.HasOne(d => d.PitchOwner)
                     .WithMany(p => p.Pitches)
                     .HasForeignKey(d => d.PitchOwnerId)
@@ -108,14 +106,6 @@ namespace PitchBooking.Data.Models
                 entity.ToTable("SubPitch");
 
                 entity.Property(e => e.ImgPath).HasMaxLength(100);
-
-                entity.Property(e => e.NormalDayPrice)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.SpecialDayPrice)
-                    .IsRequired()
-                    .HasMaxLength(100);
 
                 entity.Property(e => e.TypeOfPitch)
                     .IsRequired()
@@ -132,17 +122,13 @@ namespace PitchBooking.Data.Models
             {
                 entity.ToTable("UserAccount");
 
-                entity.Property(e => e.Address)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Address).HasMaxLength(50);
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(20)

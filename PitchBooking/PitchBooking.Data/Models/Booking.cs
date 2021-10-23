@@ -17,9 +17,10 @@ namespace PitchBooking.Data.Models
         public int? SubPitchId { get; set; }
         public DateTime DateBooking { get; set; }
         public TimeSpan? TimeStart { get; set; }
+        public TimeSpan? TimeEnd { get; set; }
         public string Price { get; set; }
         public int? Status { get; set; }
-        public TimeSpan? TimeEnd { get; set; }
+        public string CancelReason { get; set; }
 
         public virtual UserAccount Customer { get; set; }
         public virtual SubPitch SubPitch { get; set; }

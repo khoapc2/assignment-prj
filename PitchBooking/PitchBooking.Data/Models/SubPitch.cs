@@ -16,8 +16,8 @@ namespace PitchBooking.Data.Models
         public int PitchId { get; set; }
         public string ImgPath { get; set; }
         public string TypeOfPitch { get; set; }
-        public string NormalDayPrice { get; set; }
-        public string SpecialDayPrice { get; set; }
+        public int NormalDayPrice { get; set; }
+        public int SpecialDayPrice { get; set; }
         public int? Status { get; set; }
 
         public virtual Pitch Pitch { get; set; }
