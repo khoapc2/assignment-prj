@@ -2,6 +2,7 @@
 using PitchBooking.Business.Enum;
 using PitchBooking.Business.IServices;
 using PitchBooking.Business.Requests.UserAccountRequest;
+using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.IRepositories;
 using PitchBooking.Data.Models;
 using System;
@@ -33,6 +34,23 @@ namespace PitchBooking.Business.Services
             await _genericRepository.InsertAsync(account);
             await _genericRepository.SaveAsync();
             return true;
+        }
+
+        public async Task<UserAccountModel> UpdateProfile(UserAccountRequest request)
+        {
+            var profile = await _genericRepository.FindAsync(a => a.Id == request.Id && a.Status == (int) UserAccountStatus.Active);
+            if (profile == null) return null;
+
+            profile.Username = request.Username;
+            profile.Password = request.Password;
+            profile.Name = request.Name;
+            profile.Email = request.Email;
+            profile.Phone = request.Phone;
+            profile.Address = request.Address;
+            profile.Role = request.Role;
+            profile.Status = (int)UserAccountStatus.Active;
+            await _genericRepository.UpdateAsync(profile);
+            return _mapper.Map<UserAccountModel>(profile);
         }
     }
 }

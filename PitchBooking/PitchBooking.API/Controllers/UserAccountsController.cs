@@ -22,7 +22,7 @@ namespace PitchBooking.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterAccount([FromBody] UserAccountRequest request)
         {
             try
@@ -30,6 +30,22 @@ namespace PitchBooking.API.Controllers
                 var isRegister = await _service.RegisterAccount(request);
                 if (isRegister) return Ok();
                 return BadRequest("Username is duplicated!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserAccountRequest request)
+        {
+            try
+            {
+                var profile = await _service.UpdateProfile(request);
+                if(profile != null) return Ok(profile);
+                return BadRequest();
             }
             catch (Exception ex)
             {
