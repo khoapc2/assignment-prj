@@ -20,6 +20,9 @@ using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PitchBooking.Business.Services;
+using PitchBooking.Business.IServices;
+using PitchBooking.Business.AutoMapper;
 
 namespace PitchBooking.API
 {
@@ -47,7 +50,6 @@ namespace PitchBooking.API
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
             {
-                option.Authority = Configuration["Jwt:Authority"];
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -65,8 +67,8 @@ namespace PitchBooking.API
 
             services.AddScoped<PitchBookingContext>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-            services.AddControllers();
+            services.AddScoped<IUserAccountService, UserAccountService>();
+            services.AddAutoMapper(typeof(UserAccountMapper).Assembly);
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option => {
@@ -142,6 +144,8 @@ namespace PitchBooking.API
             app.UseRouting();
 
             app.UseCors(_corsName);
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

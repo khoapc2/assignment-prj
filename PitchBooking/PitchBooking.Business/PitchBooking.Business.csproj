@@ -5,23 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Requests\**" />
-    <EmbeddedResource Remove="Requests\**" />
-    <None Remove="Requests\**" />
+    <Compile Remove="Request\**" />
+    <EmbeddedResource Remove="Request\**" />
+    <None Remove="Request\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PitchBooking.Data\PitchBooking.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Request\" />
   </ItemGroup>
 
 </Project>
