@@ -26,6 +26,23 @@ namespace PitchBooking.Business.Services
             _authenticationService = authenticationService;
         }
 
+        public async Task<bool> ChangePassword(ChangePasswordRequest request)
+        {
+            var account = await _genericRepository.FindAsync(a => a.Username.Equals(request.Username) && a.Status == (int)UserAccountStatus.Active);
+            if (account == null) return false;
+
+            account.Password = request.NewPassword;
+            await _genericRepository.UpdateAsync(account);
+            return true;
+        }
+
+        public async Task<bool> CheckUsername(string username)
+        {
+            var account = await _genericRepository.FindAsync(a => a.Username.Equals(username) && a.Status == (int)UserAccountStatus.Active);
+            if (account != null) return true;
+            return false;
+        }
+
         public async Task<UserAccountModel> GetProfileByID(int id)
         {
             var profile = await _genericRepository.FindAsync(a => a.Id == id && a.Status == (int)UserAccountStatus.Active);

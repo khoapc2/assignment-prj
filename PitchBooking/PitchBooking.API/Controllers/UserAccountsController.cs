@@ -83,5 +83,37 @@ namespace PitchBooking.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("check/{username}")]
+        public async Task<IActionResult> CheckUsername(string username)
+        {
+            try
+            {
+                var isExisted = await _service.CheckUsername(username);
+                if (isExisted) return Ok();
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                var isChange = await _service.ChangePassword(request);
+                if (isChange) return Ok();
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
