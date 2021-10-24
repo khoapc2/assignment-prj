@@ -43,5 +43,13 @@ namespace PitchBooking.Business.Services
                 .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookedList);
         }
+
+        public async Task<IEnumerable<BookingModel>> GetListBookingHistoryByCustomerID(int id)
+        {
+            var bookingList = await _genericRepository.GetAllByIQueryable()
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
+                .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked).ToListAsync();
+            return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
+        }
     }
 }

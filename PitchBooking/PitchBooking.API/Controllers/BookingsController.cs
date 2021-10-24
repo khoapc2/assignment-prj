@@ -36,6 +36,21 @@ namespace PitchBooking.API.Controllers
         }
 
         //[Authorize]
+        [HttpGet("history/{id}")]
+        public async Task<IActionResult> GetListBookingHistoryByCustomerID(int id)
+        {
+            try
+            {
+                var bookingList = await _service.GetListBookingHistoryByCustomerID(id);
+                return Ok(bookingList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
         [HttpDelete("cancel")]
         public async Task<IActionResult> CancelBooking([FromBody] CancelBookingRequest request)
         {
