@@ -47,7 +47,7 @@ namespace PitchBooking.Business.Services
         public async Task<BookingModel> GetBookingByID(int id)
         {
             var booking = await _genericRepository.GetAllByIQueryable()
-                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.Id == id).FirstOrDefaultAsync();
             return _mapper.Map<BookingModel>(booking);
         }
@@ -55,16 +55,25 @@ namespace PitchBooking.Business.Services
         public async Task<IEnumerable<BookingModel>> GetListBookedByCustomerID(int id)
         {
             var bookedList = await _genericRepository.GetAllByIQueryable()
-                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked)
                 .OrderByDescending(b => b.CreateDate).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookedList);
         }
 
+        public async Task<IEnumerable<BookingModel>> GetListBookingBySubPitchID(int id)
+        {
+            var bookingList = await _genericRepository.GetAllByIQueryable()
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
+                .Where(b => b.SubPitchId == id && b.Status == (int)BookingStatus.Booked)
+                .OrderBy(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
+            return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
+        }
+
         public async Task<IEnumerable<BookingModel>> GetListBookingHistoryByCustomerID(int id)
         {
             var bookingList = await _genericRepository.GetAllByIQueryable()
-                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked)
                 .OrderByDescending(b => b.CreateDate).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookingList);

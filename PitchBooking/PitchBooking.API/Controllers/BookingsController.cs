@@ -51,6 +51,21 @@ namespace PitchBooking.API.Controllers
         }
 
         //[Authorize]
+        [HttpGet("subpitch-calendar/{id}")]
+        public async Task<IActionResult> GetListBookingBySubPitchID(int id)
+        {
+            try
+            {
+                var bookingList = await _service.GetListBookingBySubPitchID(id);
+                return Ok(bookingList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
         [HttpGet("{id}", Name = "GetBookingByID")]
         public async Task<IActionResult> GetBookingByID(int id)
         {

@@ -11,6 +11,7 @@ namespace PitchBooking.Business.ViewModel
     {
         public int? Id { get; set; }
         public int? CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public int? SubPitchId { get; set; }
         public string SubPitchName { get; set; }
         public string PitchName { get; set; }

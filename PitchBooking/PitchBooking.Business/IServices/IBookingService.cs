@@ -15,5 +15,6 @@ namespace PitchBooking.Business.IServices
         public Task<IEnumerable<BookingModel>> GetListBookingHistoryByCustomerID(int id);
         public Task<BookingModel> CreateBooking(CreateBookingRequest request);
         public Task<BookingModel> GetBookingByID(int id);
+        public Task<IEnumerable<BookingModel>> GetListBookingBySubPitchID(int id);
     }
 }

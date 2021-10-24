@@ -16,6 +16,7 @@ namespace PitchBooking.Business.AutoMapper
         public BookingMapper()
         {
             CreateMap<Booking, BookingModel>()
+                .ForMember(d => d.CustomerName, s => s.MapFrom(s => s.Customer.Name))
                 .ForMember(d => d.SubPitchName, s => s.MapFrom(s => s.SubPitch.Name))
                 .ForMember(d => d.PitchName, s => s.MapFrom(s => s.SubPitch.Pitch.Name))
                 .ForMember(d => d.Status, s => s.MapFrom(s => ConvertStatus(s.Status)));
