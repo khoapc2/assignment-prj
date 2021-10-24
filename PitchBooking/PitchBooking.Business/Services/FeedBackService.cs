@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using PagedList;
-using PitchBooking.Business.Enum;
 using PitchBooking.Business.IServices;
+using PitchBooking.Business.Requests.FeedbackRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.IRepositories;
 using PitchBooking.Data.Models;
@@ -15,23 +15,31 @@ using System.Threading.Tasks;
 
 namespace PitchBooking.Business.Services
 {
-    public class PitchService : IPitchService
+    public class FeedBackService : IFeedbackService
     {
-        private readonly IGenericRepository<Pitch> _res;
+        private readonly IGenericRepository<Feedback> _res;
         private readonly IMapper _mapper;
-        
-        public PitchService(IGenericRepository<Pitch> res, IMapper mapper)
+
+        public FeedBackService(IGenericRepository<Feedback> res, IMapper mapper)
         {
             _res = res;
             _mapper = mapper;
         }
 
-        public IPagedList<PitchModel> GetAllAdvisory(PitchModel filter, int pageIndex,
-           int pageSize)
+        public async Task<FeedBackModel> CreateAdvisory(CreateFeedbackRequest request)
         {
-            var listAdvisory = _res.FindBy(x => x.Status == (int)PitchStatus.Active);
+            var advisory = _mapper.Map<Feedback>(request);
+            await _res.InsertAsync(advisory);
+            await _res.SaveAsync();
+            return _mapper.Map<FeedBackModel>(advisory);
+        }
 
-            var listAdvisoryModel = (IQueryable<PitchModel>)(listAdvisory.ProjectTo<PitchModel>
+        public IPagedList<FeedBackModel> GetAllAdvisory(FeedBackModel filter, int pageIndex,
+            int pageSize)
+        {
+            var listAdvisory = _res.FindBy(x => true);
+
+            var listAdvisoryModel = (listAdvisory.ProjectTo<FeedBackModel>
                 (_mapper.ConfigurationProvider)).DynamicFilter(filter);
             //switch (sortBy.ToString())
             //{
@@ -56,7 +64,7 @@ namespace PitchBooking.Business.Services
             //        }
             //        break;
             //}
-            return PagedListExtensions.ToPagedList<PitchModel>(listAdvisoryModel, pageIndex, pageSize);
+            return PagedListExtensions.ToPagedList<FeedBackModel>(listAdvisoryModel, pageIndex, pageSize);
         }
     }
 }
