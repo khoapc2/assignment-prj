@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PitchBooking.Business.IServices;
+using PitchBooking.Business.Requests.PitchRequest;
 using PitchBooking.Business.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,31 @@ namespace PitchBooking.API.Controllers
         {
             var listAdvisoryModel = _pitchService.GetAllAdvisory(filter, pageIndex, pageSize);
             return Ok(listAdvisoryModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdvisory([FromBody] CreatePitchRequest request)
+        {
+            var AdvisoryModel = await _pitchService.CreateAdvisory(request);
+            return Ok(AdvisoryModel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAdvisory(int id, [FromBody] UpdatePitchRequest request)
+        {
+            var AdvisoryModel = await _pitchService.UpdateAdvisory(id, request);
+            if (AdvisoryModel == null)
+                return BadRequest();
+            return Ok(AdvisoryModel);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAdvisory(int id)
+        {
+            var rs = await _pitchService.DeleteAdvisory(id);
+            if (rs == false)
+                return BadRequest();
+            return Ok();
         }
     }
 }

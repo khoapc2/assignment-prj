@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PitchBooking.Business.Requests.PitchRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.Models;
 using System;
@@ -15,6 +16,8 @@ namespace PitchBooking.Business.AutoMapper
         public PitchModule()
         {
             CreateMap<Pitch, PitchModel>();
+            CreateMap<CreatePitchRequest, Pitch>();
+            CreateMap<UpdatePitchRequest, Pitch>();
         }
     }
 }

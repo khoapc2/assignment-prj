@@ -1,4 +1,5 @@
 ﻿using PagedList;
+using PitchBooking.Business.Requests.PitchRequest;
 using PitchBooking.Business.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,8 @@ namespace PitchBooking.Business.IServices
     {
         IPagedList<PitchModel> GetAllAdvisory(PitchModel filter, int pageIndex,
            int pageSize);
+        Task<PitchModel> CreateAdvisory(CreatePitchRequest request);
+        Task<PitchModel> UpdateAdvisory(int id, UpdatePitchRequest request);
+        Task<bool> DeleteAdvisory(int id);
     }
 }
