@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using PagedList;
 using PitchBooking.Business.Enum;
 using PitchBooking.Business.IServices;
+using PitchBooking.Business.Requests.PitchRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.IRepositories;
 using PitchBooking.Data.Models;
@@ -57,6 +58,43 @@ namespace PitchBooking.Business.Services
             //        break;
             //}
             return PagedListExtensions.ToPagedList<PitchModel>(listAdvisoryModel, pageIndex, pageSize);
+        }
+
+        public async Task<PitchModel> CreateAdvisory(CreatePitchRequest request)
+        {
+            var advisory = _mapper.Map<Pitch>(request);
+            advisory.Status = 1;
+            await _res.InsertAsync(advisory);
+            await _res.SaveAsync();
+            return _mapper.Map<PitchModel>(advisory);
+        }
+
+        public async Task<PitchModel> UpdateAdvisory(int id, UpdatePitchRequest request)
+        {
+            var advisory = await _res.FindAsync(x => x.Id == id && x.Status == (int)PitchStatus.Active);
+            if (advisory == null)
+            {
+                return null;
+            }
+            advisory = _mapper.Map(request, advisory);
+            advisory.Status = 1;
+            await _res.UpdateAsync(advisory);
+            await _res.SaveAsync();
+
+            return _mapper.Map<PitchModel>(advisory);
+        }
+
+        public async Task<bool> DeleteAdvisory(int id)
+        {
+            var advisory = (await _res.FindAsync(x => x.Id == id && x.Status == (int)PitchStatus.Active));
+            if (advisory == null)
+            {
+                return false;
+            }
+            advisory.Status = 0;
+            await _res.UpdateAsync(advisory);
+            await _res.SaveAsync();
+            return true;
         }
     }
 }
