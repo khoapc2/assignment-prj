@@ -110,5 +110,21 @@ namespace PitchBooking.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //[Authorize]
+        [HttpPut("paid/{id}")]
+        public async Task<IActionResult> PaidBooking(int id)
+        {
+            try
+            {
+                var isPaid = await _service.PaidBooking(id);
+                if (isPaid) return Ok();
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

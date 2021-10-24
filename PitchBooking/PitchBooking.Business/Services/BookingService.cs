@@ -78,5 +78,15 @@ namespace PitchBooking.Business.Services
                 .OrderByDescending(b => b.CreateDate).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
         }
+
+        public async Task<bool> PaidBooking(int id)
+        {
+            var booking = await _genericRepository.FindAsync(b => b.Id == id && b.Status == (int)BookingStatus.Booked);
+            if (booking == null) return false;
+
+            booking.Status = (int)BookingStatus.Paid;
+            await _genericRepository.UpdateAsync(booking);
+            return true;
+        }
     }
 }
