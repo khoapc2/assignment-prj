@@ -23,14 +23,14 @@ namespace PitchBooking.Data.Models
         public virtual DbSet<SubPitch> SubPitches { get; set; }
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=104.215.186.78,1433;Database=PitchBooking;User Id=sa;Password=Khoa123456789;Trusted_Connection=False;");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=104.215.186.78,1433;Database=PitchBooking;User Id=sa;Password=Khoa123456789;Trusted_Connection=False;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,8 @@ namespace PitchBooking.Data.Models
                 entity.ToTable("Booking");
 
                 entity.Property(e => e.CancelReason).HasMaxLength(500);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DateBooking).HasColumnType("date");
 
@@ -106,6 +108,8 @@ namespace PitchBooking.Data.Models
                 entity.ToTable("SubPitch");
 
                 entity.Property(e => e.ImgPath).HasMaxLength(100);
+
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.TypeOfPitch)
                     .IsRequired()

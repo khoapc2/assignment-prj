@@ -21,6 +21,7 @@ namespace PitchBooking.Data.Models
         public string Price { get; set; }
         public int? Status { get; set; }
         public string CancelReason { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         public virtual UserAccount Customer { get; set; }
         public virtual SubPitch SubPitch { get; set; }

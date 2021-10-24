@@ -19,6 +19,7 @@ namespace PitchBooking.Data.Models
         public int NormalDayPrice { get; set; }
         public int SpecialDayPrice { get; set; }
         public int? Status { get; set; }
+        public string Name { get; set; }
 
         public virtual Pitch Pitch { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
