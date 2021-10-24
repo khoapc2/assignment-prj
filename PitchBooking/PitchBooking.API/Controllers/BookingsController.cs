@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PitchBooking.Business.IServices;
+using PitchBooking.Business.Requests.BookingRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,22 @@ namespace PitchBooking.API.Controllers
             {
                 var bookedList = await _service.GetListBookedByCustomerID(id);
                 return Ok(bookedList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
+        [HttpDelete("cancel")]
+        public async Task<IActionResult> CancelBooking([FromBody] CancelBookingRequest request)
+        {
+            try
+            {
+                var isCancel = await _service.CancelBooking(request);
+                if(isCancel) return Ok();
+                return BadRequest();
             }
             catch (Exception ex)
             {

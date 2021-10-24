@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PitchBooking.Business.Enum;
+using PitchBooking.Business.Requests.BookingRequest;
 
 namespace PitchBooking.Business.Services
 {
@@ -22,6 +23,17 @@ namespace PitchBooking.Business.Services
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+        }
+
+        public async Task<bool> CancelBooking(CancelBookingRequest request)
+        {
+            var booking = await _genericRepository.FindAsync(b => b.Id == request.Id && b.Status == (int)BookingStatus.Booked);
+            if (booking == null) return false;
+
+            booking.CancelReason = request.CancelReason;
+            booking.Status = (int)BookingStatus.Cancel;
+            await _genericRepository.UpdateAsync(booking);
+            return true;
         }
 
         public async Task<IEnumerable<BookingModel>> GetListBookedByCustomerID(int id)
