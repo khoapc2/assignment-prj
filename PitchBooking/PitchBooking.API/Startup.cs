@@ -72,7 +72,11 @@ namespace PitchBooking.API
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddAutoMapper(typeof(UserAccountMapper).Assembly);
+            services.AddScoped<IPitchService, PitchService>();
+            services.AddScoped<IFeedbackService, FeedBackService>();
+
             services.AddScoped<ISubPitchService, SubPitchService>();
+
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option => {

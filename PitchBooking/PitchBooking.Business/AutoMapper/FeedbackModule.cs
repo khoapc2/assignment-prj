@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PitchBooking.Business.Requests.FeedbackRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.Models;
 using System;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace PitchBooking.Business.AutoMapper
 {
-    
-    public class PitchModule : Profile
+    public class FeedbackModule : Profile
     {
-        public PitchModule()
+        public FeedbackModule()
         {
-            CreateMap<Pitch, PitchModel>();
+            CreateMap<CreateFeedbackRequest, Feedback> ();
+            CreateMap<Feedback, FeedBackModel>();
         }
     }
 }
