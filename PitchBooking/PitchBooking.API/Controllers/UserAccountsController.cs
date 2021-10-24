@@ -37,6 +37,22 @@ namespace PitchBooking.API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            try
+            {
+                var authentication = await _service.Login(request);
+                if (authentication != null) return Ok(authentication);
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //[Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateProfile([FromBody] UserAccountRequest request)

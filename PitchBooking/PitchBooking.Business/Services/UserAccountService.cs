@@ -17,17 +17,28 @@ namespace PitchBooking.Business.Services
     {
         private IGenericRepository<UserAccount> _genericRepository;
         private IMapper _mapper;
+        private IAuthenticationService _authenticationService;
 
-        public UserAccountService(IGenericRepository<UserAccount> genericRepository, IMapper mapper)
+        public UserAccountService(IGenericRepository<UserAccount> genericRepository, IMapper mapper, IAuthenticationService authenticationService)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
+            _authenticationService = authenticationService;
         }
 
         public async Task<UserAccountModel> GetProfileByID(int id)
         {
             var profile = await _genericRepository.FindAsync(a => a.Id == id && a.Status == (int)UserAccountStatus.Active);
             return _mapper.Map<UserAccountModel>(profile);
+        }
+
+        public async Task<AuthenticationModel> Login(LoginRequest request)
+        {
+            var account = await _genericRepository.FindAsync(a => a.Username.Equals(request.Username) && a.Password.Equals(request.Password));
+            if (account == null) return null;
+
+            var token = _authenticationService.GenerateJSONWebToken(account.Id.ToString(), account.Username, account.Role);
+            return new AuthenticationModel() { Token = token, DisplayName = account.Name, Role = account.Role };
         }
 
         public async Task<bool> RegisterAccount(UserAccountRequest request)

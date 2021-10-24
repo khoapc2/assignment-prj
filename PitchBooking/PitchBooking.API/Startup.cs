@@ -69,6 +69,7 @@ namespace PitchBooking.API
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserAccountService, UserAccountService>();
             services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddAutoMapper(typeof(UserAccountMapper).Assembly);
 
             services.AddControllersWithViews()
