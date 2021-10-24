@@ -44,8 +44,23 @@ namespace PitchBooking.API.Controllers
             try
             {
                 var profile = await _service.UpdateProfile(request);
-                if(profile != null) return Ok(profile);
+                if (profile != null) return Ok(profile);
                 return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProfileByID(int id)
+        {
+            try
+            {
+                var profile = await _service.GetProfileByID(id);
+                return Ok(profile);
             }
             catch (Exception ex)
             {

@@ -24,6 +24,12 @@ namespace PitchBooking.Business.Services
             _mapper = mapper;
         }
 
+        public async Task<UserAccountModel> GetProfileByID(int id)
+        {
+            var profile = await _genericRepository.FindAsync(a => a.Id == id && a.Status == (int)UserAccountStatus.Active);
+            return _mapper.Map<UserAccountModel>(profile);
+        }
+
         public async Task<bool> RegisterAccount(UserAccountRequest request)
         {
             var account = await _genericRepository.FindAsync(a => a.Username.Equals(request.Username));
