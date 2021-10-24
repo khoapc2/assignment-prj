@@ -12,5 +12,7 @@ namespace PitchBooking.Business.IServices
     {
         public Task<bool> RegisterAccount(UserAccountRequest request);
         public Task<UserAccountModel> UpdateProfile(UserAccountRequest request);
+        public Task<UserAccountModel> GetProfileByID(int id);
+        public Task<AuthenticationModel> Login(LoginRequest request);
     }
 }

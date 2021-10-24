@@ -42,6 +42,8 @@ namespace PitchBooking.Data.Models
 
                 entity.Property(e => e.CancelReason).HasMaxLength(500);
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.DateBooking).HasColumnType("date");
 
                 entity.Property(e => e.Price)
@@ -106,6 +108,8 @@ namespace PitchBooking.Data.Models
                 entity.ToTable("SubPitch");
 
                 entity.Property(e => e.ImgPath).HasMaxLength(100);
+
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.TypeOfPitch)
                     .IsRequired()
