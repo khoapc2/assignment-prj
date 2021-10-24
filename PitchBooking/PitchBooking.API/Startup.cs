@@ -65,12 +65,14 @@ namespace PitchBooking.API
             var connectionString = Configuration.GetConnectionString("PitchBookingConnectionString");
             services.AddDbContext<PitchBookingContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddAutoMapper(typeof(UserAccountMapper).Assembly);
             services.AddScoped<PitchBookingContext>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserAccountService, UserAccountService>();
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddAutoMapper(typeof(UserAccountMapper).Assembly);
+            services.AddScoped<ISubPitchService, SubPitchService>();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option => {
