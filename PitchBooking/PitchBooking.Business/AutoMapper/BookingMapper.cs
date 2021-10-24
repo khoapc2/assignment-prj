@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PitchBooking.Business.Enum;
+using PitchBooking.Business.Requests.BookingRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.Models;
 using System;
@@ -18,6 +19,10 @@ namespace PitchBooking.Business.AutoMapper
                 .ForMember(d => d.SubPitchName, s => s.MapFrom(s => s.SubPitch.Name))
                 .ForMember(d => d.PitchName, s => s.MapFrom(s => s.SubPitch.Pitch.Name))
                 .ForMember(d => d.Status, s => s.MapFrom(s => ConvertStatus(s.Status)));
+
+            CreateMap<CreateBookingRequest, Booking>()
+                .ForMember(d => d.CreateDate, s => s.MapFrom(s => DateTime.Now))
+                .ForMember(d => d.Status, s => s.MapFrom(s => (int)BookingStatus.Booked));
         }
 
         private static BookingStatus ConvertStatus(int? status)

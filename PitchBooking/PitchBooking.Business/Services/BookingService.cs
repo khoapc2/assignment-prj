@@ -36,11 +36,28 @@ namespace PitchBooking.Business.Services
             return true;
         }
 
+        public async Task<BookingModel> CreateBooking(CreateBookingRequest request)
+        {
+            var booking = _mapper.Map<Booking>(request);
+            await _genericRepository.InsertAsync(booking);
+            await _genericRepository.SaveAsync();
+            return await GetBookingByID(booking.Id);
+        }
+
+        public async Task<BookingModel> GetBookingByID(int id)
+        {
+            var booking = await _genericRepository.GetAllByIQueryable()
+                .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
+                .Where(b => b.Id == id).FirstOrDefaultAsync();
+            return _mapper.Map<BookingModel>(booking);
+        }
+
         public async Task<IEnumerable<BookingModel>> GetListBookedByCustomerID(int id)
         {
             var bookedList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
-                .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked).ToListAsync();
+                .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked)
+                .OrderByDescending(b => b.CreateDate).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookedList);
         }
 
@@ -48,7 +65,8 @@ namespace PitchBooking.Business.Services
         {
             var bookingList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch)
-                .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked).ToListAsync();
+                .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked)
+                .OrderByDescending(b => b.CreateDate).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
         }
     }

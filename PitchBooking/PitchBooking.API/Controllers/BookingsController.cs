@@ -51,6 +51,36 @@ namespace PitchBooking.API.Controllers
         }
 
         //[Authorize]
+        [HttpGet("{id}", Name = "GetBookingByID")]
+        public async Task<IActionResult> GetBookingByID(int id)
+        {
+            try
+            {
+                var booking = await _service.GetBookingByID(id);
+                return Ok(booking);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request)
+        {
+            try
+            {
+                var booking = await _service.CreateBooking(request);
+                return Created(nameof(GetBookingByID), booking);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[Authorize]
         [HttpDelete("cancel")]
         public async Task<IActionResult> CancelBooking([FromBody] CancelBookingRequest request)
         {
