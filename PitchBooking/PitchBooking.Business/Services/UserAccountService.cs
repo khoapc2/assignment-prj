@@ -55,7 +55,7 @@ namespace PitchBooking.Business.Services
             if (account == null) return null;
 
             var token = _authenticationService.GenerateJSONWebToken(account.Id.ToString(), account.Username, account.Role);
-            return new AuthenticationModel() { Token = token, DisplayName = account.Name, Role = account.Role };
+            return new AuthenticationModel() { UserID = account.Id, Token = token, DisplayName = account.Name, Role = account.Role };
         }
 
         public async Task<bool> RegisterAccount(UserAccountRequest request)

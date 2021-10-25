@@ -8,6 +8,7 @@ namespace PitchBooking.Business.ViewModel
 {
     public class AuthenticationModel
     {
+        public int UserID { get; set; }
         public string Token { get; set; }
         public string DisplayName { get; set; }
         public string Role { get; set; }
