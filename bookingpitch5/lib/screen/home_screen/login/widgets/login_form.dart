@@ -7,7 +7,7 @@ import 'package:bookingpitch5/screen/home_screen/main_screen/Homescreen.dart';
 
 TextEditingController _username = TextEditingController();
 TextEditingController _password = TextEditingController();
-
+int id = 1;
 class LogInForm extends StatefulWidget {
   @override
   _LogInFormState createState() => _LogInFormState();
@@ -93,7 +93,7 @@ class PrimaryButton extends StatelessWidget {
 
           APIService apiService = new APIService();
           apiService.login(requestModel).then((value) => {
-            print(value),
+            print(value.id),
               if(value.token.isNotEmpty){
               if(value.role == "owner"){
                 Navigator.of(context).pushNamed('/mainScreenHost'),

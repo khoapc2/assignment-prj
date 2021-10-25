@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
-
+import 'package:bookingpitch5/view_models/profile_view_model.dart';
+import 'package:bookingpitch5/models/user_accounts/profile_model.dart';
 import '../footer_menu.dart';
 
+String name ='';
+String email ='';
+String phone ='';
+String address ='';
 class ProfilePage extends StatefulWidget {
   @override
   MapScreenState createState() => MapScreenState();
@@ -11,9 +16,16 @@ class ProfilePage extends StatefulWidget {
 
 class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
-  bool _status = true;
+  bool _status = false;
   final FocusNode myFocusNode = FocusNode();
-
+  
+  var profileModel = ProfileViewModel().getProfile().then((value) => {
+      name = value.name,
+      email = value.email,
+      address = value.address,
+      phone = value.phone
+    });
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -23,7 +35,8 @@ class MapScreenState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: new Container(
+      
+      body: new Container(
       color: Colors.white,
       child: new ListView(
         children: <Widget>[
@@ -138,7 +151,9 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: "Trần An Ướt Át"),
+                                  controller: TextEditingController(
+                                    text: name
+                                    ),
                                   decoration: const InputDecoration(
                                     hintText: "Enter Your Name",                                    
                                   ),
@@ -177,7 +192,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: "yeuemtrondoi@gmail.xx"),
+                                  controller: TextEditingController(text: email),
                                   decoration: const InputDecoration(
                                       hintText: "Enter Email ID"),
                                   enabled: !_status,
@@ -213,7 +228,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: "0969699669"),
+                                  controller: TextEditingController(text: phone),
                                   decoration: const InputDecoration(
                                       hintText: "Enter Mobile Number"),
                                   enabled: !_status,
@@ -249,7 +264,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: "trong tim em"),
+                                  controller: TextEditingController(text: address),
                                   decoration: const InputDecoration(
                                       hintText: "Enter Your Address"),
                                   enabled: !_status,
