@@ -32,7 +32,7 @@ class LoginResponseModel {
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
     return LoginResponseModel(
-      id: json["user_id"] != null ? json["user_id"] : "",
+      id: json["user_id"] != null ? json["user_id"] : 0,
       token: json["token"] != null ? json["token"] : "",
       name: json["display_name"] != null ? json["display_name"] : "",
       role: json["role"] != null ? json["role"] : "",

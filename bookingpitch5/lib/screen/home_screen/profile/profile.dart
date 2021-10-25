@@ -16,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 
 class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
-  bool _status = false;
+  bool _status = true;
   final FocusNode myFocusNode = FocusNode();
   
   var profileModel = ProfileViewModel().getProfile().then((value) => {
