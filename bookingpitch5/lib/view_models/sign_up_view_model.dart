@@ -14,7 +14,7 @@ class SignUpViewModel {
 
     if (fullname.length < 1 || fullname.length > 50)
       error += 'Fullname is required and length <= 50\n';
-    if (email.length > 50) error += 'Emai length must <= 50\n';
+    if (email.length > 50) error += 'Email length must <= 50\n';
     if (phone.length != 10)
       error += 'Phone is required and length must = 10 characters\n';
     if (address.length > 50) error += 'Address length must <= 50\n';

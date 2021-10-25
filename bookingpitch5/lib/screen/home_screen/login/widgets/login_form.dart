@@ -3,6 +3,7 @@ import 'package:bookingpitch5/models/user_accounts/user_account.dart';
 import 'package:flutter/material.dart';
 import 'package:bookingpitch5/screen/home_screen/login/theme.dart';
 import 'package:bookingpitch5/screen/home_screen/main_screen/Homescreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 TextEditingController _username = TextEditingController();
@@ -36,16 +37,6 @@ class _LogInFormState extends State<LogInForm> {
       padding: EdgeInsets.symmetric(vertical: 5),
       child: TextFormField(
         controller: _controller,
-
-
-        // onChanged: (text){
-        //   if(label == "Username") _username = text;
-        //   if(label == "Password") _password = text;
-        //
-        //   print(_username + " hihi " + _password);
-        //   print(label);
-        //
-        // },
         obscureText: pass ? _isObscure : false,
         decoration: InputDecoration(
             labelText: label,
@@ -78,34 +69,40 @@ class _LogInFormState extends State<LogInForm> {
   }
 }
 class PrimaryButton extends StatelessWidget {
-  // final String buttonText;
-  // final String _username;
-  // final String _password;
-  PrimaryButton();
+  Future<void> _setToReference(String token, int id, String role) async {
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    print(prefs.getString('token'));
+    await prefs.setInt('id', id);
+    await prefs.setString('role',role);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.08,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: ()  {
           LoginRequestModel requestModel = new LoginRequestModel(username: _username.text, password: _password.text);
-
           APIService apiService = new APIService();
-          apiService.login(requestModel).then((value) => {
-            print(value),
+           apiService.login(requestModel).then((value) async => {
               if(value.token.isNotEmpty){
-              if(value.role == "owner"){
-                Navigator.of(context).pushNamed('/mainScreenHost'),
-              }else if(value.role == "customer"){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Homescreen()),
-                )
+                // await UserAccountPreference.set
+                if(value.role == "owner"){
+                  _setToReference(value.token, value.id, value.role),
+                  Navigator.of(context).pushNamed('/mainScreenHost'),
+               }else if(value.role == "customer"){
+                  _setToReference(value.token, value.id, value.role),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Homescreen()),
+                  )
+                }
               }
-            }
-          });
-        },
+            });
+          },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
         ),

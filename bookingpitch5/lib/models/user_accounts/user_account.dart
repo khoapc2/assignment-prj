@@ -21,11 +21,13 @@ class LoginResponseModel {
   final String token;
   final String name;
   final String role;
+  final int id;
 
   LoginResponseModel({
     required this.token,
     required this.name,
     required this.role,
+    required this.id,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class LoginResponseModel {
       token: json["token"] != null ? json["token"] : "",
       name: json["display_name"] != null ? json["display_name"] : "",
       role: json["role"] != null ? json["role"] : "",
+      id: json["user_id"] != null ? json["user_id"] : 0,
     );
   }
 }
