@@ -109,9 +109,9 @@ class LogInScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                PrimaryButton(
-                  'Đăng nhập',
-                ),
+                // PrimaryButton(
+                //   'Đăng nhập',
+                // ),
                 SizedBox(
                   height: 20,
                 ),
