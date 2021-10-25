@@ -142,7 +142,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                         content: Text('Đăng ký thành công!!!'),
                         actions: [
                           TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
+                            onPressed: () => Navigator.of(context).pushNamed('/login'),
                             child: const Text('OK'),
                           ),
                         ],
