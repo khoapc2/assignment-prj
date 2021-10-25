@@ -60,7 +60,7 @@ class FooterMenu extends StatelessWidget {
       onTap: (index) {
         switch (index) {
           case 0:
-            Navigator.of(context).pushNamed('/');
+            Navigator.of(context).pushNamed('/mainScreenHost');
             break;
           // case 1:
           //   Navigator.of(context)
@@ -70,10 +70,10 @@ class FooterMenu extends StatelessWidget {
             Navigator.of(context).pushNamed('/calendar');
             break;
           case 2:
-            Navigator.of(context).pushNamed('/notification');
+            Navigator.of(context).pushNamed('/notificationPitch');
             break;
           case 3:
-            Navigator.of(context).pushNamed('//accountHost');
+            Navigator.of(context).pushNamed('/accountHost');
             break;
         }
       },
