@@ -5,7 +5,7 @@ import 'package:bookingpitch5/models/sign_up_model.dart';
 import 'package:http/http.dart' as http;
 
 class UserAccountServices {
-  var url = 'https://192.168.1.11:44322/api/v1/user-accounts';
+  var url = 'https://10.0.2.2:44322/api/v1/user-accounts';
   HttpClient client = HttpClient();
 
   Future<bool> SignUp(SignUpModel model) async {

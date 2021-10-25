@@ -96,6 +96,8 @@ class PrimaryButton extends StatelessWidget {
             print(value),
               if(value.token.isNotEmpty){
               if(value.role == "owner"){
+                Navigator.of(context).pushNamed('/mainScreenHost'),
+              }else if(value.role == "customer"){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Homescreen()),
