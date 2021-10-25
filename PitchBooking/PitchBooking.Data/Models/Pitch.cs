@@ -22,6 +22,7 @@ namespace PitchBooking.Data.Models
         public TimeSpan? TimeEnd { get; set; }
         public int? Rates { get; set; }
         public int? Status { get; set; }
+        public string Phone { get; set; }
 
         public virtual UserAccount PitchOwner { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }

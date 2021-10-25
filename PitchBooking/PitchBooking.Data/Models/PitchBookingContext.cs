@@ -97,6 +97,10 @@ namespace PitchBooking.Data.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.PitchOwner)
                     .WithMany(p => p.Pitches)
                     .HasForeignKey(d => d.PitchOwnerId)
