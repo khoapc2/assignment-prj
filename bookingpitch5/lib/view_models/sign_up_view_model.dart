@@ -1,5 +1,5 @@
 import 'package:bookingpitch5/api/user_account_services.dart';
-import 'package:bookingpitch5/models/sign_up_model.dart';
+import 'package:bookingpitch5/models/user_accounts/sign_up_model.dart';
 
 class SignUpViewModel {
   static String validateSignUp(
