@@ -6,7 +6,6 @@ import 'package:bookingpitch5/home_screen/detail_pitch/main_screen.dart';
 import 'package:bookingpitch5/home_screen/feedback/feedback.dart';
 import 'package:bookingpitch5/home_screen/main_screen.dart';
 import 'package:bookingpitch5/home_screen/notification/main_screen.dart';
-import 'package:bookingpitch5/home_screen/profile/profile.dart';
 import 'package:bookingpitch5/home_screen/updateMotherPitch/mother_pitch.dart';
 import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
@@ -57,7 +56,7 @@ class RouteGenerator{
           return MaterialPageRoute(
               builder: (_) => MainScreenBookingSlot(
                 settings.arguments as ParameterToSlotPitch));
-      case '/account':
+      case '/profile':
       return MaterialPageRoute(
           builder: (_) => ProfilePage());
       case '/screen.home_screen.calendar_today':
@@ -93,9 +92,6 @@ class RouteGenerator{
 ///
       case '/mainScreenHost':
         return MaterialPageRoute(builder: (_) => CalendarTodayHost());//sai
-
-      case '/accountHost':
-        return MaterialPageRoute(builder: (_) => ProfilePageHost());//sai
 
       case '/detailPitchHost':
         return MaterialPageRoute(builder: (_) => MainScreenDetailPitchHost());//sai

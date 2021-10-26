@@ -43,7 +43,7 @@ class FooterMenu extends StatelessWidget {
                       '/notification');
                   break;
                 case 3:
-                  Navigator.of(context).pushNamed('/account');
+                  Navigator.of(context).pushNamed('/profile');
                   break;
 
               }

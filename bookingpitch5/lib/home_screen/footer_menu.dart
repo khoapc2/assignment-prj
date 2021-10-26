@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class FooterMenu extends StatelessWidget {
+class FooterMenuHost extends StatelessWidget {
   int selectedPage;
 
-  FooterMenu(this.selectedPage);
+  FooterMenuHost(this.selectedPage);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class FooterMenu extends StatelessWidget {
             Navigator.of(context).pushNamed('/notificationPitch');
             break;
           case 3:
-            Navigator.of(context).pushNamed('/account');
+            Navigator.of(context).pushNamed('/profile');
             break;
         }
       },

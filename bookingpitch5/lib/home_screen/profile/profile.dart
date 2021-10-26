@@ -294,7 +294,7 @@ class MapScreenState extends State<ProfilePageHost>
         ],
       ),
     ),
-    bottomNavigationBar: FooterMenu(3));
+    bottomNavigationBar: FooterMenuHost(3));
   }
 
   @override
