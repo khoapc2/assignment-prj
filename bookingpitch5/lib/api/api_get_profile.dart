@@ -7,8 +7,6 @@ class ProfileService {
   Future<ProfileModel> getProfileById() async {
     var client = http.Client();
     String url = "https://localhost:44322/api/v1/user-accounts/3";
-
-
     final response = await client.get(Uri.parse(url),
         headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
     );

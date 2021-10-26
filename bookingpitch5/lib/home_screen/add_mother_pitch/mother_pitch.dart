@@ -1,6 +1,13 @@
+import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+TextEditingController edtPitchName = new TextEditingController();
+TextEditingController edtEmail = new TextEditingController();
+TextEditingController edtPhone = new TextEditingController();
+TextEditingController edtAddress = new TextEditingController();
+TextEditingController edtTimeStart = new TextEditingController();
+TextEditingController edtTimeEnd = new TextEditingController();
 
 class MotherPage extends StatefulWidget {
   @override
@@ -161,7 +168,7 @@ class MapScreenState extends State<MotherPage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   new Text(
-                                    'Email ID',
+                                    'Email',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
@@ -179,7 +186,7 @@ class MapScreenState extends State<MotherPage>
                               new Flexible(
                                 child: new TextField(
                                   decoration: const InputDecoration(
-                                      hintText: "Nhập Email ID"),
+                                      hintText: "Nhập Email"),
                                   enabled: !_status,
                                 ),
                               ),
@@ -334,6 +341,7 @@ class MapScreenState extends State<MotherPage>
   }
 
   Widget _getActionButtons() {
+    bool isCreate = false;
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: new Row(
@@ -348,7 +356,17 @@ class MapScreenState extends State<MotherPage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {
+                onPressed: () async {
+                  isCreate = await CreatePitchViewModel.createPitch(
+                    2,
+                    "ac",
+                    "ac",
+                    "ac",
+                    "6:00",
+                    "7:00");
+                  if(isCreate){
+                    print("hehehe");
+                  }
                   setState(() {
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
