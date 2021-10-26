@@ -6,10 +6,10 @@ import 'package:bookingpitch5/models/user_accounts/profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../footer_menu.dart';
 
-String name ='';
-String email ='';
-String phone ='';
-String address ='';
+TextEditingController nameEdt = new TextEditingController();
+TextEditingController emailEdt = new TextEditingController();
+TextEditingController addressEdt = new TextEditingController();
+TextEditingController phoneEdt = new TextEditingController();
 class ProfilePage extends StatefulWidget {
   @override
   MapScreenState createState() => MapScreenState();
@@ -19,12 +19,15 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
-  
-  var profileModel = ProfileViewModel().getProfile().then((value) => {
-      name = value.name,
-      email = value.email,
-      address = value.address,
-      phone = value.phone
+  String error = '';
+
+  late ProfileModel profileModel;
+
+  var getProfile = ProfileViewModel().getProfile().then((value) => {
+      nameEdt.text = value.name,
+      emailEdt.text = value.email,
+      addressEdt.text = value.address,
+      phoneEdt.text = value.phone
     });
   
   @override
@@ -152,9 +155,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(
-                                    text: name
-                                    ),
+                                  controller: nameEdt,
                                   decoration: const InputDecoration(
                                     hintText: "Enter Your Name",                                    
                                   ),
@@ -193,7 +194,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: email),
+                                  controller: emailEdt,
                                   decoration: const InputDecoration(
                                       hintText: "Enter Email ID"),
                                   enabled: !_status,
@@ -229,7 +230,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: phone),
+                                  controller: phoneEdt,                                 
                                   decoration: const InputDecoration(
                                       hintText: "Enter Mobile Number"),
                                   enabled: !_status,
@@ -265,7 +266,7 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: address),
+                                  controller: addressEdt,
                                   decoration: const InputDecoration(
                                       hintText: "Enter Your Address"),
                                   enabled: !_status,
@@ -337,11 +338,40 @@ class MapScreenState extends State<ProfilePage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {
+                onPressed: () async => {
+                  error = ProfileViewModel.validateUpdateProfile(
+                    nameEdt.text.trim(), emailEdt.text.trim(), phoneEdt.text.trim(), addressEdt.text.trim()
+                  ),
+                  if(error.length > 0){
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Cập nhật thất bại'),
+                        content: Text(error),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    )
+                  }else{
+                    // ProfileModel profileModel = await ProfileViewModel().updateProfile(
+                    //   new ProfileModel(
+                    //     name : nameEdt.text.trim(), 
+                    //     email : emailEdt.text.trim(), 
+                    //     phone: phoneEdt.text.trim(), 
+                    //     address: addressEdt.text.trim())
+                    // ),
+                    // if(profileModel != null){
+
+                    // }
+                  },
                   setState(() {
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
-                  });
+                  })
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
