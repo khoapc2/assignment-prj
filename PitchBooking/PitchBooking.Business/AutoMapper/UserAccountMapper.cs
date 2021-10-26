@@ -19,6 +19,8 @@ namespace PitchBooking.Business.AutoMapper
                 .ForMember(d => d.Status, s => s.MapFrom(s => s.Status == 1 ? UserAccountStatus.Active : UserAccountStatus.InActive));
             CreateMap<UserAccountRequest, UserAccount>()
                 .ForMember(d => d.Status, s => s.MapFrom(s => (int?)s.Status));
+
+            CreateMap<UpdateAccountRequest, UserAccount>();
         }
     }
 }

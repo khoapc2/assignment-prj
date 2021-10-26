@@ -55,7 +55,7 @@ namespace PitchBooking.API.Controllers
 
         //[Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateProfile([FromBody] UserAccountRequest request)
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateAccountRequest request)
         {
             try
             {

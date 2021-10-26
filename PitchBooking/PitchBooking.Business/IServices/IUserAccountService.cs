@@ -11,7 +11,7 @@ namespace PitchBooking.Business.IServices
     public interface IUserAccountService
     {
         public Task<bool> RegisterAccount(UserAccountRequest request);
-        public Task<UserAccountModel> UpdateProfile(UserAccountRequest request);
+        public Task<UserAccountModel> UpdateProfile(UpdateAccountRequest request);
         public Task<UserAccountModel> GetProfileByID(int id);
         public Task<AuthenticationModel> Login(LoginRequest request);
         public Task<bool> CheckUsername(string username);

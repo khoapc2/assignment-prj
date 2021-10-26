@@ -70,21 +70,17 @@ namespace PitchBooking.Business.Services
             return true;
         }
 
-        public async Task<UserAccountModel> UpdateProfile(UserAccountRequest request)
+        public async Task<UserAccountModel> UpdateProfile(UpdateAccountRequest request)
         {
-            var profile = await _genericRepository.FindAsync(a => a.Id == request.Id && a.Status == (int) UserAccountStatus.Active);
+            var profile = await _genericRepository.FindAsync(a => a.Id == request.Id && a.Status == (int)UserAccountStatus.Active);
             if (profile == null) return null;
 
-            profile.Username = request.Username;
-            profile.Password = request.Password;
-            profile.Name = request.Name;
-            profile.Email = request.Email;
-            profile.Phone = request.Phone;
-            profile.Address = request.Address;
-            profile.Role = request.Role;
             profile.Status = (int)UserAccountStatus.Active;
-            await _genericRepository.UpdateAsync(profile);
+            profile = _mapper.Map(request, profile);
+            await _genericRepository.SaveAsync();
             return _mapper.Map<UserAccountModel>(profile);
         }
+
+        
     }
 }
