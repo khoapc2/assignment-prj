@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
 import 'package:bookingpitch5/view_models/profile_view_model.dart';
 import 'package:bookingpitch5/models/user_accounts/profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../footer_menu.dart';
 
 String name ='';
@@ -284,11 +285,8 @@ class MapScreenState extends State<ProfilePage>
                                   height: MediaQuery.of(context).size.height * 0.08,
                                   width: double.infinity,                        
                                   child: ElevatedButton(
-                                    onPressed: () => {          
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => LogInScreen()),
-                                      )          
+                                    onPressed: () => {  
+                                      showAlertDialog(context),                                                     
                                     },
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
@@ -394,4 +392,47 @@ class MapScreenState extends State<ProfilePage>
       },
     );
   }
+
+  showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = FlatButton(
+    hoverColor: Colors.red,
+    child: Text("OK"),
+    onPressed: () async {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.clear();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LogInScreen()),
+      );  
+     },
+  );
+
+  Widget cancelBtn = FlatButton(
+    hoverColor: Colors.blue,
+    child: Text("Cancel"),
+    onPressed: () => Navigator.pop(context, "Cancel"),
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Log out"),
+    content: Text("You want to log out ?"),
+    actions: [
+      okButton,
+      cancelBtn
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+
+  
+}
 }
