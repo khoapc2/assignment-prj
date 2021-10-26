@@ -17,6 +17,7 @@ class SignUpModel {
     'password' : password,
     'name' : fullname,
     'email' : email,
+    'phone' : phone,
     'address' : address,
     'role' : 'customer',
   };

@@ -102,13 +102,13 @@ class _PrimaryButtonState extends State<PrimaryButton> {
       child: ElevatedButton(
         onPressed: () async => {
           error = SignUpViewModel.validateSignUp(
-              edtFullname.text,
-              edtEmail.text,
-              edtPhone.text,
-              edtAddress.text,
-              edtUsername.text,
-              edtPassword.text,
-              edtConfirmPassword.text),
+              edtFullname.text.trim(),
+              edtEmail.text.trim(),
+              edtPhone.text.trim(),
+              edtAddress.text.trim(),
+              edtUsername.text.trim(),
+              edtPassword.text.trim(),
+              edtConfirmPassword.text.trim()),
           if (error.length > 0)
             {
               showDialog<String>(
@@ -128,12 +128,12 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           else
             {
               isRegister = await SignUpViewModel.registerAccount(
-                  edtFullname.text,
-                  edtEmail.text,
-                  edtPhone.text,
-                  edtAddress.text,
-                  edtUsername.text,
-                  edtPassword.text),
+                  edtFullname.text.trim(),
+                  edtEmail.text.trim(),
+                  edtPhone.text.trim(),
+                  edtAddress.text.trim(),
+                  edtUsername.text.trim(),
+                  edtPassword.text.trim()),
                   if(isRegister) {
                     showDialog<String>(
                       context: context,
