@@ -16,8 +16,8 @@ class ProfileViewModel {
     if (fullname.length < 1 || fullname.length > 50)
       error += 'Fullname is required and length <= 50\n';
     if (email.length > 50) error += 'Email length must <= 50\n';
-    if (phone.length != 10)
-      error += 'Phone is required and length must = 10 characters\n';
+    if (phone.length > 11)
+      error += 'Phone is required and length must be short than 11 characters\n';
     if (address.length > 50) error += 'Address length must <= 50\n';
     return error;
   }
@@ -31,10 +31,19 @@ class ProfileViewModel {
         return profile;
     }
 
-  Future<ProfileModel> updateProfile(ProfileModel profileModel) 
+  Future<ProfileModel> updateProfile(String _name, 
+      String _email, String _phone, String _address) 
     async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int id = prefs.getInt('id');
       ProfileService serives = new ProfileService();
-      var profile = await serives.updateProfile(profileModel);
+      var profile = await serives.updateProfile(new ProfileModel(
+                        id: id,
+                        name : _name, 
+                        email : _email, 
+                        phone: _phone, 
+                        address: _address)
+                    );
         return profile;
     }
 }
