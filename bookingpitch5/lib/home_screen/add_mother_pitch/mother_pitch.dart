@@ -1,6 +1,8 @@
 import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 TextEditingController edtPitchName = new TextEditingController();
 TextEditingController edtEmail = new TextEditingController();
@@ -24,6 +26,10 @@ class MapScreenState extends State<MotherPage>
     // TODO: implement initState
     super.initState();
   }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +153,7 @@ class MapScreenState extends State<MotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtPitchName,
                                   decoration: const InputDecoration(
                                     hintText: "Nhập tên sân",
                                   ),
@@ -157,41 +164,41 @@ class MapScreenState extends State<MotherPage>
                               ),
                             ],
                           )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "Nhập Email"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
+                      // Padding(
+                      //     padding: EdgeInsets.only(
+                      //         left: 25.0, right: 25.0, top: 25.0),
+                      //     child: new Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         new Column(
+                      //           mainAxisAlignment: MainAxisAlignment.start,
+                      //           mainAxisSize: MainAxisSize.min,
+                      //           children: <Widget>[
+                      //             new Text(
+                      //               'Email',
+                      //               style: TextStyle(
+                      //                   fontSize: 16.0,
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     )),
+                      // Padding(
+                      //     padding: EdgeInsets.only(
+                      //         left: 25.0, right: 25.0, top: 2.0),
+                      //     child: new Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         new Flexible(
+                      //           child: new TextField(
+                      //             decoration: const InputDecoration(
+                      //                 hintText: "Nhập Email"),
+                      //             enabled: !_status,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     )),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 25.0),
@@ -220,6 +227,7 @@ class MapScreenState extends State<MotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtAddress,
                                   decoration: const InputDecoration(
                                       hintText: "Nhập Địa chỉ"),
                                   enabled: !_status,
@@ -255,6 +263,7 @@ class MapScreenState extends State<MotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtPhone,
                                   decoration: const InputDecoration(
                                       hintText: "Nhập số điện thoại"),
                                   enabled: !_status,
@@ -304,6 +313,7 @@ class MapScreenState extends State<MotherPage>
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 10.0),
                                   child: new TextField(
+                                    controller: edtTimeStart,
                                     decoration: const InputDecoration(
                                         hintText: "Nhập giờ băt đầu"),
                                     enabled: !_status,
@@ -313,6 +323,7 @@ class MapScreenState extends State<MotherPage>
                               ),
                               Flexible(
                                 child: new TextField(
+                                  controller: edtTimeEnd,
                                   decoration: const InputDecoration(
                                       hintText: "Nhập giờ kết thúc"),
                                   enabled: !_status,
@@ -357,20 +368,22 @@ class MapScreenState extends State<MotherPage>
                 textColor: Colors.white,
                 color: Colors.green,
                 onPressed: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  int id = prefs.getInt('id');
                   isCreate = await CreatePitchViewModel.createPitch(
-                    2,
-                    "ac",
-                    "ac",
-                    "ac",
-                    "6:00",
-                    "7:00");
+                      id,
+                    edtPitchName.text,
+                    edtAddress.text,
+                    edtPhone.text,
+                    edtTimeStart.text,
+                    edtTimeEnd.text);
                   if(isCreate){
-                    print("hehehe");
+                    Fluttertoast.showToast(msg: "Create Pitch Successful", fontSize: 18,gravity: ToastGravity.BOTTOM, backgroundColor: Colors.green, textColor: Colors.white);
+                    setState(() {
+                      _status = true;
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                    });
                   }
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
