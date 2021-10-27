@@ -1,4 +1,6 @@
 import 'package:bookingpitch5/home_screen/footer_menu.dart';
+import 'package:bookingpitch5/models/mother_pitch_model.dart';
+import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -40,8 +42,13 @@ class BookedPitch extends StatefulWidget {
 }
 
 class _BookedPitchState extends State<BookedPitch> {
+
+
   @override
   Widget build(BuildContext context) {
+
+    Future<List<GetPitchModel>> listBooked = CreatePitchViewModel.getListPitchByOwnerID();
+
     return SingleChildScrollView(
       child: Column(
         children: [
