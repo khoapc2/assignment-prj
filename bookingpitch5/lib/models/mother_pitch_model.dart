@@ -21,3 +21,38 @@ class CreatePitchModel {
 
   String CreateModelToJson() => json.encode(toJson());
 }
+
+class GetPitchModel {
+  int idPitch;
+  int pitch_owner_id;
+  String name;
+  String location;
+  String img_path;
+  String phone;
+  String time_start;
+  String time_end;
+
+  GetPitchModel({
+    required this.idPitch,
+    required this.pitch_owner_id,
+    required this.name,
+    required this.location,
+    required this.img_path,
+    required this.phone,
+    required this.time_start,
+    required this.time_end,
+  });
+
+  factory GetPitchModel.fromJson(Map<String, dynamic> json) {
+    return new GetPitchModel(
+        idPitch : json['id'],
+        pitch_owner_id : json['pitch_owner_id'],
+        name : json['name'],
+        location : json['location'],
+        img_path : json['img_path'],
+        phone : json['phone'],
+        time_start : json['time_start'],
+        time_end : json['time_end']
+    );
+  }
+}

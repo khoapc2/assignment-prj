@@ -17,11 +17,13 @@ class ButtonPay extends StatelessWidget {
             color: Colors.green
         ),
 
-              child: ListTile(
-                  leading: Icon(Icons.add,color: Colors.white),
-                  title: Text("Thêm cơ sở",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
-                    textAlign: TextAlign.center, )),
+              child: Center(
+                child: ListTile(
+                    title: Text("Thêm cơ sở",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+                      textAlign: TextAlign.center, )),
+              )
+
             ),
       onTap: () => Navigator.of(context).pushNamed('/addMotherPitch'),
     );
