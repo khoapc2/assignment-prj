@@ -22,6 +22,7 @@ namespace PitchBooking.Business.AutoMapper
                 .ForMember(d => d.SubPitchType, s => s.MapFrom(s => s.SubPitch.TypeOfPitch))
                 .ForMember(d => d.PitchName, s => s.MapFrom(s => s.SubPitch.Pitch.Name))
                 .ForMember(d => d.Address, s => s.MapFrom(s => s.SubPitch.Pitch.Location))
+                .ForMember(d => d.Phone, s => s.MapFrom(s => s.SubPitch.Pitch.Phone))
                 .ForMember(d => d.DateBooking, s => s.MapFrom(s => FormatDate(s.DateBooking)))
                 .ForMember(d => d.TimeStart, s => s.MapFrom(s => FormatTimeSpan(s.TimeStart)))
                 .ForMember(d => d.TimeEnd, s => s.MapFrom(s => FormatTimeSpan(s.TimeEnd)))

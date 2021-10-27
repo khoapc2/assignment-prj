@@ -57,8 +57,15 @@ namespace PitchBooking.Business.Services
             var bookedList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked)
-                .OrderByDescending(b => b.CreateDate).ToListAsync();
-            return _mapper.Map<IEnumerable<BookingModel>>(bookedList);
+                .OrderBy(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
+
+            var d = DateTime.Now;
+            var expiredList = bookedList.FindAll(e => e.DateBooking <= d && e.TimeEnd <= d.TimeOfDay);
+            expiredList.ForEach(a => { a.Status = 0; a.CancelReason = "Không đến sân"; });
+            await _genericRepository.SaveAsync();
+
+            var availableList = bookedList.Where(b => expiredList.All(e => e.Id != b.Id));
+            return _mapper.Map<IEnumerable<BookingModel>>(availableList);
         }
 
         public async Task<IEnumerable<BookingModel>> GetListBookingBySubPitchID(int id)
@@ -75,7 +82,7 @@ namespace PitchBooking.Business.Services
             var bookingList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked)
-                .OrderByDescending(b => b.CreateDate).ToListAsync();
+                .OrderByDescending(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
         }
 
