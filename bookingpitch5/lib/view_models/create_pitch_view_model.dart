@@ -9,13 +9,11 @@ class CreatePitchViewModel {
   static Future<List<GetPitchModel>> getListPitchByOwnerID() async {
     final prefs = await SharedPreferences.getInstance();
     CreatePitchService service = new CreatePitchService();
-    // var id = await prefs.getInt('id');
-    int id = 1; /////////////////////////////////////////
+    var id = await prefs.getInt('id');
     var result = await service.getPitchModel(id);
-    print(result);
     return result;
   }
-  
+
   static Future<bool> createPitch(
       int owner_id,
       String pitchName,
@@ -27,6 +25,13 @@ class CreatePitchViewModel {
     var isCreate = await createPitchService.createPitchModel(
         new CreatePitchModel(owner_id, pitchName, phone, address, timeStart, timeEnd));
     return isCreate;
+  }
+
+  static String tranferTimeFormat(String time){
+    String timeHs = "";
+    DateTime datetime = new DateFormat.Hm().parse(time);
+    timeHs = DateFormat('hh:mm').format(datetime);
+    return timeHs;
   }
 
   static String validateCreate(
