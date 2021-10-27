@@ -30,6 +30,7 @@ import 'feedback/feedback.dart';
 
 import 'list_pitch/my_activity.dart';
 
+import 'list_pitch_by_search/my_activity.dart';
 import 'main_screen/Homescreen.dart';
 
 class RouteGenerator{
@@ -90,6 +91,10 @@ class RouteGenerator{
       case '/notification':
         return MaterialPageRoute(
             builder: (_) => NotificationScreen());
+
+      case '/listPitchBySearch':
+        return MaterialPageRoute(
+            builder: (_) => ListPitchSearch(settings.arguments as String));
 ///
       case '/mainScreenHost':
         return MaterialPageRoute(builder: (_) => CalendarTodayHost());//sai

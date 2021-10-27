@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 
-class SearchValue extends StatelessWidget{
+class SearchValue extends StatefulWidget{
   final double _marginVertical;
   final double _marginHorizontal;
   SearchValue(this._marginVertical , this._marginHorizontal);
+  @override
+  SearchValueState createState() {
+    // TODO: implement createState
+    return SearchValueState(this._marginVertical , this._marginHorizontal);
+  }
+}
+
+class SearchValueState extends State<SearchValue>{
+  final searchValueController = TextEditingController();
+  final double _marginVertical;
+  final double _marginHorizontal;
+  SearchValueState(this._marginVertical , this._marginHorizontal);
+
+  @override
+  void dispose() {
+    searchValueController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +41,16 @@ class SearchValue extends StatelessWidget{
       ),
 
       child: TextField(
+        controller: searchValueController,
         decoration: InputDecoration(
           hintText: 'Bạn muốn tìm sân bóng nào',
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: GestureDetector(
+            onTap: () => {
+            Navigator.of(context).pushNamed('/listPitchBySearch',
+            arguments: searchValueController.text)
+            },
+            child: Icon(Icons.search),
+          ),
           suffixIcon: Icon(Icons.sports_soccer),
           hoverColor: Colors.black,
         ),

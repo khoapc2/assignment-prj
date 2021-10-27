@@ -3,6 +3,7 @@ import 'package:bookingpitch5/api/booking_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBookingViewModel {
+
   static Future<List<BookingModel>> getListBookedByCustomerID() async {
     final prefs = await SharedPreferences.getInstance();
     BookingService service = new BookingService();
@@ -11,4 +12,5 @@ class MyBookingViewModel {
     var result = await service.getListBookedByCustomerID(id);
     return result;
   }
+
 }

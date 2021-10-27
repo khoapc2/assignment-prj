@@ -70,7 +70,6 @@ class _LogInFormState extends State<LogInForm> {
 }
 class PrimaryButton extends StatelessWidget {
   Future<void> _setToReference(String token, int id, String role) async {
-
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
     print(prefs.getString('token'));

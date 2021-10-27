@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookingpitch5/screen/home_screen/login//screens/login.dart';
 import 'package:bookingpitch5/screen/home_screen/login//theme.dart';
-import 'package:bookingpitch5/screen/home_screen/login//widgets/checkbox.dart';
 import 'package:bookingpitch5/screen/home_screen/login//widgets/login_option.dart';
-import 'package:bookingpitch5/screen/home_screen/login//widgets/primary_button.dart';
 import 'package:bookingpitch5/screen/home_screen/login//widgets/signup_form.dart';
 
 class SignUpScreen extends StatelessWidget {

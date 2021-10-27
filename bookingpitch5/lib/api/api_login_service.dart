@@ -4,12 +4,13 @@ import 'dart:convert';
 
 class APIService {
   Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
-    String link = "https://localhost:44322/";
+    String link = "https://localhost:44322/";//192.168.1.5
     String url = link + "api/v1/user-accounts/login";
 
     final response = await http.post(Uri.parse(url),
         headers: <String, String>{
            'Content-Type': 'application/json; charset=UTF-8',
+
         },
         body: jsonEncode(<String, String>{
           'username' : loginRequestModel.username,
