@@ -167,9 +167,10 @@ class _BookedItemState extends State<BookedItem> {
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          Text("Số điện thoại: ", style: TextStyle(
+                          Text("Số điện thoại: ", 
+                              style: TextStyle(
                               fontWeight: FontWeight.bold
-                          ),
+                            ),
                           ),
                           Text("01234567"),
                         ]
