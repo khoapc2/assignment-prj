@@ -13,9 +13,16 @@ class MyBookingViewModel {
   static Future<List<BookingModel>> getListBookedByCustomerID() async {
     final prefs = await SharedPreferences.getInstance();
     BookingService service = new BookingService();
-    // var id = await prefs.getInt('id');
-    var id = 2; /////////////////////////////////////////
+    var id = await prefs.getInt('id');
     var result = await service.getListBookedByCustomerID(id);
+    return result;
+  }
+
+  static Future<List<BookingModel>> getListBookingHistoryByCustomerID() async {
+    final prefs = await SharedPreferences.getInstance();
+    BookingService service = new BookingService();
+    var id = await prefs.getInt('id');
+    var result = await service.getListBookingHistoryByCustomerID(id);
     return result;
   }
 

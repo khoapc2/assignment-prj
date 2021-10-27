@@ -51,10 +51,6 @@ class BookedPitch extends StatefulWidget {
 class _BookedPitchState extends State<BookedPitch> {
   late Future<List<BookingModel>> listBooked;
 
-   void updateScreen() {
-    setState((){});
-  }
-
   @override
   initState() {
     super.initState();
@@ -82,7 +78,7 @@ class _BookedPitchState extends State<BookedPitch> {
                     data.address,
                     data.subPitchName,
                     data.price,
-                    BookedBottomPart(data.id, updateScreen)));
+                    BookedBottomPart(data.id)));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -114,27 +110,6 @@ class _BookedPitchState extends State<BookedPitch> {
             }
             return Column(children: children);
           }),
-
-      // Column(
-      //   children: [
-      //     BookedItem(
-      //         "Sân 5",
-      //         "13:00",
-      //         "10/12/2021",
-      //         "assets/images/img1.jpg",
-      //         "Khu Liên Hiệp Thể Thao TNG",
-      //         "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.",
-      //         BookedBottomPart()),
-      //     BookedItem(
-      //         "Sân 7",
-      //         "16:00",
-      //         "12/12/2021",
-      //         "assets/images/img2.jpg",
-      //         "Sân bóng Hoàng Phú",
-      //         "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.",
-      //         BookedBottomPart())
-      //   ],
-      // ),
     );
   }
 }
@@ -218,40 +193,102 @@ class BookingHistory extends StatefulWidget {
 }
 
 class _BookingHistoryState extends State<BookingHistory> {
+  late Future<List<BookingModel>> listBookingHistory;
+
+  @override
+  void initState() {
+    super.initState();
+    listBookingHistory = MyBookingViewModel.getListBookingHistoryByCustomerID();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          BookedItem(
-              "Sân 5",
-              "",
-              "10/10/2021",
-              "assets/images/img1.jpg",
-              "Khu Liên Hiệp Thể Thao TNG",
-              "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.",
-              "",
-              "",
-              CancelBottomPart()),
-          BookedItem(
-              "Sân 7",
-              "",
-              "10/11/2021",
-              "assets/images/img2.jpg",
-              "Sân bóng Hoàng Phú",
-              "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.",
-              "",
-              "",
-              CompleteBottomPart())
-        ],
-      ),
+      child: FutureBuilder<List<BookingModel>>(
+          future: listBookingHistory,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<BookingModel>> snapshot) {
+            List<Widget> children = [];
+            BookingModel data;
+            var bottomPart;
+            if (snapshot.hasData) {
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                data = snapshot.data!.elementAt(i);
+                bottomPart = data.status == 'Cancel'
+                    ? CancelBottomPart(data.id)
+                    : CompleteBottomPart(data.id);
+                children.add(BookedItem(
+                    data.subPitchType,
+                    data.timeStart,
+                    data.dateBooking,
+                    data.subPitchImageUrl,
+                    data.pitchName,
+                    data.address,
+                    data.subPitchName,
+                    data.price,
+                    bottomPart));
+              }
+            } else if (snapshot.hasError) {
+              children = <Widget>[
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ];
+            } else {
+              children = const <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Chờ chút xíu...'),
+                )
+              ];
+            }
+            return Column(children: children);
+          }),
+      // child: Column(
+      //   children: [
+      //     BookedItem(
+      //         "Sân 5",
+      //         "",
+      //         "10/10/2021",
+      //         "assets/images/img1.jpg",
+      //         "Khu Liên Hiệp Thể Thao TNG",
+      //         "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.",
+      //         "",
+      //         "",
+      //         CancelBottomPart()),
+      //     BookedItem(
+      //         "Sân 7",
+      //         "",
+      //         "10/11/2021",
+      //         "assets/images/img2.jpg",
+      //         "Sân bóng Hoàng Phú",
+      //         "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.",
+      //         "",
+      //         "",
+      //         CompleteBottomPart())
+      //   ],
+      // ),
     );
   }
 }
 
 class BookedBottomPart extends StatefulWidget {
-  BookedBottomPart(this.bookingID, this.update, {Key? key}) : super(key: key);
-  var bookingID, update;
+  BookedBottomPart(this.bookingID, {Key? key}) : super(key: key);
+  var bookingID;
 
   @override
   State<BookedBottomPart> createState() => _BookedBottomPartState();
@@ -303,8 +340,9 @@ class _BookedBottomPartState extends State<BookedBottomPart> {
                             content: Text('Hủy thành công!!!'),
                             actions: [
                               TextButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pushNamed('/screen.home_screen.calendar_today'),
+                                onPressed: () => Navigator.of(context)
+                                    .pushNamed(
+                                        '/screen.home_screen.calendar_today'),
                                 child: const Text('OK'),
                               ),
                             ],
@@ -396,7 +434,8 @@ class _CancelFormState extends State<CancelForm> {
 }
 
 class CompleteBottomPart extends StatelessWidget {
-  const CompleteBottomPart({Key? key}) : super(key: key);
+  CompleteBottomPart(this.bookingID, {Key? key}) : super(key: key);
+  var bookingID;
 
   @override
   Widget build(BuildContext context) {
@@ -437,7 +476,8 @@ class CompleteBottomPart extends StatelessWidget {
 }
 
 class CancelBottomPart extends StatelessWidget {
-  const CancelBottomPart({Key? key}) : super(key: key);
+  CancelBottomPart(this.bookingID, {Key? key}) : super(key: key);
+  var bookingID;
 
   @override
   Widget build(BuildContext context) {

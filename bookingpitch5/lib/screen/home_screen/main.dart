@@ -1,8 +1,26 @@
+import 'dart:io';
+
 import 'package:bookingpitch5/screen/home_screen/route_generate.dart';
 import 'package:flutter/material.dart';
 import 'main_screen/Homescreen.dart';
 
-void main() {
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+Future<void> main() async {
+  HttpOverrides.global = new MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
