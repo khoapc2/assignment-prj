@@ -1,8 +1,19 @@
+import 'package:bookingpitch5/view_models/feedback_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+
+TextEditingController feedbackEdt = new TextEditingController();
+int rated = 3;
+int pitch_id = 1;
+int booking_id = 1;
+bool result = true;
 class RatingScreen extends StatelessWidget{
+
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,11 +24,12 @@ class RatingScreen extends StatelessWidget{
             ),
         backgroundColor: Colors.green,
       ),
-      body:
+      resizeToAvoidBottomInset: false,
+      body:   
       Column(
           children: [
             Image(
-                image: AssetImage('../../assets/images/footballpitch1.jpg'),
+                image: AssetImage('assets/images/footballpitch1.jpg'),
                 width: 500,
                 height: 150,
                 fit:BoxFit.fill
@@ -33,7 +45,43 @@ class RatingScreen extends StatelessWidget{
             child: Text('Gửi', style: TextStyle(fontSize: 20.0),),
             color: Colors.green,
             textColor: Colors.white,
-            onPressed: () {},
+            onPressed: () async {
+              result = await FeedbackViewModel()
+                .createFeedback(pitch_id, feedbackEdt.text, rated, booking_id);
+                print(feedbackEdt.text);
+              if(result){
+                feedbackEdt.text = '';
+                FocusScope.of(context).requestFocus(new FocusNode());
+                showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Feedback thành công'),
+                        content: Text('Cảm ơn em iu của anh <3'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                );
+              }
+              else{
+                showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Feedback thất bại'),
+                        content: Text(':(((('),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                );
+              }
+            },
             padding: EdgeInsets.all(15),
           ),
         )
@@ -49,12 +97,10 @@ class RatingScreen extends StatelessWidget{
             padding: EdgeInsets.all(20.0),
             child: Column(
           children: [
-            Text('Khu Liên Hiệp Thể Thao TNG', style: TextStyle(fontWeight: FontWeight.bold)),
             RatingBar.builder(
-              initialRating: 3,
+              initialRating: rated.toDouble(),
               minRating: 1,
               direction: Axis.horizontal,
-              allowHalfRating: true,
               itemCount: 5,
               itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
               itemBuilder: (context, _) =>
@@ -63,6 +109,8 @@ class RatingScreen extends StatelessWidget{
                     color: Colors.amber,
                   ),
               onRatingUpdate: (rating) {
+                rated = rating.toInt();
+                print(rated);
               },)
           ],
         )
@@ -94,32 +142,28 @@ class RatingScreen extends StatelessWidget{
             Container(
               margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
               child: TextField(
+                controller: feedbackEdt,
                 decoration: InputDecoration(
                   hintText: 'Cùng nhau chia sẻ trải nghiệm đặt sân tại đây với mọi người nhé',
                   hintStyle: TextStyle(
                     color: Colors.grey, // <-- Change this
-                    fontSize: 10.0,
+                    fontSize: 13.0,
                     fontWeight: FontWeight.w400,
                     fontStyle: FontStyle.normal,
                   ),
                   border: OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    onPressed: (){},
-                    icon: Icon(Icons.camera_alt),
-                  ),
+          
                 ),
                 maxLines: 10,
                 maxLength: 500,
               ),
             )
-
             ],
           )
         ),
     );
 
   }
-
   }
 
 

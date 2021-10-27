@@ -1,7 +1,6 @@
 
 import 'package:bookingpitch5/models/user_accounts/profile_model.dart';
 import 'package:bookingpitch5/api/api_get_profile.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileViewModel {
@@ -42,8 +41,7 @@ class ProfileViewModel {
                         name : _name, 
                         email : _email, 
                         phone: _phone, 
-                        address: _address)
-                    );
+                        address: _address));
         return profile;
     }
 }
