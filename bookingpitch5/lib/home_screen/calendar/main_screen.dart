@@ -24,7 +24,7 @@ class CalendarOfCustomer extends StatelessWidget {
             ],
           ),
           backgroundColor: Colors.grey[200],
-          bottomNavigationBar: FooterMenu(1),
+          bottomNavigationBar: FooterMenuHost(1),
         );
   }
 }

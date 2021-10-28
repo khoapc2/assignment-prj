@@ -1,5 +1,5 @@
-import 'package:bookingpitch5/api/api_login_service.dart';
 import 'package:bookingpitch5/models/user_accounts/user_account.dart';
+import 'package:bookingpitch5/view_models/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookingpitch5/screen/home_screen/login/theme.dart';
 import 'package:bookingpitch5/screen/home_screen/main_screen/Homescreen.dart';
@@ -84,10 +84,12 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: ()  {
-          LoginRequestModel requestModel = new LoginRequestModel(username: _username.text, password: _password.text);
-          APIService apiService = new APIService();
-           apiService.login(requestModel).then((value) async => {
+          LoginRequestModel requestModel = new LoginRequestModel(_username.text, _password.text);
+          LoginViewModel viewmodel = new LoginViewModel();
+          viewmodel.getLoginResponse(requestModel).then((value) async => {
+            print(value),
               if(value.token.isNotEmpty){
+
                 // await UserAccountPreference.set
                 if(value.role == "owner"){
                   _setToReference(value.token, value.id, value.role),

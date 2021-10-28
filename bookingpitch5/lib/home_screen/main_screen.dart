@@ -28,7 +28,7 @@ class CalendarTodayHost extends StatelessWidget {
             ],
           ),
           backgroundColor: Colors.grey[200],
-          bottomNavigationBar: FooterMenu(0),
+          bottomNavigationBar: FooterMenuHost(0),
         );
   }
 }

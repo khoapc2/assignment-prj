@@ -1,15 +1,22 @@
+import 'package:bookingpitch5/screen/home_screen/footer_menu.dart';
+import 'package:bookingpitch5/view_models/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
 import 'package:bookingpitch5/view_models/profile_view_model.dart';
 import 'package:bookingpitch5/models/user_accounts/profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../footer_menu.dart';
+import 'package:bookingpitch5/home_screen/footer_menu.dart';
 
-String name ='';
-String email ='';
-String phone ='';
-String address ='';
+TextEditingController nameEdt = new TextEditingController();
+TextEditingController emailEdt = new TextEditingController();
+TextEditingController addressEdt = new TextEditingController();
+TextEditingController phoneEdt = new TextEditingController();
+var menu ;
+
+Future<String> role = LoginViewModel.getRole();
+int user_id = 0;
+
 class ProfilePage extends StatefulWidget {
   @override
   MapScreenState createState() => MapScreenState();
@@ -19,18 +26,27 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  String error = '';
   
-  var profileModel = ProfileViewModel().getProfile().then((value) => {
-      name = value.name,
-      email = value.email,
-      address = value.address,
-      phone = value.phone
+
+  late ProfileModel profileModel;
+  var getProfile = ProfileViewModel().getProfile().then((value) => {
+      user_id = value.id,
+      nameEdt.text = value.name,
+      emailEdt.text = value.email,
+      addressEdt.text = value.address,
+      phoneEdt.text = value.phone
     });
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(role.toString() == 'customer'){
+      menu = FooterMenu(3);
+    }else{
+      menu = FooterMenuHost(3);
+    }
   }
 
   @override
@@ -152,9 +168,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(
-                                    text: name
-                                    ),
+                                  controller: nameEdt,
+                                  keyboardType: TextInputType.name,
                                   decoration: const InputDecoration(
                                     hintText: "Enter Your Name",                                    
                                   ),
@@ -193,7 +208,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: email),
+                                  controller: emailEdt,
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: const InputDecoration(
                                       hintText: "Enter Email ID"),
                                   enabled: !_status,
@@ -229,7 +245,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: phone),
+                                  controller: phoneEdt, 
+                                  keyboardType: TextInputType.phone,                                
                                   decoration: const InputDecoration(
                                       hintText: "Enter Mobile Number"),
                                   enabled: !_status,
@@ -265,7 +282,8 @@ class MapScreenState extends State<ProfilePage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: TextEditingController(text: address),
+                                  controller: addressEdt,
+                                  keyboardType: TextInputType.streetAddress,
                                   decoration: const InputDecoration(
                                       hintText: "Enter Your Address"),
                                   enabled: !_status,
@@ -312,7 +330,9 @@ class MapScreenState extends State<ProfilePage>
         ],
       ),
     ),
-    bottomNavigationBar: FooterMenu(3));
+    bottomNavigationBar: menu
+    );
+    
   }
 
   @override
@@ -337,11 +357,66 @@ class MapScreenState extends State<ProfilePage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {
+                onPressed: () async => {
+                  error = ProfileViewModel.validateUpdateProfile(
+                    nameEdt.text.trim(), emailEdt.text.trim(), phoneEdt.text.trim(), addressEdt.text.trim()
+                  ),
+                  if(error.length > 0){
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Cập nhật thất bại'),
+                        content: Text(error),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    )
+                  }
+                  else{
+                    profileModel = await ProfileViewModel().updateProfile(                     
+                        nameEdt.text.trim(), 
+                        emailEdt.text.trim(), 
+                        phoneEdt.text.trim(), 
+                        addressEdt.text.trim()),
+                    if(profileModel != null){
+                      showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Cập nhật thành công'),
+                        content: Text('Ahihi đồ ngốc!!'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                      )
+                    }
+                    else {
+                      showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Đăng ký thất bại'),
+                        content: Text('Username đã tồn tại!'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    )
+                    }
+                  },
                   setState(() {
                     _status = true;
                     FocusScope.of(context).requestFocus(new FocusNode());
-                  });
+                  })
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
@@ -410,7 +485,7 @@ class MapScreenState extends State<ProfilePage>
   );
 
   Widget cancelBtn = FlatButton(
-    hoverColor: Colors.blue,
+    focusColor: Colors.blue,
     child: Text("Cancel"),
     onPressed: () => Navigator.pop(context, "Cancel"),
   );

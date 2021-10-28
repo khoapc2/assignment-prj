@@ -1,29 +1,30 @@
-import 'package:bookingpitch5/models/user_accounts/user_account.dart';
-import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'dart:convert';
 
-class APIService {
+import '../models/user_accounts/user_account.dart';
+
+class LoginService {
+  HttpClient client = HttpClient();
   Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
-    String link = "https://localhost:44322/";//192.168.1.5
+
+    LoginResponseModel responseModel;
+    String link = "https://104.215.186.78/";
     String url = link + "api/v1/user-accounts/login";
 
-    final response = await http.post(Uri.parse(url),
-        headers: <String, String>{
-           'Content-Type': 'application/json; charset=UTF-8',
-
-        },
-        body: jsonEncode(<String, String>{
-          'username' : loginRequestModel.username,
-          'password' : loginRequestModel.password
-          }),
-    );
+    client.badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+    HttpClientRequest request =
+    await client.postUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json; charset=UTF-8');
+    request.add(utf8.encode(loginRequestModel.LoginModelToJson()));
+    HttpClientResponse response = await request.close();
     if(response.statusCode == 200 || response.statusCode == 400){
-      print(response.statusCode);
-
-      return LoginResponseModel.fromJson(json.decode(response.body));
+      String reply = await response.transform(utf8.decoder).join();
+       responseModel = LoginResponseModel.fromJson(jsonDecode(reply));
     } else {
       print(response.statusCode);
       throw Exception(Exception);
     }
+    return responseModel;
   }
 }

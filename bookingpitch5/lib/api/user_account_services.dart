@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bookingpitch5/models/user_accounts/sign_up_model.dart';
-import 'package:http/http.dart' as http;
+import '../models/user_accounts/sign_up_model.dart';
+
 
 class UserAccountServices {
   // var url = 'https://10.0.2.2:44322/api/v1/user-accounts'; // local

@@ -23,7 +23,7 @@ class NotificationPitch extends StatelessWidget {
             ],
           ),
           backgroundColor: Colors.grey[200],
-          bottomNavigationBar: FooterMenu(2),
+          bottomNavigationBar: FooterMenuHost(2),
         );
   }
 }

@@ -1,50 +1,96 @@
+import 'package:bookingpitch5/api/api_sub_pitch_service.dart';
+import 'package:bookingpitch5/models/sub_pitch/sub_pitch_model.dart';
 import 'package:bookingpitch5/screen/home_screen/footer_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 
-class ListPitch extends StatelessWidget {
-  const ListPitch({Key? key}) : super(key: key);
+class ListSubPitch extends StatelessWidget {
+  final String typeOfPitch;
+  const ListSubPitch(this.typeOfPitch,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
           appBar: AppBar(
-            title: const Text("Các sân 5", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            title: const Text("Tìm theo thể loại sân", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             centerTitle: true,
             backgroundColor: Colors.green,
             ),
           body: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              BookedPitch(),
+              BookedPitch(typeOfPitch),
               // Text("Lịch sử đặt sân")
             ],
           ),
         );
   }
 }
-
+//       BookedItem("Sân A,B,C", "0:00", "23:00", "assets/images/img1.jpg", "Khu Liên Hiệp Thể Thao TNG", "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh."),
 class BookedPitch extends StatefulWidget {
-  const BookedPitch({Key? key}) : super(key: key);
+  final String typeOfPitch;
+  const BookedPitch(this.typeOfPitch, {Key? key}) : super(key: key);
   @override
-  State<StatefulWidget> createState() => _BookedPitchState();
+  State<StatefulWidget> createState() => _BookedPitchState(typeOfPitch);
 }
 
 class _BookedPitchState extends State<BookedPitch> {
+
+  final String typeOfPitch;
+  _BookedPitchState(this.typeOfPitch);
   @override
   Widget build(BuildContext context) {
+
+    var listPitch = SubPitchServce().getListSubPitchByTypeOfPitch(typeOfPitch);
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          BookedItem("Sân A,B,C", "0:00", "23:00", "assets/images/img1.jpg", "Khu Liên Hiệp Thể Thao TNG", "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh."),
-          BookedItem("Sân A,B,E", "6:00", "24:00", "assets/images/img2.jpg", "Sân bóng Đình Long", "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh."),
-          BookedItem("Sân A", "6:00", "24:00", "assets/images/sanbanh5.jpg", "Sân bóng Phúc An", "900 Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh."),
-          BookedItem("Sân A,B", "6:00", "24:00", "assets/images/sanbanh6.jpg", "Sân bóng Phú Nhuận", "200 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh."),
-          BookedItem("Sân C", "6:00", "24:00", "assets/images/sanbanh8.jpg", "Sân bóng Nhà Văn Hóa", "400 Lý Thường Kiệt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh."),
-          BookedItem("Sân B", "6:00", "24:00", "assets/images/sanbanh9.jpg", "Sân bóng Phú Cường", "89 Chi Lăng, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.")
-        ],
+      child: FutureBuilder<List<SubPitchModel>>(
+          future: listPitch,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<SubPitchModel>> snapshot) {
+            List<Widget> children = [];
+            SubPitchModel data;
+            if (snapshot.hasData) {
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                data = snapshot.data!.elementAt(i);
+                children.add(BookedItem(
+                  data.name,
+                  data.pitch_name,
+                  "",
+                  data.img_path,
+                  data.SpecialDayPrice.toString()+"/1h",data.normalDay.toString()+"/1h",
+                ));
+              }
+            }else if (snapshot.hasError) {
+              children = <Widget>[
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ];
+            } else {
+              children = const <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                )
+              ];
+            }
+            return Column(children:children);
+          }
       ),
     );
   }
@@ -104,11 +150,19 @@ class _BookedItemState extends State<BookedItem> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(widget.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 10),
-                      Text(widget.address, maxLines: 3),
-                      const SizedBox(height: 10),
-                      const Text("800,000đ - Tiền mặt"),
+                      Row(
+                        children: [
+                          Text("Giá ngày cuối tuần", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(widget.name, ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),Row(
+                        children: [
+                          Text("Giá ngày thường", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(widget.address),
+                        ],
+                      ),
+                      const SizedBox(height: 10)
                     ],
                   ),
                 ),
