@@ -25,7 +25,7 @@ namespace PitchBooking.API.Controllers
         public IActionResult GetAllAdvisory([FromQuery] PitchModel filter,
             int pageIndex = 1, int pageSize = 1)
         {
-            var listAdvisoryModel = _pitchService.GetAllAdvisory(filter, pageIndex, pageSize);
+            var listAdvisoryModel = _pitchService.GetAllAdvisory(filter);
             return Ok(listAdvisoryModel);
         }
 

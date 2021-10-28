@@ -11,10 +11,10 @@ namespace PitchBooking.Business.IServices
 {
     public interface IPitchService
     {
-        IPagedList<PitchModel> GetAllAdvisory(PitchModel filter, int pageIndex,
-           int pageSize);
+        IEnumerable<PitchModel> GetAllAdvisory(PitchModel filter);
         Task<PitchModel> CreateAdvisory(CreatePitchRequest request);
         Task<PitchModel> UpdateAdvisory(int id, UpdatePitchRequest request);
         Task<bool> DeleteAdvisory(int id);
+        Task<bool> UpdateRatePitch(int id, int rate);
     }
 }

@@ -18,20 +18,33 @@ namespace PitchBooking.Business.Services
     public class FeedBackService : IFeedbackService
     {
         private readonly IGenericRepository<Feedback> _res;
+
+        private readonly IPitchService _servicePitch;
         private readonly IMapper _mapper;
 
-        public FeedBackService(IGenericRepository<Feedback> res, IMapper mapper)
+        public FeedBackService(IGenericRepository<Feedback> res, IMapper mapper, IPitchService service)
         {
             _res = res;
             _mapper = mapper;
+            _servicePitch = service;
         }
 
         public async Task<FeedBackModel> CreateAdvisory(CreateFeedbackRequest request)
         {
-            var advisory = _mapper.Map<Feedback>(request);
-            await _res.InsertAsync(advisory);
+
+            var pitch = _mapper.Map<Feedback>(request);
+            await _res.InsertAsync(pitch);
             await _res.SaveAsync();
-            return _mapper.Map<FeedBackModel>(advisory);
+
+            ICollection<Feedback> listFeedback = await _res.FindByAsync(x => x.PitchId == request.PitchId);
+            int avg = (int)Math.Round((double)listFeedback.Average(x => x.Rating));
+            bool result = await _servicePitch.UpdateRatePitch((int)request.PitchId, avg);
+            if (result)
+            {
+               return _mapper.Map<FeedBackModel>(pitch);
+            }
+            return null;
+            
         }
 
         public IPagedList<FeedBackModel> GetAllAdvisory(FeedBackModel filter, int pageIndex,
