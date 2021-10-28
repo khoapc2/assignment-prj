@@ -1,7 +1,6 @@
 import 'package:bookingpitch5/models/bookings/booking_model.dart';
-import 'package:bookingpitch5/models/user_accounts/tranfer_params/pitchId_and_BookingId.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
 import 'package:bookingpitch5/screen/home_screen/footer_menu.dart';
-import 'package:bookingpitch5/screen/home_screen/login/widgets/login_form.dart';
 import 'package:bookingpitch5/view_models/my_booking_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

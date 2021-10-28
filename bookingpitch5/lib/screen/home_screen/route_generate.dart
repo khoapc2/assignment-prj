@@ -8,7 +8,7 @@ import 'package:bookingpitch5/home_screen/main_screen.dart';
 import 'package:bookingpitch5/home_screen/notification/main_screen.dart';
 import 'package:bookingpitch5/home_screen/updateMotherPitch/mother_pitch.dart';
 import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart';
-import 'package:bookingpitch5/models/user_accounts/tranfer_params/pitchId_and_BookingId.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/button_pay.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/main_screen.dart';
