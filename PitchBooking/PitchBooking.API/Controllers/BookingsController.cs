@@ -126,5 +126,20 @@ namespace PitchBooking.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //[Authorize]
+        [HttpPost("validate-time")]
+        public IActionResult ValidateTimeBooking([FromBody] ValidateTimeBookingRequest request)
+        {
+            try
+            {
+                var response = _service.ValidateTimeBooking(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
