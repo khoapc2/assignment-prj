@@ -14,9 +14,12 @@ namespace PitchBooking.Business.AutoMapper
     {
        public SubPitchMapper()
         {
-            CreateMap<SubPitch, SubPitchModel>();
+            CreateMap<SubPitch, SubPitchModel>()
+                .ForMember(d => d.PitchName, s => s.MapFrom(s => s.Pitch.Name));
             CreateMap<SubPitchCreate, SubPitch>();
             CreateMap<SubPitchUpdate, SubPitch>();
+
+            CreateMap<SubPitchCreate, SubPitchModel>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PitchBooking.Business.Requests.SubPitchRequest;
+﻿using PagedList;
+using PitchBooking.Business.Requests.SubPitchRequest;
 using PitchBooking.Business.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace PitchBooking.Business.IServices
 {
     public interface ISubPitchService
     {
-        Task<IEnumerable<SubPitchModel>> GetAllSubPitches();
+        IEnumerable<SubPitchModel> GetAllSubPitches(SubPitchCreate filter);
         Task<SubPitchModel> GetSubPitchById(int id);
         Task<SubPitchModel> CreateSubPitch(SubPitchCreate SubPitchRequest);
         Task<SubPitchModel> UpdateSubPitch(SubPitchUpdate SubPitchUpdate);

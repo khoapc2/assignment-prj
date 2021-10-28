@@ -21,9 +21,9 @@ namespace PitchBooking.API.Controllers
 
             //GET api/subPitchs
             [HttpGet]
-            public ActionResult<IEnumerable<SubPitchModel>> GetAllSubPitchs()
+            public ActionResult<IEnumerable<SubPitchModel>> GetAllSubPitchs([FromQuery] SubPitchCreate filter)
             {
-                return Ok(_service.GetAllSubPitches());
+                return Ok(_service.GetAllSubPitches(filter));
             }
 
             //GET api/subPitchs/{id}

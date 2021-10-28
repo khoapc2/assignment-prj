@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using PagedList;
 using PitchBooking.Business.Enum;
 using PitchBooking.Business.IServices;
 using PitchBooking.Business.Requests.SubPitchRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.IRepositories;
 using PitchBooking.Data.Models;
+using Reso.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PitchBooking.Business.Services
 {
@@ -45,10 +49,13 @@ namespace PitchBooking.Business.Services
             return false;
         }
 
-        public async Task<IEnumerable<SubPitchModel>> GetAllSubPitches()
+        public IEnumerable<SubPitchModel> GetAllSubPitches(SubPitchCreate filter)
         {
-            var subPitches = await _genericRepository.FindByAsync(x => x.Status == (int)SubPitchStatus.Active);
-            return _mapper.Map<IEnumerable<SubPitchModel>>(subPitches);
+            var listSubPitches = _genericRepository.FindBy(x => x.Status == (int)SubPitchStatus.Active).Include(x => x.Pitch);
+
+            var listAdvisoryModel = (listSubPitches.ProjectTo<SubPitchModel>
+                (_mapper.ConfigurationProvider)).DynamicFilter(_mapper.Map<SubPitchModel>(filter));
+            return listAdvisoryModel.ToList();
         }
 
         public async Task<SubPitchModel> GetSubPitchById(int id)
