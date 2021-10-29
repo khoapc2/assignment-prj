@@ -53,5 +53,12 @@ namespace PitchBooking.API.Controllers
                 return BadRequest();
             return Ok();
         }
+
+        [HttpGet("get_highest_rates")]
+        public IActionResult GetHighestRatePitch()
+        {
+            var listAdvisoryModel = _pitchService.getHighestRates();
+            return Ok(listAdvisoryModel);
+        }
     }
 }
