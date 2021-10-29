@@ -1,14 +1,24 @@
+import 'package:bookingpitch5/view_models/son_pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+TextEditingController edtSonPitchName = new TextEditingController();
+TextEditingController edtSonType = new TextEditingController();
+TextEditingController edtPriceNormalDay = new TextEditingController();
+TextEditingController edtPriceSpecialDay = new TextEditingController();
 
 class SonPage extends StatefulWidget {
+  SonPage(this.pitchId);
+  var pitchId;
+
   @override
   MapScreenState createState() => MapScreenState();
 }
 
 class MapScreenState extends State<SonPage>
     with SingleTickerProviderStateMixin {
+
   bool _status = true;
   String? _selectedType = "Sân 5";
   final FocusNode myFocusNode = FocusNode();
@@ -17,6 +27,7 @@ class MapScreenState extends State<SonPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.pitchId.toString() + " SonPage");
   }
 
   @override
@@ -141,6 +152,7 @@ class MapScreenState extends State<SonPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtSonPitchName,
                                   decoration: const InputDecoration(
                                     hintText: "Nhập tên sân con",
                                   ),
@@ -206,7 +218,7 @@ class MapScreenState extends State<SonPage>
                               Expanded(
                                 child: Container(
                                   child: new Text(
-                                    'Giá sân ngày thường',
+                                    'Giá sân ngày thường (VNĐ)',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
@@ -217,7 +229,7 @@ class MapScreenState extends State<SonPage>
                               Expanded(
                                 child: Container(
                                   child: new Text(
-                                    'Giá sân ngày cuối tuần',
+                                    'Giá sân ngày cuối tuần (VNĐ)',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
@@ -238,8 +250,9 @@ class MapScreenState extends State<SonPage>
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 10.0),
                                   child: new TextField(
+                                    controller: edtPriceNormalDay,
                                     decoration: const InputDecoration(
-                                        hintText: "Nhập giá ngày thường"),
+                                        hintText: "Nhập giá ngày thường (VNĐ)"),
                                     enabled: !_status,
                                   ),
                                 ),
@@ -247,15 +260,16 @@ class MapScreenState extends State<SonPage>
                               ),
                               Flexible(
                                 child: new TextField(
+                                  controller: edtPriceSpecialDay,
                                   decoration: const InputDecoration(
-                                      hintText: "Nhập giá ngày đặc biệt"),
+                                      hintText: "Nhập giá ngày đặc biệt (VNĐ)"),
                                   enabled: !_status,
                                 ),
                                 flex: 2,
                               ),
                             ],
                           )),
-                      !_status ? _getActionButtons() : new Container(),
+                      !_status ? _getActionButtons(_selectedType, widget.pitchId) : new Container(),
                     ],
                   ),
                 ),
@@ -274,7 +288,9 @@ class MapScreenState extends State<SonPage>
     super.dispose();
   }
 
-  Widget _getActionButtons() {
+  Widget _getActionButtons(typePitch, pitchId) {
+    bool isCreate = false;
+    var error = "";
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: new Row(
@@ -289,11 +305,47 @@ class MapScreenState extends State<SonPage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
+                onPressed: () async {
+                  error = SonPitchViewModel.validateField(
+                      edtSonPitchName.text.trim(),
+                      edtPriceNormalDay.text.trim(),
+                      edtPriceSpecialDay.text.trim());
+                  if(error.length > 0){
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Create SubPitch Fail'),
+                        content: Text(error),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }else {
+                    isCreate = await SonPitchViewModel.createPitch(pitchId, typePitch, int.parse(edtPriceNormalDay.text), int.parse(edtPriceSpecialDay.text), edtSonPitchName.text);
+                    if(isCreate){
+                      Fluttertoast.showToast(
+                          msg: "Create SubPitch Successful",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white);
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      });
+                    } else{
+                      Fluttertoast.showToast(
+                          msg: "Delete Pitch Fail",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white);
+                    }
+                  }
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),

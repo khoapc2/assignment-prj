@@ -10,17 +10,17 @@ import 'button_pay.dart';
 import 'detail_pitches.dart';
 
 class MainScreenDetailPitchHost extends StatelessWidget{
-  MainScreenDetailPitchHost() ;
+  MainScreenDetailPitchHost(this.pitchID) ;
+  var pitchID;
 
   @override
   Widget build(BuildContext context) {
-     var pitchModel= PitchesModel.getPitchById("1");
+    print(pitchID);
 
+    var pitchModel= PitchesModel.getPitchById("1");
      if(pitchModel != null){
-
        return Scaffold(
        appBar: AppBar(
-
          title: Text(pitchModel.name),
          backgroundColor: Colors.green,
        ),
@@ -88,7 +88,7 @@ class MainScreenDetailPitchHost extends StatelessWidget{
       ));
     }
 
-    list.add(ButtonPay());
+    list.add(ButtonPay(pitchID));
     return list.map((e) => e);
   }
 }

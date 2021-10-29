@@ -177,7 +177,7 @@ class BookedBottomPart extends StatelessWidget {
                         msg: "Delete Pitch Fail",
                         fontSize: 18,
                         gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Colors.red,
                         textColor: Colors.white);
                   }
                 },
@@ -228,7 +228,7 @@ class _BookedItemState extends State<Pitches> {
         ),
 
     GestureDetector(
-    onTap:() => Navigator.of(context).pushNamed('/detailPitchHost'),
+    onTap:() => Navigator.of(context).pushNamed('/detailPitchHost', arguments: widget.idPitch),
     child:
     Container(
     child:
