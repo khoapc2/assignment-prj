@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
 
 class PitchService {
+    //localhost
+    // String link = "https://10.0.2.2:44322/";
+    //server
     String link = "https://104.215.186.78/";
     //Waiting To Fix
     Future<bool> deletePitch(int motherPitchID) async {
@@ -65,20 +68,47 @@ class PitchService {
         }
     }
 
-    Future<GetPitchModel> getPitchID(int pitchID) async {
-        GetPitchModel pitch;
-        String url = link + "api/Pitches?Id=1";
+    Future<GetPitchModelDetail> getPitchID(int pitchID) async {
+        GetPitchModelDetail pitch;
+        String url = link + "api/Pitches/" + pitchID.toString();
         final response = await http.get(
             Uri.parse(url),
             headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
             },
+
         );
         if (response.statusCode == 200) {
-            pitch = new GetPitchModel.fromJson(jsonDecode(response.body));
+            pitch = GetPitchModelDetail.fromJson(json.decode(response.body));
         }else {
             throw Exception(Exception);
         }
         return pitch;
+    }
+
+    Future<bool> updatePitch(GetPitchModelDetail pitchModelDetail) async {
+        String pitchId = pitchModelDetail.idPitch.toString();
+        String url = link + "api/Pitches/" + pitchId;
+        final response = await http.put(
+            Uri.parse(url),
+            headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+                'pitch_owner_id' : pitchModelDetail.pitch_owner_id,
+                'name' : pitchModelDetail.name,
+                'location' : pitchModelDetail.location,
+                'time_start' : pitchModelDetail.time_start,
+                'time_end' : pitchModelDetail.time_end,
+                'phone' : pitchModelDetail.phone,
+            }),
+        );
+        if (response.statusCode == 200) {
+            print(response.statusCode);
+            return true;
+        }else {
+            throw Exception(Exception);
+        }
+        return false;
     }
 }

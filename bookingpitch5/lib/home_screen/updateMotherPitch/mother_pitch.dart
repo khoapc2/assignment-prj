@@ -1,9 +1,12 @@
-import 'package:bookingpitch5/api/create_pitch_service.dart';
+import 'package:bookingpitch5/api/pitch_service.dart';
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
-import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
+import 'package:bookingpitch5/view_models/pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+TextEditingController edtID = new TextEditingController();
 TextEditingController edtPitchName = new TextEditingController();
 TextEditingController edtAddress = new TextEditingController();
 TextEditingController edtPhone = new TextEditingController();
@@ -12,11 +15,9 @@ TextEditingController edtTimeEnd = new TextEditingController();
 String txtTitle = "";
 var pitchID;
 
-
-
-
 class UpdateMotherPage extends StatefulWidget {
   var id;
+
   UpdateMotherPage(this.id);
   @override
   MapScreenState createState() => MapScreenState();
@@ -27,26 +28,16 @@ class MapScreenState extends State<UpdateMotherPage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  var pitchModel;
 
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     pitchID = widget.id;
-
+    getPitch();
+    super.initState();
   }
-
-    var pitchModel = PitchViewModel.getPitchByPitchID(pitchID).then((value) =>
-    {
-      txtTitle = value.name,
-      edtPitchName.text = value.name,
-      edtAddress.text = value.location,
-      edtPhone.text = value.phone,
-      edtTimeStart.text = value.time_start,
-      edtTimeEnd.text = value.time_end,
-    });
-
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +163,7 @@ class MapScreenState extends State<UpdateMotherPage>
                                 child: new TextField(
                                   controller: edtPitchName,
                                   decoration: const InputDecoration(
-                                    hintText: "sân Liên Hiệp Thể Thao TNG",
+                                    hintText: "Enter Pitch's Name to update",
                                   ),
                                   enabled: !_status,
                                   autofocus: !_status,
@@ -181,41 +172,41 @@ class MapScreenState extends State<UpdateMotherPage>
                               ),
                             ],
                           )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Email ID',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  decoration: const InputDecoration(
-                                      hintText: "sanlienhiepthethaotng@gmail.com"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
+                      // Padding(
+                      //     padding: EdgeInsets.only(
+                      //         left: 25.0, right: 25.0, top: 25.0),
+                      //     child: new Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         new Column(
+                      //           mainAxisAlignment: MainAxisAlignment.start,
+                      //           mainAxisSize: MainAxisSize.min,
+                      //           children: <Widget>[
+                      //             new Text(
+                      //               'Email ID',
+                      //               style: TextStyle(
+                      //                   fontSize: 16.0,
+                      //                   fontWeight: FontWeight.bold),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     )),
+                      // Padding(
+                      //     padding: EdgeInsets.only(
+                      //         left: 25.0, right: 25.0, top: 2.0),
+                      //     child: new Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         new Flexible(
+                      //           child: new TextField(
+                      //             decoration: const InputDecoration(
+                      //                 hintText: "sanlienhiepthethaotng@gmail.com"),
+                      //             enabled: !_status,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     )),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 25.0),
@@ -244,8 +235,9 @@ class MapScreenState extends State<UpdateMotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtAddress,
                                   decoration: const InputDecoration(
-                                      hintText: "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh"),
+                                      hintText: "Enter Pitch's Address to Update"),
                                   enabled: !_status,
                                 ),
                               ),
@@ -279,6 +271,7 @@ class MapScreenState extends State<UpdateMotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtPhone,
                                   decoration: const InputDecoration(
                                       hintText: "0123456789"),
                                   enabled: !_status,
@@ -328,8 +321,9 @@ class MapScreenState extends State<UpdateMotherPage>
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 10.0),
                                   child: new TextField(
+                                    controller: edtTimeStart,
                                     decoration: const InputDecoration(
-                                        hintText: "6:00"),
+                                        hintText: "TimeStart: 6:00"),
                                     enabled: !_status,
                                   ),
                                 ),
@@ -337,8 +331,9 @@ class MapScreenState extends State<UpdateMotherPage>
                               ),
                               Flexible(
                                 child: new TextField(
+                                  controller: edtTimeEnd,
                                   decoration: const InputDecoration(
-                                      hintText: "23:00"),
+                                      hintText: "TimeEnd: 23:00"),
                                   enabled: !_status,
                                 ),
                                 flex: 2,
@@ -365,6 +360,9 @@ class MapScreenState extends State<UpdateMotherPage>
   }
 
   Widget _getActionButtons() {
+    bool isUpdate = false;
+    var idPitch = widget.id;
+    String error = '';
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: new Row(
@@ -379,11 +377,53 @@ class MapScreenState extends State<UpdateMotherPage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
+                onPressed: ()  async {
+                  error = PitchViewModel.validateCreate(
+                      edtPitchName.text.trim(),
+                      edtPhone.text.trim(),
+                      edtAddress.text.trim(),
+                      edtTimeStart.text.trim(),
+                      edtTimeEnd.text.trim());
+                  if (error.length > 0) {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Update Pitch Fail'),
+                        content: Text(error),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }else {
+                    SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                    int id = prefs.getInt('id');
+                    isUpdate = await PitchViewModel.updatePitch(
+                    id,
+                    pitchID,
+                    "assets/images/circle.png",
+                    edtPitchName.text,
+                    edtAddress.text,
+                    edtPhone.text,
+                    edtTimeStart.text,
+                    edtTimeEnd.text);
+                    if (isUpdate) {
+                      Fluttertoast.showToast(
+                          msg: "Update Pitch Successful",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white);
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      });
+                    }
+                  }
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
@@ -434,4 +474,21 @@ class MapScreenState extends State<UpdateMotherPage>
       },
     );
   }
+  getPitch() async {
+      await PitchViewModel.getPitchByPitchID(pitchID).then((value) {
+        edtPitchName.text = value.name;
+        edtAddress.text = value.location;
+        edtPhone.text = value.phone;
+        edtTimeStart.text = PitchViewModel.tranferTimeFormat(value.time_start);
+        edtTimeEnd.text = PitchViewModel.tranferTimeFormat( value.time_end);
+        setState(() {
+          pitchModel = value;
+          txtTitle = value.name;
+        });
+      }
+      );
+  }
 }
+
+
+

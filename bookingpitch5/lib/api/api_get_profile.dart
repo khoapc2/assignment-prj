@@ -18,7 +18,6 @@ class ProfileService {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         });
-    
 
     if(response.statusCode == 200){
       profileModelResponse = ProfileModel.fromJson(json.decode(response.body));

@@ -1,6 +1,6 @@
 import 'package:bookingpitch5/home_screen/footer_menu.dart';
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
-import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
+import 'package:bookingpitch5/view_models/pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -155,7 +155,7 @@ class BookedBottomPart extends StatelessWidget {
             children: [
               FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/updateMotherPitch', arguments: 1);
+                  Navigator.of(context).pushNamed('/updateMotherPitch', arguments: pitchID);
                 },
                 child: const Text("Cập nhật", style: TextStyle(fontWeight: FontWeight.bold)),
                 color: Colors.green,
@@ -188,8 +188,6 @@ class BookedBottomPart extends StatelessWidget {
             ],
           ),
         )
-
-
       ],
     );
   }
