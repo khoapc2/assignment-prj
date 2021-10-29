@@ -1,29 +1,58 @@
+import 'package:bookingpitch5/api/create_pitch_service.dart';
+import 'package:bookingpitch5/models/mother_pitch_model.dart';
+import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
+TextEditingController edtPitchName = new TextEditingController();
+TextEditingController edtAddress = new TextEditingController();
+TextEditingController edtPhone = new TextEditingController();
+TextEditingController edtTimeStart = new TextEditingController();
+TextEditingController edtTimeEnd = new TextEditingController();
+String txtTitle = "";
+var pitchID;
+
 
 
 
 class UpdateMotherPage extends StatefulWidget {
+  var id;
+  UpdateMotherPage(this.id);
   @override
   MapScreenState createState() => MapScreenState();
 }
+
 
 class MapScreenState extends State<UpdateMotherPage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    pitchID = widget.id;
+
   }
+
+    var pitchModel = PitchViewModel.getPitchByPitchID(pitchID).then((value) =>
+    {
+      txtTitle = value.name,
+      edtPitchName.text = value.name,
+      edtAddress.text = value.location,
+      edtPhone.text = value.phone,
+      edtTimeStart.text = value.time_start,
+      edtTimeEnd.text = value.time_end,
+    });
+
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          title: Text("Thông tin sân Liên Hiệp Thể Thao TNG"),
+          title: Text("Thông tin sân " + txtTitle),
           backgroundColor: Colors.green,
         ),
         body: new Container(
@@ -141,6 +170,7 @@ class MapScreenState extends State<UpdateMotherPage>
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
+                                  controller: edtPitchName,
                                   decoration: const InputDecoration(
                                     hintText: "sân Liên Hiệp Thể Thao TNG",
                                   ),

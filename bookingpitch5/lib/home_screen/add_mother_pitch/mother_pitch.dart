@@ -366,7 +366,7 @@ class MapScreenState extends State<MotherPage>
                 textColor: Colors.white,
                 color: Colors.green,
                 onPressed: () async {
-                  error = CreatePitchViewModel.validateCreate(
+                  error = PitchViewModel.validateCreate(
                       edtPitchName.text.trim(),
                       edtPhone.text.trim(),
                       edtAddress.text.trim(),
@@ -390,7 +390,7 @@ class MapScreenState extends State<MotherPage>
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     int id = prefs.getInt('id');
-                    isCreate = await CreatePitchViewModel.createPitch(
+                    isCreate = await PitchViewModel.createPitch(
                         id,
                         edtPitchName.text,
                         edtAddress.text,

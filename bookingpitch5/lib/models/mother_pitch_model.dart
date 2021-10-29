@@ -55,4 +55,5 @@ class GetPitchModel {
         time_end : json['time_end']
     );
   }
+
 }

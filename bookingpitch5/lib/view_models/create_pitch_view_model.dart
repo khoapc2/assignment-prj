@@ -4,11 +4,18 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class CreatePitchViewModel {
+class PitchViewModel {
+  static Future<GetPitchModel> getPitchByPitchID(pitchID) async {
+    PitchService service = new PitchService();
+    var result = await service.getPitchID(pitchID);
+    print("viewmodel");
+    print(result);
+    return result;
+  }
 
   static Future<List<GetPitchModel>> getListPitchByOwnerID() async {
-    final prefs = await SharedPreferences.getInstance();
-    CreatePitchService service = new CreatePitchService();
+    var prefs = await SharedPreferences.getInstance();
+    PitchService service = new PitchService();
     var id = await prefs.getInt('id');
     var result = await service.getPitchModel(id);
     return result;
@@ -21,9 +28,15 @@ class CreatePitchViewModel {
       String phone,
       String timeStart,
       String timeEnd) async {
-    CreatePitchService createPitchService = new CreatePitchService();
+    PitchService createPitchService = new PitchService();
     var isCreate = await createPitchService.createPitchModel(
         new CreatePitchModel(owner_id, pitchName, phone, address, timeStart, timeEnd));
+    return isCreate;
+  }
+
+  static Future<bool> deletePitch( int owner_id) async {
+    PitchService service = new PitchService();
+    var isCreate = await service.deletePitch(owner_id);
     return isCreate;
   }
 
