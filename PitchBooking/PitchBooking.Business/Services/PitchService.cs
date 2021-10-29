@@ -27,37 +27,14 @@ namespace PitchBooking.Business.Services
             _mapper = mapper;
         }
 
-        public IPagedList<PitchModel> GetAllAdvisory(PitchModel filter, int pageIndex,
-           int pageSize)
+        public IEnumerable<PitchModel> GetAllAdvisory(PitchModel filter)
         {
             var listAdvisory = _res.FindBy(x => x.Status == (int)PitchStatus.Active);
 
-            var listAdvisoryModel = (IQueryable<PitchModel>)(listAdvisory.ProjectTo<PitchModel>
+            var listAdvisoryModel = (listAdvisory.ProjectTo<PitchModel>
                 (_mapper.ConfigurationProvider)).DynamicFilter(filter);
-            //switch (sortBy.ToString())
-            //{
-            //    case "Question":
-            //        if (order.ToString() == "Asc")
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderBy(x => x.Question);
-            //        }
-            //        else
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderByDescending(x => x.Question);
-            //        }
-            //        break;
-            //    case "Answer":
-            //        if (order.ToString() == "Asc")
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderBy(x => x.Answer);
-            //        }
-            //        else
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderByDescending(x => x.Answer);
-            //        }
-            //        break;
-            //}
-            return PagedListExtensions.ToPagedList<PitchModel>(listAdvisoryModel, pageIndex, pageSize);
+
+            return listAdvisoryModel.ToList();
         }
 
         public async Task<List<PitchModel>> getHighestRates()
@@ -102,6 +79,19 @@ namespace PitchBooking.Business.Services
             await _res.UpdateAsync(advisory);
             await _res.SaveAsync();
             return true;
+        }
+
+        public async Task<bool> UpdateRatePitch(int id, int rate)
+        {
+            var pitch = (await _res.FindAsync(x => x.Id == id && x.Status == (int)PitchStatus.Active));
+            if(pitch != null)
+            {
+                pitch.Rates = rate;
+                await _res.UpdateAsync(pitch);
+                return true;
+            }
+            return false;
+            
         }
     }
 }

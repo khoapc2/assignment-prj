@@ -95,5 +95,33 @@ namespace PitchBooking.Business.Services
             await _genericRepository.UpdateAsync(booking);
             return true;
         }
+
+        public ValidateTimeBookingResponse ValidateTimeBooking(ValidateTimeBookingRequest request)
+        {
+            ValidateTimeBookingResponse response = new ValidateTimeBookingResponse();
+            var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooing && b.Status == (int)BookingStatus.Booked);
+
+            foreach (var booking in bookingList)
+            {
+                if (request.TimeStart >= booking.TimeStart && request.TimeStart <= booking.TimeEnd)
+                {
+                    response.TimeStartError = "Your time start is conflicted in another booking";
+                }
+                if(request.TimeEnd >= booking.TimeStart && request.TimeEnd <= booking.TimeEnd)
+                {
+                    response.TimeEndError = "Your time end is conflicted in another booking";
+                }
+                if(request.TimeStart <= booking.TimeStart && request.TimeEnd >= booking.TimeEnd)
+                {
+                    response.TimeStartError = "Your time start is conflicted in another booking";
+                    response.TimeEndError = "Your time end is conflicted in another booking";
+                }
+                if(!string.IsNullOrEmpty(response.TimeStartError) || !string.IsNullOrEmpty(response.TimeEndError))
+                {
+                    return response;
+                }
+            }
+            return response;
+        }
     }
 }
