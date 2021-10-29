@@ -3,8 +3,23 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
 
-class CreatePitchService {
+class PitchService {
     String link = "https://104.215.186.78/";
+    //Waiting To Fix
+    Future<bool> deletePitch(int motherPitchID) async {
+        String url = link + "api/Pitches?id="+ motherPitchID.toString();
+        final response = await http.delete(
+            Uri.parse(url),
+            headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        );
+        if (response.statusCode == 200 || response.statusCode == 400) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     Future<bool> createPitchModel(CreatePitchModel createPitchModel) async {
     String url = link + "api/Pitches";
@@ -48,5 +63,22 @@ class CreatePitchService {
         } else {
             return listPitch;
         }
+    }
+
+    Future<GetPitchModel> getPitchID(int pitchID) async {
+        GetPitchModel pitch;
+        String url = link + "api/Pitches?Id=1";
+        final response = await http.get(
+            Uri.parse(url),
+            headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        );
+        if (response.statusCode == 200) {
+            pitch = new GetPitchModel.fromJson(jsonDecode(response.body));
+        }else {
+            throw Exception(Exception);
+        }
+        return pitch;
     }
 }

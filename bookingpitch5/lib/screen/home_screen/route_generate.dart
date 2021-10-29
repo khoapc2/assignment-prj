@@ -108,8 +108,8 @@ class RouteGenerator{
       case '/calendar':
         return MaterialPageRoute(builder: (_) => CalendarOfCustomer());
 
-      case '/updateModerPitch':
-        return MaterialPageRoute(builder: (_) => UpdateMotherPage());
+      case '/updateMotherPitch':
+        return MaterialPageRoute(builder: (_) => UpdateMotherPage(settings.arguments as int));
 
       case '/updateSonPitch':
         return MaterialPageRoute(builder: (_) => UpdateSonPage());
