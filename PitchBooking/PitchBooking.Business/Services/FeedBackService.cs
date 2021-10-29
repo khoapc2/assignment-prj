@@ -37,7 +37,7 @@ namespace PitchBooking.Business.Services
             await _res.SaveAsync();
 
             ICollection<Feedback> listFeedback = await _res.FindByAsync(x => x.PitchId == request.PitchId);
-            int avg = (int)Math.Round((double)listFeedback.Average(x => x.Rating));
+            double avg = Math.Round((double)listFeedback.Average(x => x.Rating), 1);
             bool result = await _servicePitch.UpdateRatePitch((int)request.PitchId, avg);
             if (result)
             {

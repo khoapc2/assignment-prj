@@ -81,7 +81,7 @@ namespace PitchBooking.Business.Services
             return true;
         }
 
-        public async Task<bool> UpdateRatePitch(int id, int rate)
+        public async Task<bool> UpdateRatePitch(int id, double rate)
         {
             var pitch = (await _res.FindAsync(x => x.Id == id && x.Status == (int)PitchStatus.Active));
             if(pitch != null)

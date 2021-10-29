@@ -18,7 +18,7 @@ namespace PitchBooking.Business.ViewModel
         public string Phone { get; set; }
         public TimeSpan? TimeStart { get; set; }
         public TimeSpan? TimeEnd { get; set; }
-        public int? Rates { get; set; }
+        public double? Rates { get; set; }
         public int? Status { get; set; }
     }
 }
