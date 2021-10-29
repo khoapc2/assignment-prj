@@ -15,7 +15,8 @@ namespace PitchBooking.Business.AutoMapper
         public FeedbackModule()
         {
             CreateMap<CreateFeedbackRequest, Feedback> ();
-            CreateMap<Feedback, FeedBackModel>();
+            CreateMap<Feedback, FeedBackModel>()
+                .ForMember(d => d.CustomerName, s => s.MapFrom(s => s.Customer.Name));
         }
     }
 }

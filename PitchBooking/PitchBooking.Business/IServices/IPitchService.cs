@@ -18,6 +18,8 @@ namespace PitchBooking.Business.IServices
 
         Task<List<PitchModel>> getHighestRates();
 
+        Task<PitchModel> GetPitchById(int id);
+
         Task<bool> UpdateRatePitch(int id, double rate);
 
     }

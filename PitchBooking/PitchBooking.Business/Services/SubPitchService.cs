@@ -55,7 +55,7 @@ namespace PitchBooking.Business.Services
 
             var listAdvisoryModel = (listSubPitches.ProjectTo<SubPitchModel>
                 (_mapper.ConfigurationProvider)).DynamicFilter(_mapper.Map<SubPitchModel>(filter));
-            return listAdvisoryModel.ToList();
+            return listAdvisoryModel;
         }
 
         public async Task<SubPitchModel> GetSubPitchById(int id)

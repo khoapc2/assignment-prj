@@ -93,5 +93,16 @@ namespace PitchBooking.Business.Services
             return false;
             
         }
+
+        public async Task<PitchModel> GetPitchById(int id)
+        {
+            var pitch = await _res.FindAsync(x => x.Id == id &&
+            x.Status == (int)PitchStatus.Active);
+            if (pitch != null)
+            {
+                return _mapper.Map<PitchModel>(pitch);
+            }
+            return null;
+        }
     }
 }
