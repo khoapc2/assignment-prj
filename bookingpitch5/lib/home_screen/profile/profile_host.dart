@@ -73,7 +73,7 @@ class MapScreenState extends State<ProfileHostPage>
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                     image: new ExactAssetImage(
-                                        'assets/images/as.png'),
+                                        'assets/images/profile_host.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 )),
