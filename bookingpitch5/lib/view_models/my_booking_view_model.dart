@@ -26,6 +26,12 @@ class MyBookingViewModel {
     return result;
   }
 
+  static Future<BookingModel> getBookingByID(id) async {
+    BookingService service = new BookingService();
+    var result = await service.getBookingByID(id);
+    return result;
+  }
+
   static Future<bool> cancelBooking(int id, String reason) async {
     BookingService service = new BookingService();
     return service.cancelBooking(id, reason);

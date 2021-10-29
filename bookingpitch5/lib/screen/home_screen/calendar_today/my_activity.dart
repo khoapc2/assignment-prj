@@ -1,6 +1,6 @@
 import 'package:bookingpitch5/models/bookings/booking_model.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
 import 'package:bookingpitch5/screen/home_screen/footer_menu.dart';
-import 'package:bookingpitch5/screen/home_screen/login/widgets/login_form.dart';
 import 'package:bookingpitch5/view_models/my_booking_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +70,7 @@ class _BookedPitchState extends State<BookedPitch> {
               for (int i = 0; i < snapshot.data!.length; i++) {
                 data = snapshot.data!.elementAt(i);
                 children.add(BookedItem(
+                    data.id,
                     data.subPitchType,
                     data.timeStart,
                     data.dateBooking,
@@ -115,9 +116,9 @@ class _BookedPitchState extends State<BookedPitch> {
 }
 
 class BookedItem extends StatefulWidget {
-  var type, time, date, img, name, address, price, pitchName, bottomPart;
+  var id, type, time, date, img, name, address, price, pitchName, bottomPart;
 
-  BookedItem(this.type, this.time, this.date, this.img, this.name, this.address,
+  BookedItem(this.id, this.type, this.time, this.date, this.img, this.name, this.address,
       this.pitchName, this.price, this.bottomPart,
       {Key? key})
       : super(key: key);
@@ -147,7 +148,7 @@ class _BookedItemState extends State<BookedItem> {
             ])
           ]),
           GestureDetector(
-              onTap: () => Navigator.of(context).pushNamed('/checkLocation'),
+              onTap: () => Navigator.of(context).pushNamed('/checkLocation', arguments: widget.id),
               child: Container(
                   child: Row(
                 children: [
@@ -166,7 +167,6 @@ class _BookedItemState extends State<BookedItem> {
                         Text(widget.name,
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        // const SizedBox(height: 10),
                         Text(widget.pitchName,
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
@@ -216,8 +216,9 @@ class _BookingHistoryState extends State<BookingHistory> {
                 data = snapshot.data!.elementAt(i);
                 bottomPart = data.status == 'Cancel'
                     ? CancelBottomPart(data.id)
-                    : CompleteBottomPart(data.id);
+                    : CompleteBottomPart(data.id, data.pitchID);
                 children.add(BookedItem(
+                    data.id,
                     data.subPitchType,
                     data.timeStart,
                     data.dateBooking,
@@ -258,30 +259,6 @@ class _BookingHistoryState extends State<BookingHistory> {
             }
             return Column(children: children);
           }),
-      // child: Column(
-      //   children: [
-      //     BookedItem(
-      //         "Sân 5",
-      //         "",
-      //         "10/10/2021",
-      //         "assets/images/img1.jpg",
-      //         "Khu Liên Hiệp Thể Thao TNG",
-      //         "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.",
-      //         "",
-      //         "",
-      //         CancelBottomPart()),
-      //     BookedItem(
-      //         "Sân 7",
-      //         "",
-      //         "10/11/2021",
-      //         "assets/images/img2.jpg",
-      //         "Sân bóng Hoàng Phú",
-      //         "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.",
-      //         "",
-      //         "",
-      //         CompleteBottomPart())
-      //   ],
-      // ),
     );
   }
 }
@@ -298,7 +275,7 @@ class BookedBottomPart extends StatefulWidget {
 }
 
 class _BookedBottomPartState extends State<BookedBottomPart> {
-  var reason = '';
+  var reason = MyBookingViewModel.reasonList.elementAt(0);
   var isCancel;
   TextEditingController controller = TextEditingController();
   set string(String value) => setState(() => reason = value);
@@ -434,8 +411,8 @@ class _CancelFormState extends State<CancelForm> {
 }
 
 class CompleteBottomPart extends StatelessWidget {
-  CompleteBottomPart(this.bookingID, {Key? key}) : super(key: key);
-  var bookingID;
+  CompleteBottomPart(this.bookingID, this.pitchID, {Key? key}) : super(key: key);
+  var bookingID, pitchID;
 
   @override
   Widget build(BuildContext context) {
@@ -452,7 +429,7 @@ class CompleteBottomPart extends StatelessWidget {
           children: [
             OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/ratePitch');
+                  Navigator.of(context).pushNamed('/ratePitch', arguments: PitchID_BookingID(bookingId: bookingID, pitchId: pitchID));
                 },
                 child: const Text("Đánh giá",
                     style: TextStyle(fontWeight: FontWeight.bold)),

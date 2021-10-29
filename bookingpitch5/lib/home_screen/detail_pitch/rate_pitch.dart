@@ -66,7 +66,7 @@ class FeedbackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => Navigator.of(context).pushNamed('/feedback'),
-      child: const Text('Bình luận'),
+      child: const Text('Xem bình luận'),
     );
   }
 }
