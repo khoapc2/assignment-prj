@@ -20,6 +20,7 @@ namespace PitchBooking.Business.AutoMapper
                 .ForMember(d => d.SubPitchName, s => s.MapFrom(s => s.SubPitch.Name))
                 .ForMember(d => d.SubPitchImageUrl, s => s.MapFrom(s => s.SubPitch.ImgPath))
                 .ForMember(d => d.SubPitchType, s => s.MapFrom(s => s.SubPitch.TypeOfPitch))
+                .ForMember(d => d.PitchID, s => s.MapFrom(s => s.SubPitch.PitchId))
                 .ForMember(d => d.PitchName, s => s.MapFrom(s => s.SubPitch.Pitch.Name))
                 .ForMember(d => d.Address, s => s.MapFrom(s => s.SubPitch.Pitch.Location))
                 .ForMember(d => d.Phone, s => s.MapFrom(s => s.SubPitch.Pitch.Phone))

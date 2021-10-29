@@ -16,6 +16,7 @@ namespace PitchBooking.Business.ViewModel
         public string SubPitchName { get; set; }
         public string SubPitchImageUrl { get; set; }
         public string SubPitchType { get; set; }
+        public int PitchID { get; set; }
         public string PitchName { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
