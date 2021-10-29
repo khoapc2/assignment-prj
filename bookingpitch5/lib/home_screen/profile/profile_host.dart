@@ -1,5 +1,4 @@
-import 'package:bookingpitch5/screen/home_screen/footer_menu.dart';
-import 'package:bookingpitch5/view_models/login_view_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
@@ -12,17 +11,16 @@ TextEditingController nameEdt = new TextEditingController();
 TextEditingController emailEdt = new TextEditingController();
 TextEditingController addressEdt = new TextEditingController();
 TextEditingController phoneEdt = new TextEditingController();
-// var menu ;
 
-String roleString = '';
+
 int user_id = 0;
 
-class ProfilePage extends StatefulWidget {
+class ProfileHostPage extends StatefulWidget {
   @override
   MapScreenState createState() => MapScreenState();
 }
 
-class MapScreenState extends State<ProfilePage>
+class MapScreenState extends State<ProfileHostPage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
@@ -39,15 +37,6 @@ class MapScreenState extends State<ProfilePage>
       
     });
 
-  // var cc = LoginViewModel.getRole().then((value) => {
-  //   roleString = value,    
-  //   if(roleString == 'customer'){
-  //     menu = FooterMenu(3) 
-  //   }else{
-  //     menu = FooterMenuHost(3)
-  //   },
-  //   print(menu)
-  // });
   
   @override
   void initState() {
@@ -336,7 +325,7 @@ class MapScreenState extends State<ProfilePage>
         ],
       ),
     ),
-    bottomNavigationBar: FooterMenu(3)
+    bottomNavigationBar: FooterMenuHost(3)
     );
     
   }

@@ -6,6 +6,7 @@ import 'package:bookingpitch5/home_screen/detail_pitch/main_screen.dart';
 import 'package:bookingpitch5/home_screen/feedback/feedback.dart';
 import 'package:bookingpitch5/home_screen/main_screen.dart';
 import 'package:bookingpitch5/home_screen/notification/main_screen.dart';
+import 'package:bookingpitch5/home_screen/profile/profile_host.dart';
 import 'package:bookingpitch5/home_screen/updateMotherPitch/mother_pitch.dart';
 import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
@@ -116,6 +117,10 @@ class RouteGenerator{
 
       case '/feedbackHost':
         return MaterialPageRoute(builder: (_) => ViewFeedbackHost());
+
+      case '/profileHost':
+      return MaterialPageRoute(
+          builder: (_) => ProfileHostPage());
 
       default:
         return MaterialPageRoute(builder: (_) => Homescreen());//sai

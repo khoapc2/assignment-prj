@@ -1,8 +1,9 @@
-import 'package:bookingpitch5/home_screen/detail_pitch/rate_pitch.dart';
+
 import 'package:bookingpitch5/home_screen/detail_pitch/title_pitches.dart';
 import 'package:bookingpitch5/models/detail_type_pitch.dart';
 import 'package:bookingpitch5/models/pitch.dart';
 import 'package:bookingpitch5/models/pitches.dart';
+import 'package:bookingpitch5/screen/home_screen/detail_pitch/rate_pitch.dart';
 import 'package:flutter/material.dart';
 import 'ImageBanner.dart';
 import 'button_pay.dart';
@@ -14,10 +15,6 @@ class MainScreenDetailPitchHost extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
      var pitchModel= PitchesModel.getPitchById("1");
-
-
-
-
 
      if(pitchModel != null){
 
