@@ -13,6 +13,7 @@ class ViewFeedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () {
@@ -101,7 +102,7 @@ class _ListFeedBackState extends State<ListFeedBack> {
                   padding: EdgeInsets.all(15.0),
                   child: SizedBox(
                     child: new LinearPercentIndicator(
-                      width: 350,
+                      width: MediaQuery.of(context).size.width - 50,
                       animation: true,
                       lineHeight: 15.0,
                       animationDuration: 5000,
@@ -145,11 +146,13 @@ class RatingAndFeedback extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
         Column(
-          children: [
-            Text(rate.toString(), style: TextStyle(fontSize: 50)),
+          children: [           
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: getAllStars(5)),
+                children: [
+                  Text(rate.toString(), style: TextStyle(fontSize: 50)),
+                  Icon(Icons.star, size: 50, color: Colors.yellow[800],)
+                ]),
             Text('Có ' + numOfFeed.toString() +' bình luận')
           ],
         ),
@@ -170,17 +173,21 @@ class FeedbackItem extends StatefulWidget {
 class _FeedbackItemState extends State<FeedbackItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( 
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.only(top: 10, bottom: 10),
         width: 370,
         height: 150,
+        
         decoration: BoxDecoration(
-            color: Colors.grey[100], borderRadius: BorderRadius.circular(25)),
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(25),
+            
+        ),    
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             SizedBox(height: 7),
             Row(
               children: [
@@ -189,7 +196,7 @@ class _FeedbackItemState extends State<FeedbackItem> {
               ],
             ),
             SizedBox(height: 7),
-            Text(widget.content, maxLines: 6)
+            Text(widget.content, maxLines: 6, style: TextStyle(fontSize: 15),)
           ],
         ));
   }
