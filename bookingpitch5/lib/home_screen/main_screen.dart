@@ -11,11 +11,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'ImageBanner.dart';
 import 'button_pay.dart';
 
-class CalendarTodayHost extends StatelessWidget {
+class CalendarTodayHost extends StatefulWidget {
   const CalendarTodayHost({Key? key}) : super(key: key);
 
+  @override
+  State<CalendarTodayHost> createState() => _CalendarTodayHostState();
+}
 
-
+class _CalendarTodayHostState extends State<CalendarTodayHost> {
   @override
   Widget build(BuildContext context) {
     return
@@ -25,7 +28,7 @@ class CalendarTodayHost extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.green,
             leading:Icon(Icons.sports_soccer_outlined),
-            
+
           ),
           body: ListView(
             children: [
@@ -48,13 +51,15 @@ class BookedPitch extends StatefulWidget {
 
 
 }
-
 class _BookedPitchState extends State<BookedPitch> {
-  late Future<List<GetPitchModel>> listPitch;
+  var listPitch;
+  // listPitch = PitchViewModel.getListPitchByOwnerID();
   @override
   initState() {
+    // getPitchByOwnerID(listPitch);
     super.initState();
     listPitch = PitchViewModel.getListPitchByOwnerID();
+
   }
 
   // @override
@@ -283,6 +288,12 @@ class _BookedItemState extends State<Pitches> {
         ),
       );
   }
+
+  // getPitchByOwnerID() async {
+  //   // setState(() {
+  //     listPitch = await PitchViewModel.getListPitchByOwnerID();
+  //   // });
+  // }
 }
 
 // class BookedBottomPart extends StatelessWidget {

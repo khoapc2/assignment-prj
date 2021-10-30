@@ -1,7 +1,9 @@
 import 'package:bookingpitch5/models/detail_type_pitch.dart';
 import 'package:bookingpitch5/models/pitch.dart';
+import 'package:bookingpitch5/view_models/son_pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class DetailPitch extends StatelessWidget {
@@ -24,6 +26,7 @@ class DetailPitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDelete = false;
     // TODO: implement build
     return Container(
       decoration: BoxDecoration(
@@ -83,12 +86,30 @@ class DetailPitch extends StatelessWidget {
                                 style: TextStyle(color: Colors.white))),
                       ),
                     )),
-                GestureDetector(
-                    onTap: () {
-                      // Navigator.of(context).pushNamed('/dateBooking',
-                      //     arguments: ParamenterToDateBookingScreen(
-                      //         pitchModel, detailTypePitchModel
-                      //     ));
+                FlatButton(
+                    onPressed: () async {
+                      // Navigator.of(context).pushNamed('/updateSonPitch',
+                      //     arguments: subPitchID
+                          // ParamenterToDateBookingScreen(
+                          //     pitchModel, detailTypePitchModel
+                          // )
+                      // );
+                      isDelete = await SonPitchViewModel.deleteSubPitch(subPitchID);
+                      if(isDelete) {
+                        Fluttertoast.showToast(
+                            msg: "Delete Pitch Successful",
+                            fontSize: 18,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Delete Pitch Successful",
+                            fontSize: 18,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white);
+                      }
                     },
                     child: Align(
                       alignment: Alignment.topLeft,

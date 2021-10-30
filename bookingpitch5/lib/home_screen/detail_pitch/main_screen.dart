@@ -19,19 +19,28 @@ List<GetSonPitchModel> listPitchModel7 = List.empty();
 List<GetSonPitchModel> listPitchModel11 = List.empty();
 List<GetSonPitchModel> listPitchModelFutsal = List.empty();
 
-class MainScreenDetailPitchHost extends StatelessWidget{
+class MainScreenDetailPitchHost extends StatefulWidget{
   MainScreenDetailPitchHost(this.pitchID) ;
   var pitchID;
+
+  @override
+  State<MainScreenDetailPitchHost> createState() => _MainScreenDetailPitchHostState();
+}
+
+class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
   var pitchModel;
 
   String type5 = "Sân 5";
+
   String type7 = "Sân 7";
+
   String type11 = "Sân 11";
+
   String typeFutsal = "Sân futsal";
 
   @override
   Widget build(BuildContext context) {
-    print(pitchID);
+    print(widget.pitchID);
     getPitchByID();
     getListPitch5();
     getListPitch7();
@@ -95,51 +104,59 @@ class MainScreenDetailPitchHost extends StatelessWidget{
       ));
     }
 
-    list.add(ButtonPay(pitchID));
+    list.add(ButtonPay(widget.pitchID));
     return list.map((e) => e);
   }
 
-
   getPitchByID() async {
-    await PitchViewModel.getPitchByPitchID(pitchID).then((value) {
+    await PitchViewModel.getPitchByPitchID(widget.pitchID).then((value) {
+      setState(() {
         pitchModel = value;
         txtTitle = value.name;
+      });
        }
     );
   }
 
   getListPitch5() async {
-    await SonPitchViewModel.getListPitchByCategory(pitchID, type5).then((value) {
-      listPitchModel5 = value;
-      print(listPitchModel5);
+    await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type5).then((value) {
+      setState(() {
+        listPitchModel5 = value;
+      });
     });
   }
 
-
   getListPitch7() async {
-    await SonPitchViewModel.getListPitchByCategory(pitchID, type7).then((value) {
-      listPitchModel7 = value;
+    await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type7).then((value) {
+      setState(() {
+        listPitchModel7 = value;
+      });
     });
   }
 
   getListPitch11() async {
-    await SonPitchViewModel.getListPitchByCategory(pitchID, type11).then((value) {
-      listPitchModel11 = value;
+    await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type11).then((value) {
+      setState(() {
+        listPitchModel11 = value;
+      });
     });
   }
 
   getListPitchFutsal() async {
-    await SonPitchViewModel.getListPitchByCategory(pitchID, typeFutsal).then((
+    await SonPitchViewModel.getListPitchByCategory(widget.pitchID, typeFutsal).then((
         value) {
-      listPitchModelFutsal = value;
+      setState(() {
+        listPitchModelFutsal = value;
+      });
     });
   }
 
-  //Test
   getAllSubPitch() async {
-    await SonPitchViewModel.getSonPitchModel(pitchID).then((
+    await SonPitchViewModel.getSonPitchModel(widget.pitchID).then((
         value) {
-      listSubPitch = value;
+      setState(() {
+        listSubPitch = value;
+      });
     });
   }
 }

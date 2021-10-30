@@ -2,6 +2,13 @@ import 'package:bookingpitch5/api/api_son_pitch_service.dart';
 import 'package:bookingpitch5/models/son_pitchs/son_pitch_model.dart';
 
 class SonPitchViewModel {
+
+  static Future<bool> deleteSubPitch(int subPitchID) async {
+    SonPitchService service = new SonPitchService();
+    var isDelete = await service.deleteSonPitchModel(subPitchID);
+    return isDelete;
+  }
+
   static Future<bool> updateSubPitch(int motherPitchID, int subPitchId, int normalPrice,int specialPrice, String pitchName, String typeOfPitch) async {
     SonPitchService service = new SonPitchService();
     var isCreate = await service.updatePitch(motherPitchID ,subPitchId, normalPrice, specialPrice, pitchName, typeOfPitch);

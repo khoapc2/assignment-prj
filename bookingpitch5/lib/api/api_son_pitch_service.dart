@@ -75,6 +75,27 @@ class SonPitchService{
     }
   }
 
+  Future<bool> deleteSonPitchModel(int subPitchID) async {
+    String url = link + "api/v1/subPitches/" + subPitchID.toString();
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if(response.statusCode == 200){
+      print(response.statusCode);
+      return true;
+    } else {
+      print(response.statusCode);
+      return false;
+    }
+  }
+
+
+
+
+
   //Maybe Delete
   Future<List<GetSonPitchModel>> getSonPitchModelByType(int motherPitchID, String typeOfPitch) async {
     List<GetSonPitchModel> listPitch = List.empty();
@@ -86,10 +107,12 @@ class SonPitchService{
       },
     );
     if (response.statusCode == 200) {
+      print(response.statusCode);
       List data = jsonDecode(response.body);
       listPitch = data.map((e) => GetSonPitchModel.fromJson(e)).toList();
       return listPitch;
     } else {
+      print(response.statusCode);
       return listPitch;
     }
   }

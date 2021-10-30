@@ -75,7 +75,7 @@ class PitchViewModel {
 
     if (pitchName.length < 1 || pitchName.length > 50)
       error += 'Pitchname > 0 and length <= 50\n';
-    if (phone.length != 10)
+    if (phone.trim().length != 10)
       error += 'Phone > 0 and length must equal 10 characters\n';
     if (address.length > 500) error += 'Address length must <= 50\n';
     try {
