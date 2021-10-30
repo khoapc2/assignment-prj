@@ -49,9 +49,15 @@ class MainScreenDetailPitchHost extends StatelessWidget{
          body: ListView(
            scrollDirection: Axis.vertical,
            children: [
+<<<<<<< HEAD
              ImageBanner("assets/images/sanbanh1.png", Colors.grey),
              TitlePitch(10.0, 10.0, txtTitle,30.0),
              RatePitch(10.0, 10.0, 5),
+=======
+             ImageBanner(pitchModel.imgDetailPatch, Colors.grey),
+             TitlePitch(10.0, 10.0, pitchModel.name,30.0),
+             RatePitch(10.0, 10.0, 4.3, 1),
+>>>>>>> 02a70a446f327e01206e55791d663d690e078e0c
              TitlePitch(10.0, 10.0, "Các loại sân",20.0),
            ]..addAll(showDetailPitch()),
          )

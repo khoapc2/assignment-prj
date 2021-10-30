@@ -1,3 +1,4 @@
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
 import 'package:bookingpitch5/view_models/feedback_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,13 +6,14 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 TextEditingController feedbackEdt = new TextEditingController();
 int rated = 3;
-int pitch_id = 1;
-int booking_id = 1;
+final int booking_id = 0;
 bool result = true;
 
 class RatingScreen extends StatelessWidget {
-  var pitchID_BookingID;
+  PitchID_BookingID pitchID_BookingID;
   RatingScreen(this.pitchID_BookingID);
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,8 @@ class RatingScreen extends StatelessWidget {
             color: Colors.green,
             textColor: Colors.white,
             onPressed: () async {
+              int pitch_id = pitchID_BookingID.pitchId;
+              int booking_id = pitchID_BookingID.bookingId;
               result = await FeedbackViewModel().createFeedback(
                   pitch_id, feedbackEdt.text, rated, booking_id);
               print(feedbackEdt.text);

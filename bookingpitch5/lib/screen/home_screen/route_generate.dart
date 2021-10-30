@@ -10,6 +10,7 @@ import 'package:bookingpitch5/home_screen/profile/profile_host.dart';
 import 'package:bookingpitch5/home_screen/updateMotherPitch/mother_pitch.dart';
 import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart';
 import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_rate.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/button_pay.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/main_screen.dart';
@@ -18,7 +19,6 @@ import 'package:bookingpitch5/screen/home_screen/location/Location.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
 import 'package:bookingpitch5/screen/home_screen/notification/notification.dart';
 import 'package:bookingpitch5/screen/home_screen/profile/profile.dart';
-import 'package:bookingpitch5/screen/home_screen/rate_pitch/ratingactivity.dart';
 import 'package:bookingpitch5/screen/home_screen/voucher/applyPitches.dart';
 import 'package:bookingpitch5/screen/home_screen/voucher/voucherTab.dart';
 import 'package:bookingpitch5/screen/home_screen/wallet/Wallet.dart';
@@ -27,11 +27,14 @@ import 'package:flutter/material.dart';
 import 'booking_slot/main_screen.dart';
 import 'calendar_today/my_activity.dart';
 import 'detail_pitch/main_screen.dart';
-import 'feedback/feedback.dart';
+
 
 import 'list_pitch/my_activity.dart';
 
 import 'main_screen/Homescreen.dart';
+import 'rate_and_feedback_pitch/ratingactivity.dart';
+import 'view_feedback/view_feedback.dart';
+
 
 class RouteGenerator{
   static Route<dynamic> generateRoute(RouteSettings settings){
@@ -83,8 +86,8 @@ class RouteGenerator{
       case '/listPitch':
         return MaterialPageRoute(
             builder: (_) => ApplyVoucherPitch());
-      case '/feedback':
-        return MaterialPageRoute(builder: (_) => ViewFeedback());
+      case '/view_feedback':
+        return MaterialPageRoute(builder: (_) => ViewFeedback(settings.arguments as PitchID_Rate));
       case '/listPitch5':
         return MaterialPageRoute(
             builder: (_) => ListPitch());
