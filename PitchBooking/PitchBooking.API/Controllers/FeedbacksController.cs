@@ -29,10 +29,9 @@ namespace PitchBooking.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllAdvisory([FromQuery] FeedBackModel filter, 
-          int pageIndex = 1, int pageSize = 1)
+        public IActionResult GetAllAdvisory([FromQuery] FeedBackModel filter)
         {
-            var listAdvisoryModel = _pitchService.GetAllAdvisory(filter, pageIndex, pageSize);
+            var listAdvisoryModel = _pitchService.GetAllAdvisory(filter);
             return Ok(listAdvisoryModel);
         }
     }

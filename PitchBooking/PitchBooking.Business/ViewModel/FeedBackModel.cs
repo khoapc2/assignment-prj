@@ -15,6 +15,6 @@ namespace PitchBooking.Business.ViewModel
         public int? Rating { get; set; }
         public int? BookingId { get; set; }
 
-   
+        public string? CustomerName { get; set; }
     }
 }

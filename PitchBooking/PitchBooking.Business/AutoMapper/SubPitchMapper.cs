@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PitchBooking.Business.Enum;
 using PitchBooking.Business.Requests.SubPitchRequest;
 using PitchBooking.Business.ViewModel;
 using PitchBooking.Data.Models;
@@ -16,7 +17,8 @@ namespace PitchBooking.Business.AutoMapper
         {
             CreateMap<SubPitch, SubPitchModel>()
                 .ForMember(d => d.PitchName, s => s.MapFrom(s => s.Pitch.Name));
-            CreateMap<SubPitchCreate, SubPitch>();
+            CreateMap<SubPitchCreate, SubPitch>()
+                .ForMember(d => d.Status, s => s.MapFrom(s => (int)SubPitchStatus.Active));
             CreateMap<SubPitchUpdate, SubPitch>();
 
             CreateMap<SubPitchCreate, SubPitchModel>();

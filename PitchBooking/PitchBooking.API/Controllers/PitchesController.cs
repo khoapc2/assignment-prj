@@ -29,6 +29,8 @@ namespace PitchBooking.API.Controllers
             return Ok(listAdvisoryModel);
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> CreateAdvisory([FromBody] CreatePitchRequest request)
         {
@@ -40,6 +42,15 @@ namespace PitchBooking.API.Controllers
         public async Task<IActionResult> UpdateAdvisory(int id, [FromBody] UpdatePitchRequest request)
         {
             var AdvisoryModel = await _pitchService.UpdateAdvisory(id, request);
+            if (AdvisoryModel == null)
+                return BadRequest();
+            return Ok(AdvisoryModel);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPitchById(int id)
+        {
+            var AdvisoryModel = await _pitchService.GetPitchById(id);
             if (AdvisoryModel == null)
                 return BadRequest();
             return Ok(AdvisoryModel);

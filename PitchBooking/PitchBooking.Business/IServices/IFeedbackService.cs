@@ -13,7 +13,6 @@ namespace PitchBooking.Business.IServices
     public interface IFeedbackService
     {
         Task<FeedBackModel> CreateAdvisory(CreateFeedbackRequest request);
-        IPagedList<FeedBackModel> GetAllAdvisory(FeedBackModel filter, int pageIndex,
-           int pageSize);
+        IEnumerable<FeedBackModel> GetAllAdvisory(FeedBackModel filter);
     }
 }

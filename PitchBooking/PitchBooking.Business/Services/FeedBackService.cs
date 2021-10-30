@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PitchBooking.Business.Services
 {
@@ -47,37 +48,13 @@ namespace PitchBooking.Business.Services
             
         }
 
-        public IPagedList<FeedBackModel> GetAllAdvisory(FeedBackModel filter, int pageIndex,
-            int pageSize)
+        public IEnumerable<FeedBackModel> GetAllAdvisory(FeedBackModel filter)
         {
-            var listAdvisory = _res.FindBy(x => true);
+            var listAdvisory = _res.FindBy(x => true).Include(x => x.Customer);
 
             var listAdvisoryModel = (listAdvisory.ProjectTo<FeedBackModel>
-                (_mapper.ConfigurationProvider)).DynamicFilter(filter);
-            //switch (sortBy.ToString())
-            //{
-            //    case "Question":
-            //        if (order.ToString() == "Asc")
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderBy(x => x.Question);
-            //        }
-            //        else
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderByDescending(x => x.Question);
-            //        }
-            //        break;
-            //    case "Answer":
-            //        if (order.ToString() == "Asc")
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderBy(x => x.Answer);
-            //        }
-            //        else
-            //        {
-            //            listAdvisoryModel = (IQueryable<AdvisoryModel>)listAdvisoryModel.OrderByDescending(x => x.Answer);
-            //        }
-            //        break;
-            //}
-            return PagedListExtensions.ToPagedList<FeedBackModel>(listAdvisoryModel, pageIndex, pageSize);
+                (_mapper.ConfigurationProvider)).DynamicFilter(filter);           
+            return listAdvisoryModel;
         }
     }
 }
