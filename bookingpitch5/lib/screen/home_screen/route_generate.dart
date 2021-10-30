@@ -99,13 +99,13 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => CalendarTodayHost());//sai
 
       case '/detailPitchHost':
-        return MaterialPageRoute(builder: (_) => MainScreenDetailPitchHost());//sai
+        return MaterialPageRoute(builder: (_) => MainScreenDetailPitchHost(settings.arguments as int));//sai
 
       case '/addMotherPitch':
         return MaterialPageRoute(builder: (_) => MotherPage());
 
       case '/addSonPitch':
-        return MaterialPageRoute(builder: (_) => SonPage());
+        return MaterialPageRoute(builder: (_) => SonPage(settings.arguments as int));
 
       case '/notificationPitch':
         return MaterialPageRoute(builder: (_) => NotificationPitch());
@@ -117,7 +117,7 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => UpdateMotherPage(settings.arguments as int));
 
       case '/updateSonPitch':
-        return MaterialPageRoute(builder: (_) => UpdateSonPage());
+        return MaterialPageRoute(builder: (_) => UpdateSonPage(settings.arguments as int));
 
       case '/feedbackHost':
         return MaterialPageRoute(builder: (_) => ViewFeedbackHost());

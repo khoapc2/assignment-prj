@@ -101,6 +101,7 @@ class PitchService {
                 'time_start' : pitchModelDetail.time_start,
                 'time_end' : pitchModelDetail.time_end,
                 'phone' : pitchModelDetail.phone,
+                'img_path' : pitchModelDetail.img_path,
             }),
         );
         if (response.statusCode == 200) {

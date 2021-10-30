@@ -422,6 +422,17 @@ class MapScreenState extends State<UpdateMotherPage>
                         _status = true;
                         FocusScope.of(context).requestFocus(new FocusNode());
                       });
+                    }else {
+                      Fluttertoast.showToast(
+                          msg: "Update Pitch Fail",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white);
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      });
                     }
                   }
                 },

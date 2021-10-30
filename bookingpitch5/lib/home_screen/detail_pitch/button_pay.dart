@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ButtonPay extends StatelessWidget {
-  ButtonPay();
+  ButtonPay(this.id);
+  var id;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -16,16 +17,16 @@ class ButtonPay extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             color: Colors.green
         ),
-        child: Center(
+
+          child: Center(
             child:
             ListTile(
-              leading: Icon(Icons.add,color: Colors.white),
               title: Text("Thêm sân bóng",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
-                  textAlign: TextAlign.center, )),
+                  textAlign: TextAlign.center)),
             )
       ),
-     onTap: () => Navigator.of(context).pushNamed('/addSonPitch'),
+     onTap: () => Navigator.of(context).pushNamed('/addSonPitch', arguments: id),
     );
 
   }

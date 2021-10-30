@@ -10,11 +10,17 @@ class DetailPitch extends StatelessWidget {
   final String typePitch;
   final String normalDayPrice;
   final String specialDayPrice;
-  final DetailTypePitchModel detailTypePitchModel;
-  final PitchModel pitchModel;
+  final int subPitchID;
 
-  DetailPitch(this.name, this.imgPath, this.typePitch, this.normalDayPrice,
-      this.specialDayPrice, this.detailTypePitchModel, this.pitchModel);
+  // final DetailTypePitchModel detailTypePitchModel;
+  // final PitchModel pitchModel;
+
+  DetailPitch(this.subPitchID ,this.name, this.imgPath, this.typePitch, this.normalDayPrice,
+      this.specialDayPrice,
+      // this.detailTypePitchModel,
+      // this.pitchModel
+      );
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class DetailPitch extends StatelessWidget {
               children: [
                 Text("Ngày thường: ",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(normalDayPrice)
+                Text(normalDayPrice + " VNĐ")
               ],
             ),
           ),
@@ -48,7 +54,7 @@ class DetailPitch extends StatelessWidget {
               children: [
                 Text("Ngày cuối tuần: ",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(specialDayPrice)
+                Text(specialDayPrice + " VNĐ")
               ],
             ),
           ),
@@ -60,7 +66,7 @@ class DetailPitch extends StatelessWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/updateSonPitch');
+                      Navigator.of(context).pushNamed('/updateSonPitch', arguments: subPitchID);
                     },
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -79,9 +85,10 @@ class DetailPitch extends StatelessWidget {
                     )),
                 GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/dateBooking',
-                          arguments: ParamenterToDateBookingScreen(
-                              pitchModel, detailTypePitchModel));
+                      // Navigator.of(context).pushNamed('/dateBooking',
+                      //     arguments: ParamenterToDateBookingScreen(
+                      //         pitchModel, detailTypePitchModel
+                      //     ));
                     },
                     child: Align(
                       alignment: Alignment.topLeft,

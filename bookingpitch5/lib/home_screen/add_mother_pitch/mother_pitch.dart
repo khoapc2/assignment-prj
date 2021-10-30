@@ -409,6 +409,13 @@ class MapScreenState extends State<MotherPage>
                         _status = true;
                         FocusScope.of(context).requestFocus(new FocusNode());
                       });
+                    }else{
+                      Fluttertoast.showToast(
+                          msg: "Delete Pitch Fail",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white);
                     }
                   }
                 },
