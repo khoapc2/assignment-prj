@@ -114,7 +114,7 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => UpdateMotherPage(settings.arguments as int));
 
       case '/updateSonPitch':
-        return MaterialPageRoute(builder: (_) => UpdateSonPage());
+        return MaterialPageRoute(builder: (_) => UpdateSonPage(settings.arguments as int));
 
       case '/feedbackHost':
         return MaterialPageRoute(builder: (_) => ViewFeedbackHost());
