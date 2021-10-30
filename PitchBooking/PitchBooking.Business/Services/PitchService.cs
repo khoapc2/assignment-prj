@@ -37,7 +37,7 @@ namespace PitchBooking.Business.Services
             return listAdvisoryModel.ToList();
         }
 
-        public async Task<List<PitchModel>> getHighestRates()
+        public IEnumerable<PitchModel> getHighestRates()
         {
             var listAdvisory =  _res.FindBy(x => x.Status == (int)PitchStatus.Active);
             listAdvisory = listAdvisory.OrderByDescending(x => x.Rates).Take(3);

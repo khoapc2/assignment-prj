@@ -99,7 +99,8 @@ namespace PitchBooking.Business.Services
         public ValidateTimeBookingResponse ValidateTimeBooking(ValidateTimeBookingRequest request)
         {
             ValidateTimeBookingResponse response = new ValidateTimeBookingResponse();
-            var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooing && b.Status == (int)BookingStatus.Booked);
+            var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooing && b.Status == (int)BookingStatus.Booked && 
+            b.SubPitchId == request.SubPitchId);
 
             foreach (var booking in bookingList)
             {
