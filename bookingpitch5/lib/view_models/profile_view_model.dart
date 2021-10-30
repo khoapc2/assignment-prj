@@ -21,7 +21,7 @@ class ProfileViewModel {
     return error;
   }
   
-  Future<ProfileModel> getProfile() 
+  static Future<ProfileModel> getProfile() 
     async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int id = prefs.getInt('id');
@@ -30,7 +30,7 @@ class ProfileViewModel {
         return profile;
     }
 
-  Future<ProfileModel> updateProfile(String _name, 
+  static Future<ProfileModel> updateProfile(String _name, 
       String _email, String _phone, String _address) 
     async {
       SharedPreferences prefs = await SharedPreferences.getInstance();

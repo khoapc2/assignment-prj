@@ -30,7 +30,7 @@ class MapScreenState extends State<ProfilePage>
   
 
   late ProfileModel profileModel;
-  var getProfile = ProfileViewModel().getProfile().then((value) => {
+  var getProfile = ProfileViewModel.getProfile().then((value) => {
       user_id = value.id,
       nameEdt.text = value.name,
       emailEdt.text = value.email,
@@ -383,7 +383,7 @@ class MapScreenState extends State<ProfilePage>
                     )
                   }
                   else{
-                    profileModel = await ProfileViewModel().updateProfile(                     
+                    profileModel = await ProfileViewModel.updateProfile(                     
                         nameEdt.text.trim(), 
                         emailEdt.text.trim(), 
                         phoneEdt.text.trim(), 

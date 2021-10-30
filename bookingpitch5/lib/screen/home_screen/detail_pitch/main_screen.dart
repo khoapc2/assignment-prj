@@ -36,7 +36,7 @@ class MainScreenDetailPitch extends StatelessWidget{
            children: [
              ImageBanner(pitchModel.imgDetailPatch, Colors.grey),
              TitlePitch(10.0, 10.0, pitchModel.name,30.0),
-             RatePitch(10.0, 10.0, pitchModel.rates),
+             RatePitch(10.0, 10.0, 4.3, 1),
              TitlePitch(10.0, 10.0, "Các loại sân",20.0),
            ]..addAll(showDetailPitch(pitchModel)),
          )

@@ -22,4 +22,12 @@ class FeedbackViewModel{
       );
         return result;
     }
+
+    static Future<List<FeedbackResponse>> getFeedback(int _pitchId) 
+    async {
+      FeedbackService serives = new FeedbackService();
+      var result = await serives.getFeedbackByPitchID(_pitchId); 
+        return Future.delayed(Duration(milliseconds: 2000))
+                 .then((onValue) => result);
+    }
 }
