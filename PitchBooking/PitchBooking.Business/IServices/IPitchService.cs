@@ -16,7 +16,7 @@ namespace PitchBooking.Business.IServices
         Task<PitchModel> UpdateAdvisory(int id, UpdatePitchRequest request);
         Task<bool> DeleteAdvisory(int id);
         IEnumerable<PitchModel>  getHighestRates();
-
+        IEnumerable<PitchModel> getRecommendPitch();
 
         Task<PitchModel> GetPitchById(int id);
         Task<bool> UpdateRatePitch(int id, double rate);

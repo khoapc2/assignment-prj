@@ -41,7 +41,14 @@ namespace PitchBooking.Business.Services
         {
             var listAdvisory =  _res.FindBy(x => x.Status == (int)PitchStatus.Active);
             listAdvisory = listAdvisory.OrderByDescending(x => x.Rates).Take(3);
-            return _mapper.Map<List<PitchModel>>(listAdvisory);
+            return _mapper.Map<List<PitchModel>>(listAdvisory.ToList());
+        }
+
+        public IEnumerable<PitchModel> getRecommendPitch()
+        {
+            var listAdvisory = _res.FindBy(x => x.Status == (int)PitchStatus.Active);
+            listAdvisory = listAdvisory.OrderBy(x => Guid.NewGuid()).Take(3);
+            return _mapper.Map<List<PitchModel>>(listAdvisory.ToList());
         }
 
         public async Task<PitchModel> CreateAdvisory(CreatePitchRequest request)

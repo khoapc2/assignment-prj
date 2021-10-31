@@ -71,5 +71,12 @@ namespace PitchBooking.API.Controllers
             var listAdvisoryModel = _pitchService.getHighestRates();
             return Ok(listAdvisoryModel);
         }
+
+        [HttpGet("get_recomand_pitch")]
+        public IActionResult GetRecommendPitch()
+        {
+            var listAdvisoryModel = _pitchService.getRecommendPitch();
+            return Ok(listAdvisoryModel);
+        }
     }
 }

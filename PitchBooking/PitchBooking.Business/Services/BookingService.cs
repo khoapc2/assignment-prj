@@ -102,6 +102,9 @@ namespace PitchBooking.Business.Services
             var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooking && b.Status == (int)BookingStatus.Booked && 
             b.SubPitchId == request.SubPitchId);
 
+            response.TimeStartError = "Not Error";
+            response.TimeEndError = "Not Error";
+
             foreach (var booking in bookingList)
             {
                 if (request.TimeStart >= booking.TimeStart && request.TimeStart <= booking.TimeEnd)
@@ -122,8 +125,6 @@ namespace PitchBooking.Business.Services
                     return response;
                 }
             }
-            response.TimeStartError = "Not Error";
-            response.TimeEndError = "Not Error";
 
             return response;
         }
