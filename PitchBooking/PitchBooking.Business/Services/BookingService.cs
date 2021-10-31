@@ -99,29 +99,32 @@ namespace PitchBooking.Business.Services
         public ValidateTimeBookingResponse ValidateTimeBooking(ValidateTimeBookingRequest request)
         {
             ValidateTimeBookingResponse response = new ValidateTimeBookingResponse();
-            var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooing && b.Status == (int)BookingStatus.Booked && 
+            var bookingList = _genericRepository.FindBy(b => b.DateBooking == request.DateBooking && b.Status == (int)BookingStatus.Booked && 
             b.SubPitchId == request.SubPitchId);
 
             foreach (var booking in bookingList)
             {
                 if (request.TimeStart >= booking.TimeStart && request.TimeStart <= booking.TimeEnd)
                 {
-                    response.TimeStartError = "Your time start is conflicted in another booking";
+                    response.TimeStartError = "Thời gian bắt đầu đã có người đặt";
                 }
                 if(request.TimeEnd >= booking.TimeStart && request.TimeEnd <= booking.TimeEnd)
                 {
-                    response.TimeEndError = "Your time end is conflicted in another booking";
+                    response.TimeEndError = "Thời gian kết thúc đã có người đặt";
                 }
                 if(request.TimeStart <= booking.TimeStart && request.TimeEnd >= booking.TimeEnd)
                 {
-                    response.TimeStartError = "Your time start is conflicted in another booking";
-                    response.TimeEndError = "Your time end is conflicted in another booking";
+                    response.TimeStartError = "Thời gian bắt đầu đã có người đặt";
+                    response.TimeEndError = "Thời gian kết thúc đã có người đặt";
                 }
                 if(!string.IsNullOrEmpty(response.TimeStartError) || !string.IsNullOrEmpty(response.TimeEndError))
                 {
                     return response;
                 }
             }
+            response.TimeStartError = "Not Error";
+            response.TimeEndError = "Not Error";
+
             return response;
         }
     }
