@@ -23,14 +23,18 @@ class MainScreenBookingDate extends StatefulWidget {
 }
 
 class MainScreenBookingDateState extends State<MainScreenBookingDate> {
-  final timeStarts = ["06:00","16:00", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30",
+  final timeStarts = ["06:00","07:00","08:00","09:00","10:00","11:00",
+    "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00",
+    "23:00"
   ];
   List listNumberStart = [];
-  final timeEnds = ["07:00","16:30", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30"];
+  final timeEnds = ["07:00","08:00","09:00","10:00","11:00",
+    "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00",
+    "23:00","24:00"];
 
 
-  String selectedTimeStart = "16:00";
-  String selectedTimeEnd = "16:30";
+  String selectedTimeStart = "06:00";
+  String selectedTimeEnd = "07:00";
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime(1967, 10, 12);
   late ButtonPay buttonPay;
@@ -123,11 +127,11 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
     var subPitch = SubPitchViewModel.getSubPitchById(SubPitchId);
     if(_selectedDay.compareTo(now) > 0){
       list.add(CalendarContainer(_selectedDay));
-      list.add(LineSlot("Người khác đã đặt"
-          ));
-      list.add(Wrap(
-        children: listSlot,
-      ));
+      // list.add(LineSlot("Người khác đã đặt"
+      //     ));
+      // list.add(Wrap(
+      //   children: listSlot,
+      // ));
       list.add(LineSlot("Thời gian đặt"
       ));
       list.add(Row(
@@ -218,13 +222,14 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                 setState(() {
                   if(value.timeStartError == "Thời gian bắt đầu đã có người đặt"
                       || value.timeEndError == "Thời gian kết thúc đã có người đặt"){
-                    print("Khung giờ đã có người đặt");
+                    var timeStart = value.timeStartError =="Not Error" ? "": value.timeStartError;
+                    var timeEnd = value.timeEndError =="Not Error" ? "": value.timeEndError;
                     showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         title: const Text('Khung giờ không hợp lệ'),
-                        content: Text(value.timeStartError +"\n"
-                            + value.timeEndError),
+                        content: Text(timeStart +"\n"
+                            + timeEnd),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, 'OK'),
@@ -316,8 +321,72 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
           future: subPitch,
           builder: (BuildContext context,
               AsyncSnapshot<SubPitchModel> snapshot) {
-            print("price ne:" + snapshot.data!.normalDay.toString());
-            return ButtonPay(SubPitchId,_selectedDay,selectedTimeStart, selectedTimeEnd,snapshot.data!.normalDay);
+            //return ButtonPay(SubPitchId,_selectedDay,selectedTimeStart, selectedTimeEnd,snapshot.data!.normalDay);
+            return GestureDetector(
+              child: Container(
+                constraints: BoxConstraints.expand(
+                    height: 50.0
+                ),
+                margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.green
+                ),
+                child: Center(
+
+                    child: Text("Đặt sân",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+                        textAlign: TextAlign.center)),
+              ),
+              //     onTap: (){
+              //       Navigator.of(context).pushNamed('/billPitch',
+              //   arguments: ParameterToBillPitch(pars.pitchModel.name,pars.pitchModel.location,
+              //   pars.detailPitchModel.name,pars.detailPitchModel.typePitch,dateSelected,
+              //   timeStartSelected, timeEndSelected, "100.000 đồng"));
+              // },
+
+              onTap: (){
+
+                var validateTimeModel = MyBookingViewModel.postValidationTime(SubPitchId, selectedTimeStart, selectedTimeEnd, DateFormat('MM-dd-yyyy').format(_selectedDay));
+                validateTimeModel.then((value) {
+
+                  setState(() {
+                    if(value.timeStartError == "Thời gian bắt đầu đã có người đặt"
+                        || value.timeEndError == "Thời gian kết thúc đã có người đặt"){
+                      var timeStart = value.timeStartError =="Not Error" ? "": value.timeStartError;
+                      var timeEnd = value.timeEndError =="Not Error" ? "": value.timeEndError;
+                      print("Khung giờ đã có người đặt");
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Khung giờ không hợp lệ'),
+                          content: Text(timeStart +"\n"
+                              + timeEnd),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    else{
+                      print("Khung giờ chưa có ai đặt");
+                      MyBookingViewModel.createBooking(SubPitchId, selectedTimeStart, selectedTimeEnd, snapshot.data!.normalDay.toString(),
+                          DateFormat('MM-dd-yyyy').format(_selectedDay)).then(
+                              (value) => Navigator.of(context).pushNamed(
+                              '/billPitch',
+                              arguments: value.id));
+                      ;
+                    }
+                  });
+                }
+                );
+
+
+              },
+            );
           }));
 
       return list.map((e) => e);

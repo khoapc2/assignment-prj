@@ -17,7 +17,7 @@ String timeEnd = "Chưa có";
 String price = "Chưa có";
 String typeOfPitch = "chưa có";
 
-class InformationPitch extends StatelessWidget{
+class InformationPitch extends StatefulWidget{
   // final String namePitch;
   // final String address;
   // final String detailPitch;
@@ -33,6 +33,18 @@ class InformationPitch extends StatelessWidget{
   //     this.price, this.BookingId);
   InformationPitch(this.BookingId);
 
+  @override
+  _InformationPitchState createState() => _InformationPitchState();
+}
+
+class _InformationPitchState extends State<InformationPitch> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInformation();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -112,26 +124,6 @@ class InformationPitch extends StatelessWidget{
     //       }
     //       return Column(children:children);
     //     })));
-    MyBookingViewModel.getBookingById(BookingId).then(
-            (value) => {
-              SubPitchId = value.subPitchID,
-              timeStart = value.timeStart,
-              timeEnd = value.timeEnd,
-              price = value.price,
-              dateBooking = value.dateBooking
-            });
-
-    SubPitchViewModel.getSubPitchById(SubPitchId).then((value) => {
-      nameSubPitch = value.name,
-      nameMotherPitch = value.pitch_name,
-      typeOfPitch = value.typeOfPitch,
-      print("thể loại sân trong hàm then: " + typeOfPitch),
-      PitchId = value.pitch_id
-    });
-
-    PitchViewModel.getPitchById(PitchId).then((value) => {
-      adress = value.location
-    });
 
     return Container(
       margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
@@ -143,7 +135,7 @@ class InformationPitch extends StatelessWidget{
         children: [
           ListTile(
             leading: Text("Tên Sân:"),
-            title: Text("cái này bị null",
+            title: Text(nameMotherPitch,
             style: TextStyle(fontWeight: FontWeight.bold),),
           ),
           ListTile(
@@ -182,5 +174,56 @@ class InformationPitch extends StatelessWidget{
         ],
       ),
     );
+
+  }
+
+  getInformation(){
+    MyBookingViewModel.getBookingById(widget.BookingId).then(
+            (value)  {
+              setState(() {
+                SubPitchId = value.subPitchID;
+                timeStart = value.timeStart;
+                timeEnd = value.timeEnd;
+                price = value.price;
+                dateBooking = value.dateBooking;
+
+                SubPitchViewModel.getSubPitchById(SubPitchId).then((value)  {
+                  setState(() {
+                    nameSubPitch = value.name;
+
+                    typeOfPitch = value.typeOfPitch;
+                    PitchId = value.pitch_id;
+
+                    PitchViewModel.getPitchById(PitchId).then((value)  {
+                      setState(() {
+                        adress = value.location;
+                        nameMotherPitch = value.name;
+                        print(nameMotherPitch);
+                      });
+                    });
+                  });
+
+                });
+              });
+
+        });
+
+    // SubPitchViewModel.getSubPitchById(SubPitchId).then((value)  {
+    //   setState(() {
+    //     nameSubPitch = value.name;
+    //
+    //     typeOfPitch = value.typeOfPitch;
+    //     PitchId = value.pitch_id;
+    //   });
+    //
+    // });
+    //
+    // PitchViewModel.getPitchById(PitchId).then((value)  {
+    //   setState(() {
+    //     adress = value.location;
+    //     nameMotherPitch = value.name;
+    //   });
+    // });
+
   }
 }

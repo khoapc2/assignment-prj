@@ -28,6 +28,7 @@ class HomeScreenState extends State<Homescreen>{
     // TODO: implement build
     //PitchesModel nearestPitchesModel = PitchesModel.fetchNearestPitch();
     var highestRatePitchModel = PitchServce().getListHightRatePitches();
+    var recomandPitchModel = PitchServce().getRecommandPitches();
     //PitchesModel hotDealPitchesModel = PitchesModel.fetchHotDeal();
     // TODO: implement build
     return Scaffold(
@@ -97,7 +98,51 @@ class HomeScreenState extends State<Homescreen>{
                 }
             ),
           ),
-
+          TitlePitch(20.0, 20.0, "Sân bóng gợi ý cho bạn"),
+          SingleChildScrollView(
+            child: FutureBuilder<List<PitchModel>>(
+                future: recomandPitchModel,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<PitchModel>> snapshot) {
+                  List<Widget> children = [];
+                  if (snapshot.hasData) {
+                    children.add(
+                        SizedBox(
+                          height: 230.0,
+                          child: Pitches(snapshot.data!),
+                        )
+                    );
+                  }else if (snapshot.hasError) {
+                    children = <Widget>[
+                      const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text('Error: ${snapshot.error}'),
+                      )
+                    ];
+                  } else {
+                    children = const <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          child: CircularProgressIndicator(),
+                          width: 60,
+                          height: 60,
+                        ),),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text('Awaiting result...'),
+                      )
+                    ];
+                  }
+                  return Column(children:children);
+                }
+            ),
+          )
           // TitlePitch(20.0, 20.0, "Sân đang được giảm giá"),
           // SizedBox(
           //   height: 300.0,

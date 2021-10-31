@@ -7,11 +7,19 @@ import 'package:flutter/material.dart';
 
 import 'ImageBanner.dart';
 
-class BillPitch extends StatelessWidget{
+class BillPitch extends StatefulWidget{
   //ParameterToBillPitch pars;
   int BookingId;
   //BillPitch(this.pars, this.BookingId);
   BillPitch(this.BookingId);
+
+  @override
+  _BillPitchState createState() => _BillPitchState();
+}
+
+class _BillPitchState extends State<BillPitch> {
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -33,7 +41,7 @@ class BillPitch extends StatelessWidget{
           TitlePitch(),
         // InformationPitch(pars.namePitch, pars.address, pars.detailPitch, pars.typeOfPitch, pars.dateBooking,
         //     pars.timeStartedSeleted, pars.timeEndSeleted, pars.price, BookingId)
-        InformationPitch(BookingId)
+        InformationPitch(widget.BookingId)
         ]
     ),
         bottomNavigationBar: DoneButton(),

@@ -89,6 +89,12 @@ return result;
     return timeHs;
   }
 
+  static Future<List<PitchModel>> getRecommandPitch() async {
+    PitchServce service = new PitchServce();
+    var result = await service.getRecommandPitches();
+    return result;
+  }
+
   static String validateCreate(String pitchName, String phone, String address,
       String timeStart, String timeEnd) {
     var error = '';

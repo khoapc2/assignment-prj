@@ -72,6 +72,25 @@ class PitchServce {
     return profileModelResponse;
   }
 
+  Future<List<PitchModel>> getRecommandPitches() async {
+    String url = "https://10.0.2.2:44322/api/Pitches/get_recomand_pitch";
+    List<PitchModel> result = List.empty();
+    client.badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+
+    HttpClientRequest request =
+    await client.getUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json; charset=UTF-8');
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      List ds = jsonDecode(await response.transform(utf8.decoder).join());
+      result = ds.map((e) => PitchModel.fromJson(e)).toList();
+      return result;
+    } else {
+      return result;
+    }
+  }
+
   // Future<PitchModel> getProfileById(int id) async {
   //   String url = "https://104.215.186.78/api/v1/user-accounts/" + id.toString();
   //
