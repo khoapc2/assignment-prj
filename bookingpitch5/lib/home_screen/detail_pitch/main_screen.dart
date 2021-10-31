@@ -1,8 +1,6 @@
 
 import 'package:bookingpitch5/home_screen/detail_pitch/title_pitches.dart';
-import 'package:bookingpitch5/models/detail_type_pitch.dart';
-import 'package:bookingpitch5/models/pitch.dart';
-import 'package:bookingpitch5/models/pitches.dart';
+
 import 'package:bookingpitch5/models/son_pitchs/son_pitch_model.dart';
 import 'package:bookingpitch5/screen/home_screen/detail_pitch/rate_pitch.dart';
 import 'package:bookingpitch5/view_models/pitch_view_model.dart';
@@ -29,7 +27,7 @@ class MainScreenDetailPitchHost extends StatefulWidget{
 
 class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
   var pitchModel;
-
+  var rates;
   String type5 = "Sân 5";
 
   String type7 = "Sân 7";
@@ -60,7 +58,7 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
            children: [
              ImageBanner("assets/images/sanbanh1.png", Colors.grey),
              TitlePitch(10.0, 10.0, txtTitle,30.0),
-             RatePitch(10.0, 10.0, 5,1),
+             RatePitch(10.0, 10.0, rates, widget.pitchID),
              TitlePitch(10.0, 10.0, "Các loại sân",20.0),
            ]..addAll(showDetailPitch()),
          )
@@ -97,7 +95,7 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
     }
 
     if(listPitchModelFutsal.isNotEmpty){
-      list.add(TitlePitch(10.0, 10.0, "Sân fusan("+listPitchModelFutsal.length.toString()+")",15.0));
+      list.add(TitlePitch(10.0, 10.0, "Sân futsal("+listPitchModelFutsal.length.toString()+")",15.0));
       list.add(SizedBox(
         height: 300,
         child: DetailPitches(listPitchModelFutsal),
@@ -113,6 +111,7 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
       setState(() {
         pitchModel = value;
         txtTitle = value.name;
+        rates = value.rates;
       });
        }
     );

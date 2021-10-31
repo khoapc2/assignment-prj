@@ -65,6 +65,7 @@ class GetPitchModelDetail {
   late String location;
   late String img_path;
   late String phone;
+  late double rates;
   late String time_start;
   late String time_end;
 
@@ -88,5 +89,6 @@ class GetPitchModelDetail {
   phone = json['phone'];
   time_start = json['time_start'];
   time_end = json['time_end'];
+  rates = json['rates'];
   }
 }
