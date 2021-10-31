@@ -8,6 +8,8 @@ import 'package:bookingpitch5/home_screen/main_screen.dart';
 import 'package:bookingpitch5/home_screen/notification/main_screen.dart';
 import 'package:bookingpitch5/home_screen/updateMotherPitch/mother_pitch.dart';
 import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
+import 'package:bookingpitch5/models/tranfer_params/pitchId_and_rate.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/button_pay.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/main_screen.dart';
@@ -16,7 +18,6 @@ import 'package:bookingpitch5/screen/home_screen/location/Location.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
 import 'package:bookingpitch5/screen/home_screen/notification/notification.dart';
 import 'package:bookingpitch5/screen/home_screen/profile/profile.dart';
-import 'package:bookingpitch5/screen/home_screen/rate_pitch/ratingactivity.dart';
 import 'package:bookingpitch5/screen/home_screen/voucher/applyPitches.dart';
 import 'package:bookingpitch5/screen/home_screen/voucher/voucherTab.dart';
 import 'package:bookingpitch5/screen/home_screen/wallet/Wallet.dart';
@@ -25,12 +26,15 @@ import 'package:flutter/material.dart';
 import 'booking_slot/main_screen.dart';
 import 'calendar_today/my_activity.dart';
 import 'detail_pitch/main_screen.dart';
-import 'feedback/feedback.dart';
+
 
 import 'list_pitch/my_activity.dart';
 
 import 'list_pitch_by_search/my_activity.dart';
 import 'main_screen/Homescreen.dart';
+import 'rate_and_feedback_pitch/ratingactivity.dart';
+import 'view_feedback/view_feedback.dart';
+
 
 class RouteGenerator{
   static Route<dynamic> generateRoute(RouteSettings settings){
@@ -71,10 +75,10 @@ class RouteGenerator{
             builder: (_) => BillPitch(settings.arguments as int));
       case '/ratePitch':
         return MaterialPageRoute(
-            builder: (_) => RatingScreen());
+            builder: (_) => RatingScreen(settings.arguments as PitchID_BookingID));
       case '/checkLocation':
         return MaterialPageRoute(
-            builder: (_) => Location());
+            builder: (_) => Location(settings.arguments as int));
       case '/wallet':
         return MaterialPageRoute(
             builder: (_) => Wallet());
@@ -82,9 +86,11 @@ class RouteGenerator{
       case '/listPitch':
         return MaterialPageRoute(
             builder: (_) => ApplyVoucherPitch());
-      case '/feedback':
-        return MaterialPageRoute(builder: (_) => ViewFeedback());
-      case '/listSubPitch':
+
+      case '/view_feedback':
+        return MaterialPageRoute(builder: (_) => ViewFeedback(settings.arguments as PitchID_Rate));
+
+    case '/listSubPitch':
         return MaterialPageRoute(
             builder: (_) => ListSubPitch(settings.arguments as String));
       case '/notification':
@@ -99,13 +105,13 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => CalendarTodayHost());//sai
 
       case '/detailPitchHost':
-        return MaterialPageRoute(builder: (_) => MainScreenDetailPitchHost());//sai
+        return MaterialPageRoute(builder: (_) => MainScreenDetailPitchHost(settings.arguments as int));//sai
 
       case '/addMotherPitch':
         return MaterialPageRoute(builder: (_) => MotherPage());
 
       case '/addSonPitch':
-        return MaterialPageRoute(builder: (_) => SonPage());
+        return MaterialPageRoute(builder: (_) => SonPage(settings.arguments as int));
 
       case '/notificationPitch':
         return MaterialPageRoute(builder: (_) => NotificationPitch());
@@ -113,14 +119,15 @@ class RouteGenerator{
       case '/calendar':
         return MaterialPageRoute(builder: (_) => CalendarOfCustomer());
 
-      case '/updateModerPitch':
-        return MaterialPageRoute(builder: (_) => UpdateMotherPage());
+      case '/updateMotherPitch':
+        return MaterialPageRoute(builder: (_) => UpdateMotherPage(settings.arguments as int));
 
       case '/updateSonPitch':
-        return MaterialPageRoute(builder: (_) => UpdateSonPage());
+        return MaterialPageRoute(builder: (_) => UpdateSonPage(settings.arguments as int));
 
       case '/feedbackHost':
         return MaterialPageRoute(builder: (_) => ViewFeedbackHost());
+      
 
       default:
         return MaterialPageRoute(builder: (_) => Homescreen());//sai

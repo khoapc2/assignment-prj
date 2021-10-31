@@ -1,17 +1,24 @@
 import 'package:bookingpitch5/home_screen/footer_menu.dart';
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
-import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
+import 'package:bookingpitch5/view_models/pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 import 'ImageBanner.dart';
 import 'button_pay.dart';
 
-class CalendarTodayHost extends StatelessWidget {
+class CalendarTodayHost extends StatefulWidget {
   const CalendarTodayHost({Key? key}) : super(key: key);
 
+  @override
+  State<CalendarTodayHost> createState() => _CalendarTodayHostState();
+}
+
+class _CalendarTodayHostState extends State<CalendarTodayHost> {
   @override
   Widget build(BuildContext context) {
     return
@@ -20,6 +27,8 @@ class CalendarTodayHost extends StatelessWidget {
             title: const Text("Màn hình chính chủ sân", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             centerTitle: true,
             backgroundColor: Colors.green,
+            leading:Icon(Icons.sports_soccer_outlined),
+
           ),
           body: ListView(
             children: [
@@ -42,13 +51,15 @@ class BookedPitch extends StatefulWidget {
 
 
 }
-
 class _BookedPitchState extends State<BookedPitch> {
-  late Future<List<GetPitchModel>> listPitch;
+  var listPitch;
+  // listPitch = PitchViewModel.getListPitchByOwnerID();
   @override
   initState() {
+    // getPitchByOwnerID(listPitch);
     super.initState();
-    listPitch = CreatePitchViewModel.getListPitchByOwnerID();
+    listPitch = PitchViewModel.getListPitchByOwnerID();
+
   }
 
   // @override
@@ -63,7 +74,6 @@ class _BookedPitchState extends State<BookedPitch> {
   //   );
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -77,14 +87,15 @@ class _BookedPitchState extends State<BookedPitch> {
               for (int i = 0; i < snapshot.data!.length; i++) {
                 data = snapshot.data!.elementAt(i);
                 children.add(Pitches(
+                    data.idPitch,
                     data.name,
                     data.location,
                     // data.img_path
                     "assets/images/img2.jpg",
                     data.phone,
-                    CreatePitchViewModel.tranferTimeFormat(data.time_start),
-                    CreatePitchViewModel.tranferTimeFormat(data.time_end),
-                    BookedBottomPart()));
+                    PitchViewModel.tranferTimeFormat(data.time_start),
+                    PitchViewModel.tranferTimeFormat(data.time_end),
+                    BookedBottomPart(data.idPitch)));
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -121,9 +132,9 @@ class _BookedPitchState extends State<BookedPitch> {
 }
 
 class Pitches extends StatefulWidget {
-  var name, location, img_path, phone, time_start, time_end, botton;
+  var idPitch, name, location, img_path, phone, time_start, time_end, botton;
 
-  Pitches(this.name, this.location, this.img_path, this.phone,
+  Pitches(this.idPitch, this.name, this.location, this.img_path, this.phone,
       this.time_start, this.time_end, this.botton,
       {Key? key})
       : super(key: key);
@@ -132,8 +143,11 @@ class Pitches extends StatefulWidget {
   State<Pitches> createState() => _BookedItemState();
 }
 
+
 class BookedBottomPart extends StatelessWidget {
-  const BookedBottomPart({Key? key}) : super(key: key);
+  BookedBottomPart(this.pitchID, {Key? key}) : super(key: key);
+  var pitchID;
+  var isDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +160,7 @@ class BookedBottomPart extends StatelessWidget {
             children: [
               FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/updateModerPitch');
+                  Navigator.of(context).pushNamed('/updateMotherPitch', arguments: pitchID);
                 },
                 child: const Text("Cập nhật", style: TextStyle(fontWeight: FontWeight.bold)),
                 color: Colors.green,
@@ -154,7 +168,24 @@ class BookedBottomPart extends StatelessWidget {
               )
               ,
               FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  isDelete = PitchViewModel.deletePitch(pitchID);
+                  if(isDelete) {
+                    Fluttertoast.showToast(
+                        msg: "Delete Pitch Successful",
+                        fontSize: 18,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.green,
+                        textColor: Colors.white);
+                  }else{
+                    Fluttertoast.showToast(
+                        msg: "Delete Pitch Fail",
+                        fontSize: 18,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                  }
+                },
                 child: const Text("Xóa", style: TextStyle(fontWeight: FontWeight.bold)),
                 color: Colors.red,
                 textColor: Colors.white,
@@ -162,8 +193,6 @@ class BookedBottomPart extends StatelessWidget {
             ],
           ),
         )
-
-
       ],
     );
   }
@@ -204,7 +233,7 @@ class _BookedItemState extends State<Pitches> {
         ),
 
     GestureDetector(
-    onTap:() => Navigator.of(context).pushNamed('/detailPitchHost'),
+    onTap:() => Navigator.of(context).pushNamed('/detailPitchHost', arguments: widget.idPitch),
     child:
     Container(
     child:
@@ -259,6 +288,12 @@ class _BookedItemState extends State<Pitches> {
         ),
       );
   }
+
+  // getPitchByOwnerID() async {
+  //   // setState(() {
+  //     listPitch = await PitchViewModel.getListPitchByOwnerID();
+  //   // });
+  // }
 }
 
 // class BookedBottomPart extends StatelessWidget {
@@ -281,67 +316,67 @@ class _BookedItemState extends State<Pitches> {
 //   }
 // }
 
-class CompleteBottomPart extends StatelessWidget {
-  const CompleteBottomPart({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Image(
-          image: AssetImage("assets/images/complete.png"),
-          // width: 100,
-          height: 50,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/ratePitch');
-              },
-              child: const Text("Đánh giá", style: TextStyle(fontWeight: FontWeight.bold)),
-              style: OutlinedButton.styleFrom(
-                primary: Colors.green,
-                backgroundColor: Colors.white,
-                side: const BorderSide(color: Colors.green, width: 2)
-              )
-            ),
-            const SizedBox(width: 20),
-            FlatButton(
-              onPressed: () {},
-              child: const Text("Đặt lại", style: TextStyle(fontWeight: FontWeight.bold)),
-              color: Colors.green,
-              textColor: Colors.white,
-            )
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class CancelBottomPart extends StatelessWidget {
-  const CancelBottomPart({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Image(
-          image: AssetImage("assets/images/cancel.png"),
-          // width: 100,
-          height: 50,
-        ),
-        FlatButton(
-          onPressed: () {},
-          child: const Text("Đặt lại", style: TextStyle(fontWeight: FontWeight.bold)),
-          color: Colors.green,
-          textColor: Colors.white,
-        )
-      ],
-    );
-  }
-}
+// class CompleteBottomPart extends StatelessWidget {
+//   const CompleteBottomPart({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         const Image(
+//           image: AssetImage("assets/images/complete.png"),
+//           // width: 100,
+//           height: 50,
+//         ),
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.end,
+//           children: [
+//             OutlinedButton(
+//               onPressed: () {
+//                 Navigator.of(context).pushNamed('/ratePitch');
+//               },
+//               child: const Text("Đánh giá", style: TextStyle(fontWeight: FontWeight.bold)),
+//               style: OutlinedButton.styleFrom(
+//                 primary: Colors.green,
+//                 backgroundColor: Colors.white,
+//                 side: const BorderSide(color: Colors.green, width: 2)
+//               )
+//             ),
+//             const SizedBox(width: 20),
+//             FlatButton(
+//               onPressed: () {},
+//               child: const Text("Đặt lại", style: TextStyle(fontWeight: FontWeight.bold)),
+//               color: Colors.green,
+//               textColor: Colors.white,
+//             )
+//           ],
+//         )
+//       ],
+//     );
+//   }
+// }
+//
+// class CancelBottomPart extends StatelessWidget {
+//   const CancelBottomPart({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         const Image(
+//           image: AssetImage("assets/images/cancel.png"),
+//           // width: 100,
+//           height: 50,
+//         ),
+//         FlatButton(
+//           onPressed: () {},
+//           child: const Text("Đặt lại", style: TextStyle(fontWeight: FontWeight.bold)),
+//           color: Colors.green,
+//           textColor: Colors.white,
+//         )
+//       ],
+//     );
+//   }
+// }

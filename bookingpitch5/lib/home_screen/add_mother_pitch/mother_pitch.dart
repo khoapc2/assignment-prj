@@ -1,4 +1,4 @@
-import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
+import 'package:bookingpitch5/view_models/pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -366,7 +366,7 @@ class MapScreenState extends State<MotherPage>
                 textColor: Colors.white,
                 color: Colors.green,
                 onPressed: () async {
-                  error = CreatePitchViewModel.validateCreate(
+                  error = PitchViewModel.validateCreate(
                       edtPitchName.text.trim(),
                       edtPhone.text.trim(),
                       edtAddress.text.trim(),
@@ -376,7 +376,7 @@ class MapScreenState extends State<MotherPage>
                     showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Đăng ký thất bại'),
+                        title: const Text('Update Pitch Fail'),
                         content: Text(error),
                         actions: [
                           TextButton(
@@ -390,7 +390,8 @@ class MapScreenState extends State<MotherPage>
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     int id = prefs.getInt('id');
-                    isCreate = await CreatePitchViewModel.createPitch(
+                    print(id);
+                    isCreate = await PitchViewModel.createPitch(
                         id,
                         edtPitchName.text,
                         edtAddress.text,
@@ -408,6 +409,13 @@ class MapScreenState extends State<MotherPage>
                         _status = true;
                         FocusScope.of(context).requestFocus(new FocusNode());
                       });
+                    }else{
+                      Fluttertoast.showToast(
+                          msg: "Delete Pitch Fail",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white);
                     }
                   }
                 },

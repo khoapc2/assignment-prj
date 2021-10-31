@@ -12,9 +12,9 @@ TextEditingController nameEdt = new TextEditingController();
 TextEditingController emailEdt = new TextEditingController();
 TextEditingController addressEdt = new TextEditingController();
 TextEditingController phoneEdt = new TextEditingController();
-var menu ;
+var menu;
 
-String roleString = '';
+String role = '', avatar = 'assets/images/as.png';
 int user_id = 0;
 
 class ProfilePage extends StatefulWidget {
@@ -27,318 +27,302 @@ class MapScreenState extends State<ProfilePage>
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
   String error = '';
-  
 
   late ProfileModel profileModel;
-  var getProfile = ProfileViewModel().getProfile().then((value) => {
-      user_id = value.id,
-      nameEdt.text = value.name,
-      emailEdt.text = value.email,
-      addressEdt.text = value.address,
-      phoneEdt.text = value.phone,
-      
-    });
 
-  var cc = LoginViewModel.getRole().then((value) => {
-    roleString = value,    
-    if(roleString == 'customer'){
-      menu = FooterMenu(3) 
-    }else{
-      menu = FooterMenuHost(3)
-    },
-    print(menu)
-  });
-  
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();   
+    super.initState();
+    getProfile();
+    checkRole();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      
-      body: new Container(
-      color: Colors.white,
-      child: new ListView(
-        children: <Widget>[
-          Column(
+        body: new Container(
+          color: Colors.white,
+          child: new ListView(
             children: <Widget>[
-              new Container(
-                height: 250.0,
-                color: Colors.white,
-                child: new Column(
-                  children: <Widget>[                   
-                    Padding(
-                      padding: EdgeInsets.only(top: 40.0),
-                      child: new Stack(fit: StackFit.loose, children: <Widget>[
-                        new Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new Container(
-                                width: 140.0,
-                                height: 140.0,
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                    image: new ExactAssetImage(
-                                        'assets/images/as.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                          ],
-                        ),
+              Column(
+                children: <Widget>[
+                  new Container(
+                    height: 250.0,
+                    color: Colors.white,
+                    child: new Column(
+                      children: <Widget>[
                         Padding(
-                            padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                            child: new Row(
+                          padding: EdgeInsets.only(top: 40.0),
+                          child:
+                              new Stack(fit: StackFit.loose, children: <Widget>[
+                            new Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                new CircleAvatar(
-                                  backgroundColor: Colors.green,
-                                  radius: 25.0,
-                                  child: new Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.white,
-                                  ),
-                                )
+                                new Container(
+                                    width: 140.0,
+                                    height: 140.0,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: new DecorationImage(
+                                        image: new ExactAssetImage(
+                                            avatar),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )),
                               ],
-                            )),
-                      ]),
-                    )
-                  ],
-                ),
-              ),
-              new Container(
-                color: Color(0xffFFFFFF),
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 25.0),
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Personal Information',
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  _status ? _getEditIcon() : new Container(),
-                                ],
-                              )
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Name',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  controller: nameEdt,
-                                  keyboardType: TextInputType.name,
-                                  decoration: const InputDecoration(
-                                    hintText: "Enter Your Name",                                    
-                                  ),
-                                  enabled: !_status,
-                                  autofocus: !_status,
-
-                                ),
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Email ID',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  controller: emailEdt,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter Email ID"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Mobile',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  controller: phoneEdt, 
-                                  keyboardType: TextInputType.phone,                                
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter Mobile Number"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 25.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  new Text(
-                                    'Address',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new TextField(
-                                  controller: addressEdt,
-                                  keyboardType: TextInputType.streetAddress,
-                                  decoration: const InputDecoration(
-                                      hintText: "Enter Your Address"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      !_status ? _getActionButtons() : new Container(),    
-                      Padding(
-                          padding: EdgeInsets.only(
-                              left: 25.0, right: 25.0, top: 2.0),
-                          child: new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Flexible(
-                                child: new SizedBox(
-                                  height: MediaQuery.of(context).size.height * 0.08,
-                                  width: double.infinity,                        
-                                  child: ElevatedButton(
-                                    onPressed: () => {  
-                                      showAlertDialog(context),                                                     
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                                    ),
-                                    child: Text(
-                                      "Đăng xuất",
-                                      style: TextStyle(
+                            ),
+                            Padding(
+                                padding:
+                                    EdgeInsets.only(top: 90.0, right: 100.0),
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    new CircleAvatar(
+                                      backgroundColor: Colors.green,
+                                      radius: 25.0,
+                                      child: new Icon(
+                                        Icons.camera_alt,
                                         color: Colors.white,
-                                        fontSize: 25
                                       ),
-                                      ),
-                                  ),
-                                )
-                              ),
-                            ],
-                          )),    
-                    ],
+                                    )
+                                  ],
+                                )),
+                          ]),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              )
+                  new Container(
+                    color: Color(0xffFFFFFF),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 25.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Personal Information',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      _status
+                                          ? _getEditIcon()
+                                          : new Container(),
+                                    ],
+                                  )
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Name',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                    child: new TextField(
+                                      controller: nameEdt,
+                                      keyboardType: TextInputType.name,
+                                      decoration: const InputDecoration(
+                                        hintText: "Enter Your Name",
+                                      ),
+                                      enabled: !_status,
+                                      autofocus: !_status,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Email ID',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                    child: new TextField(
+                                      controller: emailEdt,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                          hintText: "Enter Email ID"),
+                                      enabled: !_status,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Mobile',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                    child: new TextField(
+                                      controller: phoneEdt,
+                                      keyboardType: TextInputType.phone,
+                                      decoration: const InputDecoration(
+                                          hintText: "Enter Mobile Number"),
+                                      enabled: !_status,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Text(
+                                        'Address',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                    child: new TextField(
+                                      controller: addressEdt,
+                                      keyboardType: TextInputType.streetAddress,
+                                      decoration: const InputDecoration(
+                                          hintText: "Enter Your Address"),
+                                      enabled: !_status,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          !_status ? _getActionButtons() : new Container(),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 2.0),
+                              child: new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Flexible(
+                                      child: new SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.08,
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: () => {
+                                        showAlertDialog(context),
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.red),
+                                      ),
+                                      child: Text(
+                                        "Đăng xuất",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 25),
+                                      ),
+                                    ),
+                                  )),
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
-        ],
-      ),
-    ),
-    bottomNavigationBar: menu
-    );
-    
+        ),
+        bottomNavigationBar: menu);
   }
 
   @override
@@ -365,65 +349,71 @@ class MapScreenState extends State<ProfilePage>
                 color: Colors.green,
                 onPressed: () async => {
                   error = ProfileViewModel.validateUpdateProfile(
-                    nameEdt.text.trim(), emailEdt.text.trim(), phoneEdt.text.trim(), addressEdt.text.trim()
-                  ),
-                  if(error.length > 0){
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Cập nhật thất bại'),
-                        content: Text(error),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    )
-                  }
-                  else{
-                    profileModel = await ProfileViewModel().updateProfile(                     
-                        nameEdt.text.trim(), 
-                        emailEdt.text.trim(), 
-                        phoneEdt.text.trim(), 
-                        addressEdt.text.trim()),
-                    if(profileModel != null){
+                      nameEdt.text.trim(),
+                      emailEdt.text.trim(),
+                      phoneEdt.text.trim(),
+                      addressEdt.text.trim()),
+                  if (error.length > 0)
+                    {
                       showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Cập nhật thành công'),
-                        content: Text('Ahihi đồ ngốc!!'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                      ),
-                      setState(() {
-                        _status = true;
-                        FocusScope.of(context).requestFocus(new FocusNode());
-                      })
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Cập nhật thất bại'),
+                          content: Text(error),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      )
                     }
-                    else {
-                      showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Đăng ký thất bại'),
-                        content: Text('Username đã tồn tại!'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
+                  else
+                    {
+                      profileModel = await ProfileViewModel.updateProfile(
+                          nameEdt.text.trim(),
+                          emailEdt.text.trim(),
+                          phoneEdt.text.trim(),
+                          addressEdt.text.trim()),
+                      if (profileModel != null)
+                        {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Cập nhật thành công'),
+                              content: Text('Ahihi đồ ngốc!!'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    )
-                    }
-                  },
-                  
+                          setState(() {
+                            _status = true;
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                          })
+                        }
+                      else
+                        {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Đăng ký thất bại'),
+                              content: Text('Username đã tồn tại!'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          )
+                        }
+                    },
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
@@ -476,45 +466,64 @@ class MapScreenState extends State<ProfilePage>
   }
 
   showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      hoverColor: Colors.red,
+      child: Text("OK"),
+      onPressed: () async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        await preferences.clear();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LogInScreen()),
+        );
+      },
+    );
 
-  // set up the button
-  Widget okButton = FlatButton(
-    hoverColor: Colors.red,
-    child: Text("OK"),
-    onPressed: () async {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.clear();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LogInScreen()),
-      );  
-     },
-  );
+    Widget cancelBtn = FlatButton(
+      focusColor: Colors.blue,
+      child: Text("Cancel"),
+      onPressed: () => Navigator.pop(context, "Cancel"),
+    );
 
-  Widget cancelBtn = FlatButton(
-    focusColor: Colors.blue,
-    child: Text("Cancel"),
-    onPressed: () => Navigator.pop(context, "Cancel"),
-  );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Log out"),
+      content: Text("You want to log out ?"),
+      actions: [okButton, cancelBtn],
+    );
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Log out"),
-    content: Text("You want to log out ?"),
-    actions: [
-      okButton,
-      cancelBtn
-    ],
-  );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+  getProfile() async {
+    await ProfileViewModel.getProfile().then((value) {
+      user_id = value.id;
+      nameEdt.text = value.name;
+      emailEdt.text = value.email;
+      addressEdt.text = value.address;
+      phoneEdt.text = value.phone;
+    });
+  }
 
-  
-}
+  checkRole() async {
+    await LoginViewModel.getRole().then((value) {
+      setState(() {
+        role = value;
+        if (role== 'customer') {
+          menu = FooterMenu(3);
+        } else {
+          menu = FooterMenuHost(3);
+          avatar = 'assets/images/profile_host.jpg';
+        }
+        ;
+      });
+    });
+  }
 }

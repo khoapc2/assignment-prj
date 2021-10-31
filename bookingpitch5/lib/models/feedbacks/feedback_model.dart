@@ -13,15 +13,7 @@ class FeedbackRequest{
       required this.rating,
       required this.bookingId
       });
-
-  FeedbackRequest.fromJson(Map<String, dynamic> json) {
-    customerId = json['customer_id'];
-    pitchId = json['pitch_id'];
-    content = json['content'];
-    rating = json['rating'];
-    bookingId = json['booking_id'];
-  }
-
+ 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['customer_id'] = this.customerId;
@@ -31,6 +23,27 @@ class FeedbackRequest{
     data['booking_id'] = this.bookingId;
     return data;
   }
+}
 
+class FeedbackResponse{
+  String customerName;
+  String content;
+  int rating;
+  int bookingId;
 
+  FeedbackResponse({
+      required this.customerName,
+      required this.content,
+      required this.rating,
+      required this.bookingId
+      });
+
+  factory FeedbackResponse.fromJson(Map<String, dynamic> json) {
+    return new FeedbackResponse(
+        customerName : json['customer_name'],
+        content : json['content'],
+        rating : json['rating'],
+        bookingId : json['booking_id']
+    );
+  }
 }

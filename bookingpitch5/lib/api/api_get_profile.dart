@@ -9,7 +9,7 @@ import '../models/user_accounts/profile_model.dart';
 class ProfileService {
 
   Future<ProfileModel> getProfileById(int id) async {
-    String url = "https://104.215.186.78/api/v1/user-accounts/" + id.toString();
+    String url = "https://10.0.2.2:44322/api/v1/user-accounts/" + id.toString();
 
     ProfileModel profileModelResponse;  
 
@@ -17,7 +17,6 @@ class ProfileService {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         });
-    
 
     if(response.statusCode == 200){
       profileModelResponse = ProfileModel.fromJson(json.decode(response.body));

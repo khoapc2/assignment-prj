@@ -56,3 +56,37 @@ class GetPitchModel {
     );
   }
 }
+
+
+class GetPitchModelDetail {
+  late int idPitch;
+  late int pitch_owner_id;
+  late String name;
+  late String location;
+  late String img_path;
+  late String phone;
+  late String time_start;
+  late String time_end;
+
+  GetPitchModelDetail({
+    required this.idPitch,
+    required this.pitch_owner_id,
+    required this.name,
+    required this.location,
+    required this.img_path,
+    required this.phone,
+    required this.time_start,
+    required this.time_end,
+  });
+
+  GetPitchModelDetail.fromJson(Map<String, dynamic> json) {
+  idPitch = json['id'];
+  pitch_owner_id = json['pitch_owner_id'];
+  name = json['name'];
+  location = json['location'];
+  img_path = json['img_path'];
+  phone = json['phone'];
+  time_start = json['time_start'];
+  time_end = json['time_end'];
+  }
+}
