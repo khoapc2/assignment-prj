@@ -15,20 +15,29 @@ import 'ImageBanner.dart';
 String namePitch = "Chua co";
 double rate = 0.0;
 List<SubPitchModel> listSubPitch = [];
-class MainScreenDetailPitch extends StatelessWidget{
+class MainScreenDetailPitch extends StatefulWidget{
   final int id;
-  List<SubPitchModel> listSubPitch = [];
+
   MainScreenDetailPitch(this.id) ;
 
   @override
-  Widget build(BuildContext context) {
+  _MainScreenDetailPitchState createState() => _MainScreenDetailPitchState();
+}
 
-    PitchViewModel.getPitchById(id).then((value) => {
-      namePitch = value.name,
-      rate = value.rates
-    });
-    var listSubPitch = SubPitchViewModel.getListSubPitchByPitchId(id);
-    double rateOfPitch = 3;
+class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
+  List<SubPitchModel> listSubPitch = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTitle();
+  }
+  @override
+  Widget build(BuildContext context) {
+    print("2");
+    var listSubPitch = SubPitchViewModel.getListSubPitchByPitchId(widget.id);
+    //double rateOfPitch = 3;
     //PitchViewModel.getListPitchByName(listSubPitch[0].pitch_name).then((value) =>  rateOfPitch = value[0].rates);
 
        return Scaffold(
@@ -47,7 +56,7 @@ class MainScreenDetailPitch extends StatelessWidget{
            children: [
              ImageBanner("assets/images/DetailPitch.png", Colors.grey),
              TitlePitch(10.0, 10.0, namePitch,30.0),
-             RatePitch(10.0, 10.0, rate, id),
+             RatePitch(10.0, 10.0, rate, widget.id),
 
              TitlePitch(10.0, 10.0, "Các loại sân",20.0),
              showDetailPitch(listSubPitch)
@@ -57,7 +66,109 @@ class MainScreenDetailPitch extends StatelessWidget{
                //RatePitch(10.0,10.0,pitchModel.rates);
            );
      }
+
+  Widget showDetailPitch (Future<List<SubPitchModel>> listSubPitch){
+    return SingleChildScrollView(
+        child: FutureBuilder<List<SubPitchModel>>(
+            future: listSubPitch,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<SubPitchModel>> snapshot) {
+              List<Widget> children = [];
+              if (snapshot.hasData) {
+                List<SubPitchModel> listSubPitch5 = [];
+                List<SubPitchModel> listSubPitch7 = [];
+                List<SubPitchModel> listSubPitch11 = [];
+                List<SubPitchModel> listSubPitchFutsal = [];
+                for(var SubPitchModel in snapshot.data!){
+                  if(SubPitchModel.typeOfPitch == "Sân 5"){
+                    listSubPitch5.add(SubPitchModel);
+                  }
+                  if(SubPitchModel.typeOfPitch == "Sân 7"){
+                    listSubPitch7.add(SubPitchModel);
+                  }
+                  if(SubPitchModel.typeOfPitch == "Sân 11"){
+                    listSubPitch11.add(SubPitchModel);
+                  }
+                  if(SubPitchModel.typeOfPitch == "Sân futsal"){
+                    listSubPitchFutsal.add(SubPitchModel);
+                  }
+                }
+                if(listSubPitch5.length != 0){
+                  children.add(TitlePitch(10.0, 10.0, "Sân 5("+listSubPitch5.length.toString()+")",15.0));
+                  children.add(SizedBox(
+                    height: 300,
+                    child: DetailPitches(listSubPitch5),
+                  ));
+
+                  if(listSubPitch7.length != 0){
+                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 7");
+                    children.add(TitlePitch(10.0, 10.0, "Sân 7("+listSubPitch7.length.toString()+")",15.0));
+                    children.add(SizedBox(
+                      height: 300,
+                      child: DetailPitches(listSubPitch7),
+                    ));
+                  }
+                  if(listSubPitch11.length != 0){
+                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 11");
+                    children.add(TitlePitch(10.0, 10.0, "Sân 11("+listSubPitch11.length.toString()+")",15.0));
+                    children.add(SizedBox(
+                      height: 300,
+                      child: DetailPitches(listSubPitch11),
+                    ));
+                  }
+                  if(listSubPitchFutsal.length != 0){
+                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân fusan");
+                    children.add(TitlePitch(10.0, 10.0, "Sân fusan("+listSubPitchFutsal.length.toString()+")",15.0));
+                    children.add(SizedBox(
+                      height: 300,
+                      child: DetailPitches(listSubPitchFutsal),
+                    ));
+                  }
+                }else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                } else {
+                  children = const <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        child: CircularProgressIndicator(),
+                        width: 60,
+                        height: 60,
+                      ),),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    )
+                  ];
+                }
+
+              }
+              return Column(children:children);
+            }));
   }
+
+  getTitle() async{
+
+      await PitchViewModel.getPitchById(widget.id).then((value)  {
+      setState(() {
+        namePitch = value.name;
+        rate = value.rates;
+        print(namePitch);
+      });
+
+      });
+  }
+}
 
   // List<DetailTypePitchModel> listDetailPitchByType(PitchModel pitchModel, String typePith){
   //   List<DetailTypePitchModel> list = [];
@@ -70,95 +181,7 @@ class MainScreenDetailPitch extends StatelessWidget{
   //   return list;
   // }
 
-  Widget showDetailPitch (Future<List<SubPitchModel>> listSubPitch){
-    return SingleChildScrollView(
-      child: FutureBuilder<List<SubPitchModel>>(
-          future: listSubPitch,
-          builder: (BuildContext context,
-              AsyncSnapshot<List<SubPitchModel>> snapshot) {
-            List<Widget> children = [];
-            if (snapshot.hasData) {
-              List<SubPitchModel> listSubPitch5 = [];
-              List<SubPitchModel> listSubPitch7 = [];
-              List<SubPitchModel> listSubPitch11 = [];
-              List<SubPitchModel> listSubPitchFutsal = [];
-              for(var SubPitchModel in snapshot.data!){
-                if(SubPitchModel.typeOfPitch == "Sân 5"){
-                  listSubPitch5.add(SubPitchModel);
-                }
-                if(SubPitchModel.typeOfPitch == "Sân 7"){
-                  listSubPitch7.add(SubPitchModel);
-                }
-                if(SubPitchModel.typeOfPitch == "Sân 11"){
-                  listSubPitch11.add(SubPitchModel);
-                }
-                if(SubPitchModel.typeOfPitch == "Sân futsal"){
-                  listSubPitchFutsal.add(SubPitchModel);
-                }
-              }
-              if(listSubPitch5.length != 0){
-                children.add(TitlePitch(10.0, 10.0, "Sân 5("+listSubPitch5.length.toString()+")",15.0));
-                children.add(SizedBox(
-                  height: 300,
-                  child: DetailPitches(listSubPitch5),
-                ));
 
-                if(listSubPitch7.length != 0){
-                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 7");
-                  children.add(TitlePitch(10.0, 10.0, "Sân 7("+listSubPitch7.length.toString()+")",15.0));
-                  children.add(SizedBox(
-                    height: 300,
-                    child: DetailPitches(listSubPitch7),
-                  ));
-                }
-                if(listSubPitch11.length != 0){
-                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 11");
-                  children.add(TitlePitch(10.0, 10.0, "Sân 11("+listSubPitch11.length.toString()+")",15.0));
-                  children.add(SizedBox(
-                    height: 300,
-                    child: DetailPitches(listSubPitch11),
-                  ));
-                }
-                if(listSubPitchFutsal.length != 0){
-                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân fusan");
-                  children.add(TitlePitch(10.0, 10.0, "Sân fusan("+listSubPitchFutsal.length.toString()+")",15.0));
-                  children.add(SizedBox(
-                    height: 300,
-                    child: DetailPitches(listSubPitchFutsal),
-                  ));
-                }
-            }else if (snapshot.hasError) {
-              children = <Widget>[
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Error: ${snapshot.error}'),
-                )
-              ];
-            } else {
-              children = const <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                )
-              ];
-            }
-
-          }
-            return Column(children:children);
-          }));
-}
 
     // List<Widget> list= [];
     //
