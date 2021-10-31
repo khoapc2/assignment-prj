@@ -28,9 +28,9 @@ namespace PitchBooking.API.Controllers
 
             //GET api/subPitchs/{id}
             [HttpGet("{id}", Name = "GetSubPitchById")]
-            public async Task<ActionResult<SubPitchModel>> GetSubPitchById(int id)
+            public ActionResult<SubPitchModel> GetSubPitchById(int id)
             {
-                var subPitchModel = await _service.GetSubPitchById(id);
+                var subPitchModel = _service.GetSubPitchById(id);
                 if (subPitchModel == null)
                 {
                     return BadRequest();

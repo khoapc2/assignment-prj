@@ -58,10 +58,10 @@ namespace PitchBooking.Business.Services
             return listAdvisoryModel;
         }
 
-        public async Task<SubPitchModel> GetSubPitchById(int id)
+        public SubPitchModel GetSubPitchById(int id)
         {
-            var subPitch = await _genericRepository.FindAsync(x => x.Id == id &&
-            x.Status == (int)SubPitchStatus.Active);
+            var subPitch = _genericRepository.FindBy(x => x.Id == id &&
+            x.Status == (int)SubPitchStatus.Active).Include(x => x.Pitch).FirstOrDefault();
             if (subPitch != null)
             {
                 return _mapper.Map<SubPitchModel>(subPitch);

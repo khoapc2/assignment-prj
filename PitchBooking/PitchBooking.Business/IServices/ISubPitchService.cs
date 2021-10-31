@@ -12,7 +12,7 @@ namespace PitchBooking.Business.IServices
     public interface ISubPitchService
     {
         IEnumerable<SubPitchModel> GetAllSubPitches(SubPitchCreate filter);
-        Task<SubPitchModel> GetSubPitchById(int id);
+        SubPitchModel GetSubPitchById(int id);
         Task<SubPitchModel> CreateSubPitch(SubPitchCreate SubPitchRequest);
         Task<SubPitchModel> UpdateSubPitch(SubPitchUpdate SubPitchUpdate);
         Task<bool> DeleteSubPitch(int id);
