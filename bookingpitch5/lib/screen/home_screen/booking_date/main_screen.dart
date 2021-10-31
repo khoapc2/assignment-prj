@@ -1,33 +1,42 @@
+import 'package:bookingpitch5/models/sub_pitch/sub_pitch_model.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/ImageBanner.dart';
 import 'package:bookingpitch5/screen/home_screen/detail_pitch/detail_pitch.dart';
+import 'package:bookingpitch5/view_models/sub_pitch_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'package:bookingpitch5/view_models/my_booking_view_model.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 import 'button_pay.dart';
 import 'calendar_container.dart';
 import 'line_slot.dart';
 
 class MainScreenBookingDate extends StatefulWidget {
   @override
-  ParamenterToDateBookingScreen pars;
-  MainScreenBookingDate(this.pars);
+  //ParamenterToDateBookingScreen pars;
+  final int SubPitchId;
 
-  MainScreenBookingDateState createState() => MainScreenBookingDateState(pars);
+  MainScreenBookingDate(this.SubPitchId);
+
+  MainScreenBookingDateState createState() => MainScreenBookingDateState(SubPitchId);
 }
 
 class MainScreenBookingDateState extends State<MainScreenBookingDate> {
-  final timeStarts = ['16:00', "16:30", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30",
+  final timeStarts = ["06:00","16:00", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30",
   ];
   List listNumberStart = [];
-  final timeEnds = [ "16:30", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30",];
+  final timeEnds = ["07:00","16:30", "17:00","17:30","18:00","18:30", "19:00","19:00","19:30"];
 
 
   String selectedTimeStart = "16:00";
   String selectedTimeEnd = "16:30";
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime(1967, 10, 12);
-  ParamenterToDateBookingScreen pars;
-  MainScreenBookingDateState(this.pars);
+  late ButtonPay buttonPay;
+  //ParamenterToDateBookingScreen pars;
+  final int SubPitchId;
+  MainScreenBookingDateState(this.SubPitchId);
 
   @override
   void initState() {
@@ -46,7 +55,7 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
               },
               child: Icon(Icons.arrow_back)),
           title:
-              Text(pars.pitchModel.name + " - " + pars.detailPitchModel.name),
+              Text("Đặt sân"),
           backgroundColor: Colors.green,
         ),
         body: ListView(
@@ -64,7 +73,8 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay =
-                        focusedDay; // update `_focusedDay` here as well
+                        focusedDay;// update `_focusedDay` here as well
+
                   });
                 }),
 
@@ -110,6 +120,7 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
     var listSlot = getSlots();
     List<Widget> list = [];
     DateTime now = DateTime.now();
+    var subPitch = SubPitchViewModel.getSubPitchById(SubPitchId);
     if(_selectedDay.compareTo(now) > 0){
       list.add(CalendarContainer(_selectedDay));
       list.add(LineSlot("Người khác đã đặt"
@@ -158,7 +169,11 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                         items: timeEnds.map(buildMenuItem).toList(),
                         onChanged: (value){
                           if(value == null)
-                            return setState(() => selectedTimeEnd = "07:00");
+                            return setState(() => {
+                              selectedTimeEnd = "07:00",
+                              //buttonPay = ButtonPay(SubPitchId, _selectedDay, selectedTimeStart, selectedTimeEnd, price);
+
+                            });
                           return setState(() => selectedTimeEnd = value);
                         }),
                   )
@@ -167,8 +182,75 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
           ]
       )
         ,);
+      list.add(FutureBuilder(
+        future: subPitch,
+          builder: (BuildContext context,
+          AsyncSnapshot<SubPitchModel> snapshot) {
+            //return ButtonPay(SubPitchId,_selectedDay,selectedTimeStart, selectedTimeEnd,snapshot.data!.normalDay);
+          return GestureDetector(
+            child: Container(
+              constraints: BoxConstraints.expand(
+                  height: 50.0
+              ),
+              margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.green
+              ),
+              child: Center(
 
-      list.add(ButtonPay(pars , _selectedDay,selectedTimeStart, selectedTimeEnd));
+                  child: Text("Đặt sân",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+                      textAlign: TextAlign.center)),
+            ),
+            //     onTap: (){
+            //       Navigator.of(context).pushNamed('/billPitch',
+            //   arguments: ParameterToBillPitch(pars.pitchModel.name,pars.pitchModel.location,
+            //   pars.detailPitchModel.name,pars.detailPitchModel.typePitch,dateSelected,
+            //   timeStartSelected, timeEndSelected, "100.000 đồng"));
+            // },
+
+            onTap: (){
+
+              var validateTimeModel = MyBookingViewModel.postValidationTime(SubPitchId, selectedTimeStart, selectedTimeEnd, DateFormat('MM-dd-yyyy').format(_selectedDay));
+              validateTimeModel.then((value) {
+
+                setState(() {
+                  if(value.timeStartError == "Thời gian bắt đầu đã có người đặt"
+                      || value.timeEndError == "Thời gian kết thúc đã có người đặt"){
+                    print("Khung giờ đã có người đặt");
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Khung giờ không hợp lệ'),
+                        content: Text(value.timeStartError +"\n"
+                            + value.timeEndError),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  else{
+                    print("Khung giờ chưa có ai đặt");
+                    MyBookingViewModel.createBooking(SubPitchId, selectedTimeStart, selectedTimeEnd, snapshot.data!.normalDay.toString(),
+                        DateFormat('MM-dd-yyyy').format(_selectedDay)).then(
+                            (value) => Navigator.of(context).pushNamed(
+                                '/billPitch',
+                                arguments: value.id));
+                    ;
+                  }
+                });
+              }
+              );
+
+
+            },
+          );
+        }));
 
       return list.map((e) => e);
     }
@@ -230,7 +312,13 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
       ),
         );
 
-      list.add(ButtonPay(pars , _selectedDay,selectedTimeStart, selectedTimeEnd));
+      list.add(FutureBuilder(
+          future: subPitch,
+          builder: (BuildContext context,
+              AsyncSnapshot<SubPitchModel> snapshot) {
+            print("price ne:" + snapshot.data!.normalDay.toString());
+            return ButtonPay(SubPitchId,_selectedDay,selectedTimeStart, selectedTimeEnd,snapshot.data!.normalDay);
+          }));
 
       return list.map((e) => e);
     }

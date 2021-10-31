@@ -9,7 +9,7 @@ class HotDealPitch extends StatelessWidget{
   final String _location;
   final String _time;
   final String _distance;
-  final int _rate;
+  final double _rate;
   final String _nameDiscount;
   final String normalDayPrice;
   final String _discount;

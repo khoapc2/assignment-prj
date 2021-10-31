@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../models/user_accounts/user_account.dart';
 
@@ -8,19 +9,22 @@ class LoginService {
   Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
 
     LoginResponseModel responseModel;
-    String link = "https://104.215.186.78/";
+    String link = "https://10.0.2.2:44322/";
     String url = link + "api/v1/user-accounts/login";
 
-    client.badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
-    HttpClientRequest request =
-    await client.postUrl(Uri.parse(url));
-    request.headers.set('content-type', 'application/json; charset=UTF-8');
-    request.add(utf8.encode(loginRequestModel.LoginModelToJson()));
-    HttpClientResponse response = await request.close();
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'username' : loginRequestModel.username,
+        'password' : loginRequestModel.password,
+      }),
+    );
+
     if(response.statusCode == 200 || response.statusCode == 400){
-      String reply = await response.transform(utf8.decoder).join();
-       responseModel = LoginResponseModel.fromJson(jsonDecode(reply));
+       responseModel = LoginResponseModel.fromJson(jsonDecode(response.body));
     } else {
       print(response.statusCode);
       throw Exception(Exception);

@@ -45,13 +45,13 @@ class RouteGenerator{
           return MaterialPageRoute(
               builder: (_) =>
                   MainScreenDetailPitch(
-                      settings.arguments.toString()
+                      settings.arguments as int
                   ));
       case '/dateBooking':
         return MaterialPageRoute(
             builder: (_) =>
                 MainScreenBookingDate(
-                    settings.arguments as ParamenterToDateBookingScreen
+                    settings.arguments as int
                 ));
       case '/slotBooking':
           return MaterialPageRoute(
@@ -68,7 +68,7 @@ class RouteGenerator{
             builder: (_) => VoucherTab());
       case '/billPitch':
         return MaterialPageRoute(
-            builder: (_) => BillPitch(settings.arguments as ParameterToBillPitch));
+            builder: (_) => BillPitch(settings.arguments as int));
       case '/ratePitch':
         return MaterialPageRoute(
             builder: (_) => RatingScreen());

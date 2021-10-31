@@ -11,4 +11,17 @@ class SubPitchViewModel {
     return result;
   }
 
+  static Future<List<SubPitchModel>> getListSubPitchByPitchId(int pitchId) async {
+    SubPitchServce service = new SubPitchServce();
+    // var id = await prefs.getInt('id');
+    var result = await service.getListSubPitchByPitchId(pitchId);
+    return result;
+  }
+
+  static Future<SubPitchModel> getSubPitchById(int subPitch) async {
+    SubPitchServce service = new SubPitchServce();
+    var result = await service.getSubPitchById(subPitch);
+    return result!;
+  }
+
 }

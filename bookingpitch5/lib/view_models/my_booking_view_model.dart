@@ -1,5 +1,6 @@
 import 'package:bookingpitch5/models/bookings/booking_model.dart';
 import 'package:bookingpitch5/api/booking_service.dart';
+import 'package:bookingpitch5/models/bookings/validate_time_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBookingViewModel {
@@ -15,15 +16,46 @@ class MyBookingViewModel {
   static Future<List<BookingModel>> getListBookedByCustomerID() async {
     final prefs = await SharedPreferences.getInstance();
     BookingService service = new BookingService();
-    // var id = await prefs.getInt('id');
-    var id = 2; /////////////////////////////////////////
+    var id = await prefs.getInt('id');
     var result = await service.getListBookedByCustomerID(id);
     return result;
   }
 
 
+  static Future<List<BookingModel>> getListBookingHistoryByCustomerID() async {
+    final prefs = await SharedPreferences.getInstance();
+    BookingService service = new BookingService();
+    var id = await prefs.getInt('id');
+    var result = await service.getListBookingHistoryByCustomerID(id);
+    return result;
+  }
+
   static Future<bool> cancelBooking(int id, String reason) async {
     BookingService service = new BookingService();
     return service.cancelBooking(id, reason);
+  }
+
+  static Future<ValidateTimeModel> postValidationTime(int subPitch, String timeStart, String timeEnd, String dateBooking)
+  async {
+    BookingService service = new BookingService();
+    var response = await service.postValidateTime(subPitch, timeStart, timeEnd, dateBooking);
+    return response;
+  }
+
+  static Future<BookingModel> createBooking(int subPitch, String timeStart, String timeEnd, String price,String dateBooking)
+  async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int customerId = prefs.getInt('id');
+    BookingService service = new BookingService();
+    var response = await service.createBooking(customerId, subPitch,price, timeStart, timeEnd, dateBooking);
+    return response!;
+  }
+
+  static Future<BookingModel> getBookingById(int id)
+  async {
+
+    BookingService serives = new BookingService();
+    var booking = await serives.getBookingById(id);
+    return booking;
   }
 }

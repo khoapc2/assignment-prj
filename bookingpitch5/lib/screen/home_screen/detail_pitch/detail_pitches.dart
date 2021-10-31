@@ -1,13 +1,13 @@
 import 'package:bookingpitch5/models/detail_type_pitch.dart';
 import 'package:bookingpitch5/models/pitch.dart';
+import 'package:bookingpitch5/models/sub_pitch/sub_pitch_model.dart';
 import 'package:flutter/material.dart';
 
 import 'detail_pitch.dart';
 
 class DetailPitches extends StatelessWidget{
-  final List<DetailTypePitchModel> detailPitchModel;
-  final PitchModel pitchModel;
-  DetailPitches(this.detailPitchModel, this.pitchModel);
+  final List<SubPitchModel> listSubPitchModel;
+  DetailPitches(this.listSubPitchModel);
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,8 @@ class DetailPitches extends StatelessWidget{
   }
 
   List<DetailPitch> listPitches(){
-    return detailPitchModel.map((detailPitchModel) => DetailPitch(detailPitchModel.name, detailPitchModel.imgPath,
-        detailPitchModel.typePitch,detailPitchModel.normalDayPrice, detailPitchModel.specialDayPrice,detailPitchModel,
-        pitchModel, detailPitchModel.rates)).toList();
+    return listSubPitchModel.map((SubPitchModel) => DetailPitch(SubPitchModel.id,SubPitchModel.name, SubPitchModel.img_path,
+        SubPitchModel.typeOfPitch,SubPitchModel.normalDay, SubPitchModel.SpecialDayPrice)).toList();
   }
 
 }

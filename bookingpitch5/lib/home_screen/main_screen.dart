@@ -1,4 +1,6 @@
 import 'package:bookingpitch5/home_screen/footer_menu.dart';
+import 'package:bookingpitch5/models/mother_pitch_model.dart';
+import 'package:bookingpitch5/view_models/create_pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -22,8 +24,8 @@ class CalendarTodayHost extends StatelessWidget {
           body: ListView(
             children: [
               ImageBanner("assets/images/baneradmin.jpg", Colors.grey),
+              ButtonPay(),
               BookedPitch(),
-              ButtonPay()
               // Text("Lịch sử đặt sân")
             ],
           ),
@@ -37,21 +39,99 @@ class BookedPitch extends StatefulWidget {
   const BookedPitch({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _BookedPitchState();
+
+
 }
 
 class _BookedPitchState extends State<BookedPitch> {
+  late Future<List<GetPitchModel>> listPitch;
+  @override
+  initState() {
+    super.initState();
+    listPitch = CreatePitchViewModel.getListPitchByOwnerID();
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SingleChildScrollView(
+  //     child: Column(
+  //       children: [
+  //         BookedItem("Khu Liên Hiệp Thể Thao TNG", "", "", "assets/images/img1.jpg", "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.", "6:00-23:00",BookedBottomPart() ),
+  //         BookedItem("Sân bóng Hoàng Phú", "", "", "assets/images/img2.jpg", "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.", "6:00-23:00", BookedBottomPart())
+  //       ],
+  //     ),
+  //   );
+  // }
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          BookedItem("Khu Liên Hiệp Thể Thao TNG", "", "", "assets/images/img1.jpg", "27/311/D To 85 Thống Nhất, Phường 15, Gò Vấp, Thành phố Hồ Chí Minh.", "6:00-23:00",BookedBottomPart() ),
-          BookedItem("Sân bóng Hoàng Phú", "", "", "assets/images/img2.jpg", "449 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh.", "6:00-23:00", BookedBottomPart())
-        ],
-      ),
+      child: FutureBuilder<List<GetPitchModel>>(
+          future: listPitch,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<GetPitchModel>> snapshot) {
+            List<Widget> children = [];
+            GetPitchModel data;
+            if (snapshot.hasData) {
+              for (int i = 0; i < snapshot.data!.length; i++) {
+                data = snapshot.data!.elementAt(i);
+                children.add(Pitches(
+                    data.name,
+                    data.location,
+                    // data.img_path
+                    "assets/images/img2.jpg",
+                    data.phone,
+                    CreatePitchViewModel.tranferTimeFormat(data.time_start),
+                    CreatePitchViewModel.tranferTimeFormat(data.time_end),
+                    BookedBottomPart()));
+              }
+            } else if (snapshot.hasError) {
+              children = <Widget>[
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ];
+            } else {
+              children = const <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Chờ chút xíu nhé tình yêu <3...'),
+                )
+              ];
+            }
+            return Column(children: children);
+          }),
     );
   }
 }
+
+class Pitches extends StatefulWidget {
+  var name, location, img_path, phone, time_start, time_end, botton;
+
+  Pitches(this.name, this.location, this.img_path, this.phone,
+      this.time_start, this.time_end, this.botton,
+      {Key? key})
+      : super(key: key);
+
+  @override
+  State<Pitches> createState() => _BookedItemState();
+}
+
 class BookedBottomPart extends StatelessWidget {
   const BookedBottomPart({Key? key}) : super(key: key);
 
@@ -89,16 +169,15 @@ class BookedBottomPart extends StatelessWidget {
   }
 }
 
-class BookedItem extends StatefulWidget {
-  var type, time, date, img, name, address, botton;
+// class BookedItem extends StatefulWidget {
+//   var type, time, date, img, name, address, botton;
+//   BookedItem(this.type, this.time, this.date, this.img, this.name, this.address,this.botton,  {Key? key}) : super(key: key);
+//
+//   @override
+//   State<BookedItem> createState() => _BookedItemState();
+// }
 
-  BookedItem(this.type, this.time, this.date, this.img, this.name, this.address,this.botton,  {Key? key}) : super(key: key);
-
-  @override
-  State<BookedItem> createState() => _BookedItemState();
-}
-
-class _BookedItemState extends State<BookedItem> {
+class _BookedItemState extends State<Pitches> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,15 +191,15 @@ class _BookedItemState extends State<BookedItem> {
              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                Text(widget.type, style: const TextStyle(fontWeight: FontWeight.bold)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(widget.time, style: const TextStyle(color: Colors.grey)),
-                    const SizedBox(width: 20),
-                    Text(widget.date, style: const TextStyle(color: Colors.grey))
-                  ]
-              )
+                Text(widget.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              //   Row(
+              //     mainAxisAlignment: MainAxisAlignment.end,
+              //     children: [
+              //       Text(widget.time_start + "-" + widget.time_end, style: const TextStyle(color: Colors.grey)),
+              //       const SizedBox(width: 20),
+              //       Text(widget.time_start, style: const TextStyle(color: Colors.grey))
+              //     ]
+              // )
             ]
         ),
 
@@ -132,7 +211,7 @@ class _BookedItemState extends State<BookedItem> {
             Row(
               children: [
                 Image(
-                  image: AssetImage(widget.img),
+                  image: AssetImage(widget.img_path),
                   width: 100,
                   height: 100,
                 ),
@@ -143,7 +222,7 @@ class _BookedItemState extends State<BookedItem> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(widget.name, maxLines: 3,),
+                      Text(widget.location, maxLines: 3,),
 
                       const SizedBox(height: 10),
                       Row(
@@ -152,7 +231,7 @@ class _BookedItemState extends State<BookedItem> {
                                 fontWeight: FontWeight.bold
                             ),
                             ),
-                            Text(widget.address, maxLines: 3),
+                            Text(widget.time_start + " - " + widget.time_end, maxLines: 3),
                           ]
                       ),
 
@@ -160,11 +239,12 @@ class _BookedItemState extends State<BookedItem> {
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          Text("Số điện thoại: ", style: TextStyle(
+                          Text("Số điện thoại: ", 
+                              style: TextStyle(
                               fontWeight: FontWeight.bold
+                            ),
                           ),
-                          ),
-                          Text("01234567"),
+                          Text(widget.phone),
                         ]
                       )
 

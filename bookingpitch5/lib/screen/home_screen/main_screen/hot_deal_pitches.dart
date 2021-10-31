@@ -17,7 +17,7 @@ class HotDealPitches extends StatelessWidget{
 
   List<HotDealPitch> listPitches(){
     return pitchesModel.listPitches.map((pitchModel) => HotDealPitch(pitchModel.id,pitchModel.imgPath,
-        pitchModel.name, pitchModel.location, pitchModel.time, pitchModel.distance, pitchModel.rates, pitchModel.listDetailTypePitch[0].nameDiscount,
+        pitchModel.name, pitchModel.location, pitchModel.time, pitchModel.distance, 0.0, pitchModel.listDetailTypePitch[0].nameDiscount,
         pitchModel.listDetailTypePitch[0].remainPrice, pitchModel.listDetailTypePitch[0].normalDayPrice)).toList();
   }
 }

@@ -139,7 +139,7 @@ class _BookedItemState extends State<BookedItem> {
             Row(
               children: [
                 Image(
-                  image: AssetImage(widget.img),
+                  image: AssetImage("assets/images/img1.jpg"),
                   width: 100,
                   height: 100,
                 ),

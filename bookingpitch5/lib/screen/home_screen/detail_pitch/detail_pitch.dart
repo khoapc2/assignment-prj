@@ -4,17 +4,18 @@ import 'package:bookingpitch5/screen/home_screen/main_screen/rate_pitch.dart';
 import 'package:flutter/material.dart';
 
 class DetailPitch extends StatelessWidget {
+  final int id;
   final String name;
   final String imgPath;
   final String typePitch;
-  final String normalDayPrice;
-  final String specialDayPrice;
-  final DetailTypePitchModel detailTypePitchModel;
-  final int _rates;
-  final PitchModel pitchModel;
+  final int normalDayPrice;
+  final int specialDayPrice;
+  // final DetailTypePitchModel detailTypePitchModel;
+  // final int _rates;
+  // final PitchModel pitchModel;
 
-  DetailPitch(this.name, this.imgPath, this.typePitch, this.normalDayPrice,
-      this.specialDayPrice, this.detailTypePitchModel, this.pitchModel, this._rates);
+  DetailPitch(this.id, this.name, this.imgPath, this.typePitch, this.normalDayPrice,
+       this.specialDayPrice);//, this.detailTypePitchModel, this.pitchModel, this._rates);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class DetailPitch extends StatelessWidget {
         children: [
           Container(
             constraints: BoxConstraints.expand(height: 150, width: 300),
-            child: Image.asset(imgPath, fit: BoxFit.fill),
+            child: Image.asset("assets/images/img1.jpg", fit: BoxFit.fill),
           ),
           Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
           Container(
@@ -39,7 +40,7 @@ class DetailPitch extends StatelessWidget {
               children: [
                 Text("Ngày thường: ",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(normalDayPrice)
+                Text(normalDayPrice.toString())
               ],
             ),
           ),
@@ -48,15 +49,15 @@ class DetailPitch extends StatelessWidget {
               children: [
                 Text("Ngày cuối tuần: ",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(specialDayPrice)
+                Text(specialDayPrice.toString())
               ],
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed('/dateBooking',
-                  arguments: ParamenterToDateBookingScreen(
-                      pitchModel, detailTypePitchModel));
+              Navigator.of(context).pushNamed('/dateBooking',arguments: id);
+                  // arguments: ParamenterToDateBookingScreen(
+                  //     pitchModel, detailTypePitchModel));
             },
             child: Container(
               constraints: BoxConstraints.expand(height: 50.0),

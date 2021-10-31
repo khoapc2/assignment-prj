@@ -7,7 +7,7 @@ class PitchModel {
   late String phone;
   late String time_start;
   late String time_end;
-  late int rates;
+  late double rates;
   late int status;
 
 

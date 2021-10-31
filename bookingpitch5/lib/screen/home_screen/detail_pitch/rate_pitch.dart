@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RatePitch extends StatelessWidget{
   final double _marginVertical;
   final double _marginHorizontal;
-  final int rates ;
+  final double rates ;
 
   RatePitch(this._marginVertical , this._marginHorizontal, this.rates);
 
@@ -22,8 +22,12 @@ class RatePitch extends StatelessWidget{
         children: [
           Container(
             child: Row(
-            children:
-            getAllStar()
+            children:[
+              Icon(Icons.star,
+                color: Colors.yellow),
+              Text(rates.toString())
+            ]
+            //getAllStar()
           ),
         ),
           Icon(Icons.favorite_border)]
@@ -33,30 +37,30 @@ class RatePitch extends StatelessWidget{
     );
   }
 
-  List<Icon> getStars(){
-    return  List<Icon>.generate(rates, (i) => Icon(Icons.star,
-      color: Colors.yellow));
-  }
+  // List<Icon> getStars(){
+  //   return  List<Icon>.generate(rates, (i) => Icon(Icons.star,
+  //     color: Colors.yellow));
+  // }
+  //
+  // List<Icon> getNonStar(){
+  //   return  List<Icon>.generate(5-rates, (i) => Icon(Icons.star_border,
+  //       color: Colors.yellow));
+  // }
 
-  List<Icon> getNonStar(){
-    return  List<Icon>.generate(5-rates, (i) => Icon(Icons.star_border,
-        color: Colors.yellow));
-  }
-
-  List<Widget> getAllStar(){
-    List<Icon> stars = getStars();
-    List<Icon> nonStars = getNonStar();
-    List<Widget> allStars = new List.from(stars)..addAll(nonStars);
-    allStars.add(
-      Row(
-        children: [
-          Text(rates.toString() + "." +"999+"),
-          FeedbackButton()
-        ],
-      )
-      );
-    return allStars;
-  }
+  // List<Widget> getAllStar(){
+  //   List<Icon> stars = getStars();
+  //   List<Icon> nonStars = getNonStar();
+  //   List<Widget> allStars = new List.from(stars)..addAll(nonStars);
+  //   allStars.add(
+  //     Row(
+  //       children: [
+  //         Text(rates.toString() + "." +"999+"),
+  //         FeedbackButton()
+  //       ],
+  //     )
+  //     );
+  //   return allStars;
+  // }
 }
 
 class FeedbackButton extends StatelessWidget {

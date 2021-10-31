@@ -12,4 +12,17 @@ class PitchViewModel {
     return result;
   }
 
+  static Future<List<PitchModel>> getListHightRatePitch() async {
+    PitchServce service = new PitchServce();
+    // var id = await prefs.getInt('id');
+    var result = await service.getListHightRatePitches();
+    return result;
+  }
+
+  static Future<PitchModel> getPitchById(int id) async {
+    PitchServce service = new PitchServce();
+    var result = await service.getPitchById(id);
+    return result;
+  }
+
 }

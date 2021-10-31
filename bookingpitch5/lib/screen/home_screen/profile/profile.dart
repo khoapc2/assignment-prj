@@ -14,7 +14,7 @@ TextEditingController addressEdt = new TextEditingController();
 TextEditingController phoneEdt = new TextEditingController();
 var menu ;
 
-Future<String> role = LoginViewModel.getRole();
+String roleString = '';
 int user_id = 0;
 
 class ProfilePage extends StatefulWidget {
@@ -35,18 +35,24 @@ class MapScreenState extends State<ProfilePage>
       nameEdt.text = value.name,
       emailEdt.text = value.email,
       addressEdt.text = value.address,
-      phoneEdt.text = value.phone
+      phoneEdt.text = value.phone,
+      
     });
+
+  var cc = LoginViewModel.getRole().then((value) => {
+    roleString = value,    
+    if(roleString == 'customer'){
+      menu = FooterMenu(3) 
+    }else{
+      menu = FooterMenuHost(3)
+    },
+    print(menu)
+  });
   
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    if(role.toString() == 'customer'){
-      menu = FooterMenu(3);
-    }else{
-      menu = FooterMenuHost(3);
-    }
+    super.initState();   
   }
 
   @override
@@ -395,7 +401,11 @@ class MapScreenState extends State<ProfilePage>
                           ),
                         ],
                       ),
-                      )
+                      ),
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      })
                     }
                     else {
                       showDialog<String>(
@@ -413,10 +423,7 @@ class MapScreenState extends State<ProfilePage>
                     )
                     }
                   },
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  })
+                  
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),

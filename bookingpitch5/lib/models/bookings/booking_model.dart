@@ -1,20 +1,20 @@
 class BookingModel {
-  int id;
-  int customerID;
-  String customerName;
-  int subPitchID;
-  String subPitchName;
-  String subPitchImageUrl;
-  String subPitchType;
-  String pitchName;
-  String address;
-  String dateBooking;
-  String timeStart;
-  String timeEnd;
-  String price;
-  String status;
-  String cancelReason;
-  String createDate;
+  late int id;
+  late int customerID;
+  late String customerName;
+  late int subPitchID;
+  late String subPitchName;
+  late String subPitchImageUrl;
+  late String subPitchType;
+  late String pitchName;
+  late String address;
+  late String dateBooking;
+  late String timeStart;
+  late String timeEnd;
+  late String price;
+  late String status;
+  late String cancelReason;
+  late String createDate;
 
   BookingModel({
     required this.id,
@@ -35,6 +35,7 @@ class BookingModel {
     required this.createDate,
   });
 
+
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     return new BookingModel(
       id : json['id'], 
@@ -54,4 +55,15 @@ class BookingModel {
       cancelReason : json['cancel_reason'], 
       createDate : json['create_date']);
   }
+  Map<String, dynamic> toJson(Map<String, dynamic> json){
+    final _data = <String, dynamic>{};
+    _data['customer_id'] = customerID;
+    _data['sub_pitch_id'] = subPitchID;
+    _data['date_booking'] = dateBooking;
+    _data['time_start'] = timeStart;
+    _data['time_end'] = timeEnd;
+
+    return _data;
+  }
+
 }
