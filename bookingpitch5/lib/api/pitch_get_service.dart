@@ -9,8 +9,7 @@ class PitchServce {
   HttpClient client = HttpClient();
 
   Future<List<PitchModel>> getListPitchByName(String searchValue) async {
-    String url = "https://104.215.186.78/api/Pitches?Name=" + searchValue +
-        "&pageIndex=1&pageSize=10";
+    String url = "https://104.215.186.78/api/Pitches?Name=" + searchValue;
     List<PitchModel> result = List.empty();
     client.badCertificateCallback =
     ((X509Certificate cert, String host, int port) => true);
