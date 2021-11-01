@@ -141,5 +141,19 @@ namespace PitchBooking.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("owner/{id}")]
+        public async Task<IActionResult> GetAllBookingByOwnerID(int id)
+        {
+            try
+            {
+                var response = await _service.GetAllBookingByOwnerID(id);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
