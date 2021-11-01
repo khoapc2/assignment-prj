@@ -24,10 +24,8 @@ class SonPitchService{
       }),
     );
     if (response.statusCode == 200) {
-      print(response.statusCode);
       return true;
     } else {
-      print(response.statusCode);
       throw Exception(Exception);
     }
   }
@@ -84,10 +82,8 @@ class SonPitchService{
       },
     );
     if(response.statusCode == 200){
-      print(response.statusCode);
       return true;
     } else {
-      print(response.statusCode);
       return false;
     }
   }
@@ -107,12 +103,10 @@ class SonPitchService{
       },
     );
     if (response.statusCode == 200) {
-      print(response.statusCode);
       List data = jsonDecode(response.body);
       listPitch = data.map((e) => GetSonPitchModel.fromJson(e)).toList();
       return listPitch;
     } else {
-      print(response.statusCode);
       return listPitch;
     }
   }

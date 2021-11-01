@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 TextEditingController _username = TextEditingController();
 TextEditingController _password = TextEditingController();
-int id = 1;
 
 class LogInForm extends StatefulWidget {
   @override

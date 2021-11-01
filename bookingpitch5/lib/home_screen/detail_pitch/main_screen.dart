@@ -38,12 +38,14 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.pitchID);
     getPitchByID();
-    getListPitch5();
-    getListPitch7();
-    getListPitch11();
-    getListPitchFutsal();
+    setState(() {
+      getListPitch5();
+      getListPitch7();
+      getListPitch11();
+      getListPitchFutsal();
+    });
+
 
     //Test
     // var pitchModel= PitchesModel.getPitchById("1");
@@ -108,54 +110,42 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
 
   getPitchByID() async {
     await PitchViewModel.getPitchByPitchID(widget.pitchID).then((value) {
-      setState(() {
         pitchModel = value;
         txtTitle = value.name;
         rates = value.rates;
-      });
        }
     );
   }
 
   getListPitch5() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type5).then((value) {
-      setState(() {
         listPitchModel5 = value;
-      });
     });
   }
 
   getListPitch7() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type7).then((value) {
-      setState(() {
         listPitchModel7 = value;
-      });
     });
   }
 
   getListPitch11() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type11).then((value) {
-      setState(() {
         listPitchModel11 = value;
-      });
     });
   }
 
   getListPitchFutsal() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, typeFutsal).then((
         value) {
-      setState(() {
         listPitchModelFutsal = value;
-      });
     });
   }
 
   getAllSubPitch() async {
     await SonPitchViewModel.getSonPitchModel(widget.pitchID).then((
         value) {
-      setState(() {
         listSubPitch = value;
-      });
     });
   }
 }
