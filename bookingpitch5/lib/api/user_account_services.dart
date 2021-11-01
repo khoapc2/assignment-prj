@@ -4,7 +4,7 @@ import '../models/user_accounts/sign_up_model.dart';
 
 
 class UserAccountServices {
-  // var url = 'https://10.0.2.2:44322/api/v1/user-accounts'; // local
+  // var url = 'https://104.215.186.78/api/v1/user-accounts'; // local
   var url = 'https://104.215.186.78/api/v1/user-accounts';  // server
   HttpClient client = HttpClient();
 

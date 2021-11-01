@@ -5,7 +5,7 @@ import 'package:bookingpitch5/models/mother_pitch_model.dart';
 
 class PitchService {
     //localhost
-    // String link = "https://10.0.2.2:44322/";
+    // String link = "https://104.215.186.78/";
     //server
     String link = "https://104.215.186.78/";
     //Waiting To Fix

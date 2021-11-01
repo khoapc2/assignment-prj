@@ -9,7 +9,7 @@ class PitchServce {
   HttpClient client = HttpClient();
 
   Future<List<PitchModel>> getListPitchByName(String searchValue) async {
-    String url = "https://10.0.2.2:44322/api/Pitches?Name=" + searchValue +
+    String url = "https://104.215.186.78/api/Pitches?Name=" + searchValue +
         "&pageIndex=1&pageSize=10";
     List<PitchModel> result = List.empty();
     client.badCertificateCallback =
@@ -32,7 +32,7 @@ class PitchServce {
   }
 
   Future<List<PitchModel>> getListHightRatePitches() async {
-    String url = "https://10.0.2.2:44322/api/Pitches/get_highest_rates";
+    String url = "https://104.215.186.78/api/Pitches/get_highest_rates";
     List<PitchModel> result = List.empty();
     client.badCertificateCallback =
     ((X509Certificate cert, String host, int port) => true);
@@ -54,7 +54,7 @@ class PitchServce {
   }
 
   Future<PitchModel> getPitchById(int id) async {
-    String url = "https://10.0.2.2:44322/api/Pitches/" + id.toString();
+    String url = "https://104.215.186.78/api/Pitches/" + id.toString();
     print("Tên id sân mẹ trong service: "+ id.toString());
     PitchModel profileModelResponse;
 
@@ -73,7 +73,7 @@ class PitchServce {
   }
 
   Future<List<PitchModel>> getRecommandPitches() async {
-    String url = "https://10.0.2.2:44322/api/Pitches/get_recomand_pitch";
+    String url = "https://104.215.186.78/api/Pitches/get_recomand_pitch";
     List<PitchModel> result = List.empty();
     client.badCertificateCallback =
     ((X509Certificate cert, String host, int port) => true);
