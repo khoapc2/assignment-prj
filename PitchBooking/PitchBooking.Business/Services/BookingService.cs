@@ -44,6 +44,15 @@ namespace PitchBooking.Business.Services
             return await GetBookingByID(booking.Id);
         }
 
+        public async Task<IEnumerable<BookingModel>> GetAllBookingByOwnerID(int id)
+        {
+            var bookings = await _genericRepository.GetAllByIQueryable()
+                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
+                 .Where(b => b.SubPitch.Pitch.PitchOwnerId == id && b.Status == 1)
+                 .OrderBy(b => b.TimeStart).OrderBy(b => b.DateBooking).ToListAsync();
+            return _mapper.Map<IEnumerable<BookingModel>>(bookings);
+        }
+
         public async Task<BookingModel> GetBookingByID(int id)
         {
             var booking = await _genericRepository.GetAllByIQueryable()

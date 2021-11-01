@@ -18,5 +18,6 @@ namespace PitchBooking.Business.IServices
         public Task<IEnumerable<BookingModel>> GetListBookingBySubPitchID(int id);
         public Task<bool> PaidBooking(int id);
         public ValidateTimeBookingResponse ValidateTimeBooking(ValidateTimeBookingRequest request);
+        public Task<IEnumerable<BookingModel>> GetAllBookingByOwnerID(int id);
     }
 }
