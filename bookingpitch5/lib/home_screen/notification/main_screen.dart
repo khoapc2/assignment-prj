@@ -40,52 +40,18 @@ class _BookedPitchState extends State<BookedPitch> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BookedItem("Lionel Messi", "", "", "assets/images/as.png", "Khu liên hiệp thể thao TNG", "6:00-7:00","07-01-2021","A","5", BookedBottomPart()),
-          BookedItem("Lord Bendtner", "", "", "assets/images/lordbendtner.png", "Sân bóng đá Hiệp Phú", "15:00-17:00","07-10-2021","C","7", BookedBottomPart())
+          BookedItem("Lionel Messi", "", "", "assets/images/as.png", "Khu liên hiệp thể thao TNG", "6:00-7:00","07-01-2021","A","5"),
+          BookedItem("Lord Bendtner", "", "", "assets/images/lordbendtner.png", "Sân bóng đá Hiệp Phú", "15:00-17:00","07-10-2021","C","7")
         ],
       ),
     );
   }
 }
-class BookedBottomPart extends StatelessWidget {
-  const BookedBottomPart({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text("", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-        Container(
-          child: Row(
-            children: [
-              FlatButton(
-                onPressed: () {},
-                child: const Text("Cấp nhận", style: TextStyle(fontWeight: FontWeight.bold)),
-                color: Colors.green,
-                textColor: Colors.white,
-              )
-              ,
-              FlatButton(
-                onPressed: () {},
-                child: const Text("Từ chối", style: TextStyle(fontWeight: FontWeight.bold)),
-                color: Colors.red,
-                textColor: Colors.white,
-              ),
-            ],
-          ),
-        )
-
-
-      ],
-    );
-  }
-}
 
 class BookedItem extends StatefulWidget {
-  var type, time, date, img, name, address, datebooking, namedetailPitch, typePitch,botton;
+  var type, time, date, img, name, address, datebooking, namedetailPitch, typePitch;
 
-  BookedItem(this.type, this.time, this.date, this.img, this.name, this.address, this.datebooking,this.namedetailPitch, this.typePitch, this.botton,  {Key? key}) : super(key: key);
+  BookedItem(this.type, this.time, this.date, this.img, this.name, this.address, this.datebooking,this.namedetailPitch, this.typePitch,  {Key? key}) : super(key: key);
 
   @override
   State<BookedItem> createState() => _BookedItemState();
@@ -203,7 +169,6 @@ class _BookedItemState extends State<BookedItem> {
               ],
             ))),
             const Divider(color: Colors.black),
-            widget.botton
           ],
         ),
       );

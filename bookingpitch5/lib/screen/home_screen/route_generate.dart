@@ -1,7 +1,7 @@
 
 import 'package:bookingpitch5/home_screen/addDetailPitch/son_pitch.dart';
 import 'package:bookingpitch5/home_screen/add_mother_pitch/mother_pitch.dart';
-import 'package:bookingpitch5/home_screen/calendar/main_screen.dart';
+import 'package:bookingpitch5/home_screen/calendar/booking_host.dart';
 import 'package:bookingpitch5/home_screen/detail_pitch/main_screen.dart';
 import 'package:bookingpitch5/home_screen/feedback/feedback.dart';
 import 'package:bookingpitch5/home_screen/main_screen.dart';
@@ -11,9 +11,7 @@ import 'package:bookingpitch5/home_screen/update_son_pitch/update_son_pitch.dart
 import 'package:bookingpitch5/models/tranfer_params/pitchId_and_BookingId.dart';
 import 'package:bookingpitch5/models/tranfer_params/pitchId_and_rate.dart';
 import 'package:bookingpitch5/screen/home_screen/bill-pitch/main_screen.dart';
-import 'package:bookingpitch5/screen/home_screen/booking_date/button_pay.dart';
 import 'package:bookingpitch5/screen/home_screen/booking_date/main_screen.dart';
-import 'package:bookingpitch5/screen/home_screen/detail_pitch/detail_pitch.dart';
 import 'package:bookingpitch5/screen/home_screen/location/Location.dart';
 import 'package:bookingpitch5/screen/home_screen/login/screens/login.dart';
 import 'package:bookingpitch5/screen/home_screen/notification/notification.dart';
@@ -123,8 +121,8 @@ class RouteGenerator{
       case '/notificationPitch':
         return MaterialPageRoute(builder: (_) => NotificationPitch());
 
-      case '/calendar':
-        return MaterialPageRoute(builder: (_) => CalendarOfCustomer());
+      case '/booking_host':
+        return MaterialPageRoute(builder: (_) => BookingHost());
 
       case '/updateMotherPitch':
         return MaterialPageRoute(builder: (_) => UpdateMotherPage(settings.arguments as int));
