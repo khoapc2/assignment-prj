@@ -60,7 +60,7 @@ namespace PitchBooking.Business.Services
                 .OrderBy(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
 
             var d = DateTime.Now;
-            var expiredList = bookedList.FindAll(e => e.DateBooking <= d && e.TimeEnd <= d.TimeOfDay);
+            var expiredList = bookedList.FindAll(e => e.DateBooking <= d && e.TimeEnd?.Hours <= d.TimeOfDay.Hours && e.TimeEnd?.Minutes <= d.TimeOfDay.Minutes);
             expiredList.ForEach(a => { a.Status = 0; a.CancelReason = "Không đến sân"; });
             await _genericRepository.SaveAsync();
 
