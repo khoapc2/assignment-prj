@@ -44,6 +44,11 @@ class MapScreenState extends State<UpdateMotherPage>
     return new Scaffold(
         appBar: AppBar(
           title: Text("Thông tin sân " + txtTitle),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/mainScreenHost');
+              },
+              child: Icon(Icons.arrow_back)),
           backgroundColor: Colors.green,
         ),
         body: new Container(

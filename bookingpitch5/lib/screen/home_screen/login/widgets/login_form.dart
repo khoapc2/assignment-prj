@@ -3,22 +3,20 @@ import 'package:bookingpitch5/view_models/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookingpitch5/screen/home_screen/login/theme.dart';
 import 'package:bookingpitch5/screen/home_screen/main_screen/Homescreen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 TextEditingController _username = TextEditingController();
 TextEditingController _password = TextEditingController();
 int id = 1;
+
 class LogInForm extends StatefulWidget {
   @override
   _LogInFormState createState() => _LogInFormState();
-
 }
 
 class _LogInFormState extends State<LogInForm> {
   bool _isObscure = true;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +29,8 @@ class _LogInFormState extends State<LogInForm> {
     );
   }
 
-
-  Padding buildInputForm(String label, bool pass, TextEditingController _controller) {
+  Padding buildInputForm(
+      String label, bool pass, TextEditingController _controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: TextFormField(
@@ -68,13 +66,14 @@ class _LogInFormState extends State<LogInForm> {
     );
   }
 }
+
 class PrimaryButton extends StatelessWidget {
   Future<void> _setToReference(String token, int id, String role) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
     print(prefs.getString('token'));
     await prefs.setInt('id', id);
-    await prefs.setString('role',role);
+    await prefs.setString('role', role);
   }
 
   @override
@@ -83,27 +82,73 @@ class PrimaryButton extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.08,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: ()  {
-          LoginRequestModel requestModel = new LoginRequestModel(_username.text, _password.text);
+        onPressed: () {
+          LoginRequestModel requestModel =
+              new LoginRequestModel(_username.text, _password.text);
           LoginViewModel viewmodel = new LoginViewModel();
-          viewmodel.getLoginResponse(requestModel).then((value) async => {
-            print(value),
-              if(value.token.isNotEmpty){
-
-                // await UserAccountPreference.set
-                if(value.role == "owner"){
-                  _setToReference(value.token, value.id, value.role),
-                  Navigator.of(context).pushNamed('/mainScreenHost'),
-               }else if(value.role == "customer"){
-                  _setToReference(value.token, value.id, value.role),
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Homescreen()),
-                  )
-                }
-              }
-            });
-          },
+          try {
+            viewmodel.getLoginResponse(requestModel).then((value) async => {
+                  if (value.token != null)
+                    {
+                      if (value.token.isNotEmpty)
+                        {
+                          if (value.role == "owner")
+                            {
+                              _setToReference(
+                                  value.token, value.id, value.role),
+                              Fluttertoast.showToast(
+                                  msg: "Login Success",
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white),
+                              Navigator.of(context)
+                                  .pushNamed('/mainScreenHost'),
+                            }
+                          else if (value.role == "customer")
+                            {
+                              _setToReference(
+                                  value.token, value.id, value.role),
+                              Fluttertoast.showToast(
+                                  msg: "Login Success",
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Homescreen()),
+                              )
+                            }
+                        }
+                      else
+                        {
+                          Fluttertoast.showToast(
+                              msg: "Login Fail",
+                              fontSize: 18,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white)
+                        }
+                    } else {
+                    Fluttertoast.showToast(
+                        msg: "Login Fail",
+                        fontSize: 18,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white)
+                  }
+                });
+          } catch (Exception) {
+            Fluttertoast.showToast(
+                msg: "Login Fail",
+                fontSize: 18,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white);
+          }
+        },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
         ),

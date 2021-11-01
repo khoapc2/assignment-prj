@@ -6,7 +6,7 @@ import 'package:bookingpitch5/models/feedbacks/feedback_model.dart';
 
 class FeedbackService{
   Future<bool> createFeedback(FeedbackRequest feedbackRequest) async {
-    String url = "https://10.0.2.2:44322/api/Feedbacks";
+    String url = "https://104.215.186.78/api/Feedbacks";
     
     
     final response = await http.post(Uri.parse(url),
@@ -23,7 +23,7 @@ class FeedbackService{
   }
 
   Future<List<FeedbackResponse>> getFeedbackByPitchID(int id) async {
-    String url = "https://10.0.2.2:44322/api/Feedbacks?PitchId=" + id.toString();
+    String url = "https://104.215.186.78/api/Feedbacks?PitchId=" + id.toString();
     
     
     final response = await http.get(Uri.parse(url),

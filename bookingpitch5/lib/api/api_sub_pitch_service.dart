@@ -32,7 +32,7 @@ class SubPitchServce{
   }
 
   Future<List<SubPitchModel>> getListSubPitchByPitchId(int pitchId) async {
-    String url = "https://10.0.2.2:44322/api/v1/subPitches?PitchId=" + pitchId.toString();
+    String url = "https://104.215.186.78/api/v1/subPitches?PitchId=" + pitchId.toString();
     List<SubPitchModel> result = List.empty();
     client.badCertificateCallback =
     ((X509Certificate cert, String host, int port) => true);
@@ -52,7 +52,7 @@ class SubPitchServce{
   }
 
   Future<SubPitchModel?> getSubPitchById(int SubPitchId) async {
-    String url = "https://10.0.2.2:44322/api/v1/subPitches/" + SubPitchId.toString();
+    String url = "https://104.215.186.78/api/v1/subPitches/" + SubPitchId.toString();
     print("subpitchID trong service SubPitch: " + SubPitchId.toString());
     client.badCertificateCallback =
     ((X509Certificate cert, String host, int port) => true);

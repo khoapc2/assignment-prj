@@ -32,6 +32,11 @@ class MapScreenState extends State<MotherPage>
     return new Scaffold(
       appBar: AppBar(
         title: Text("Thông tin sân mới"),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed('/mainScreenHost');
+            },
+            child: Icon(Icons.arrow_back)),
         backgroundColor: Colors.green,
       ),
       body: new Container(
