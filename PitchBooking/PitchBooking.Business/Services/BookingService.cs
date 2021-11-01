@@ -116,11 +116,11 @@ namespace PitchBooking.Business.Services
 
             foreach (var booking in bookingList)
             {
-                if (request.TimeStart >= booking.TimeStart && request.TimeStart <= booking.TimeEnd)
+                if (request.TimeStart >= booking.TimeStart && request.TimeStart < booking.TimeEnd)
                 {
                     response.TimeStartError = "Thời gian bắt đầu đã có người đặt";
                 }
-                if(request.TimeEnd >= booking.TimeStart && request.TimeEnd <= booking.TimeEnd)
+                if(request.TimeEnd > booking.TimeStart && request.TimeEnd <= booking.TimeEnd)
                 {
                     response.TimeEndError = "Thời gian kết thúc đã có người đặt";
                 }
