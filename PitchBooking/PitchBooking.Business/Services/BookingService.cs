@@ -66,7 +66,7 @@ namespace PitchBooking.Business.Services
             var bookedList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status == (int)BookingStatus.Booked)
-                .OrderBy(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
+                .OrderBy(b => b.TimeStart).OrderBy(b => b.DateBooking).ToListAsync();
 
             var d = DateTime.Now;
             var expiredList = bookedList.FindAll(e => e.DateBooking <= d && e.TimeEnd?.Hours <= d.TimeOfDay.Hours && e.TimeEnd?.Minutes <= d.TimeOfDay.Minutes);
@@ -91,7 +91,7 @@ namespace PitchBooking.Business.Services
             var bookingList = await _genericRepository.GetAllByIQueryable()
                 .Include(b => b.SubPitch.Pitch).Include(b => b.SubPitch).Include(b => b.Customer)
                 .Where(b => b.CustomerId == id && b.Status != (int)BookingStatus.Booked)
-                .OrderByDescending(b => b.DateBooking).OrderBy(b => b.TimeStart).ToListAsync();
+                .OrderBy(b => b.TimeStart).OrderByDescending(b => b.DateBooking).ToListAsync();
             return _mapper.Map<IEnumerable<BookingModel>>(bookingList);
         }
 
