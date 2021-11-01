@@ -26,7 +26,6 @@ class DetailPitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDelete = false;
     // TODO: implement build
     return Container(
       decoration: BoxDecoration(
@@ -88,28 +87,7 @@ class DetailPitch extends StatelessWidget {
                     )),
                 FlatButton(
                     onPressed: () async {
-                      // Navigator.of(context).pushNamed('/updateSonPitch',
-                      //     arguments: subPitchID
-                          // ParamenterToDateBookingScreen(
-                          //     pitchModel, detailTypePitchModel
-                          // )
-                      // );
-                      isDelete = await SonPitchViewModel.deleteSubPitch(subPitchID);
-                      if(isDelete) {
-                        Fluttertoast.showToast(
-                            msg: "Delete Pitch Successful",
-                            fontSize: 18,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.green,
-                            textColor: Colors.white);
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Delete Pitch Successful",
-                            fontSize: 18,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.green,
-                            textColor: Colors.white);
-                      }
+                      showAlertDialogDelete(context);
                     },
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -132,6 +110,68 @@ class DetailPitch extends StatelessWidget {
       ),
     );
   }
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the button
+    bool isDelete = false;
+    Widget okButton = FlatButton(
+        hoverColor: Colors.red,
+        child: Text("OK"),
+        onPressed: () async {
+          isDelete = await SonPitchViewModel.deleteSubPitch(subPitchID);
+          if(isDelete) {
+            Fluttertoast.showToast(
+                msg: "Delete SubPitch Successful",
+                fontSize: 18,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white);
+          } else {
+            Fluttertoast.showToast(
+                msg: "Delete SubPitch Fail",
+                fontSize: 18,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white);
+          }
+          Navigator.pop(context);
+        }
+    );
+
+    Widget cancelBtn = FlatButton(
+      focusColor: Colors.blue,
+      child: Text("Cancel"),
+      onPressed: () => Navigator.pop(context, "Cancel"),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert"),
+      content: Text("Do you want to Delete this SubPitch"),
+      actions: [okButton,cancelBtn],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 class ParamenterToDateBookingScreen {

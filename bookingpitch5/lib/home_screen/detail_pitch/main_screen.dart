@@ -29,17 +29,14 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
   var pitchModel;
   var rates;
   String type5 = "Sân 5";
-
   String type7 = "Sân 7";
-
   String type11 = "Sân 11";
-
   String typeFutsal = "Sân futsal";
 
   @override
   Widget build(BuildContext context) {
-    getPitchByID();
     setState(() {
+      getPitchByID();
       getListPitch5();
       getListPitch7();
       getListPitch11();
@@ -53,6 +50,11 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
        return Scaffold(
        appBar: AppBar(
          title: Text(txtTitle),
+         leading: GestureDetector(
+             onTap: () {
+               Navigator.pop(context);
+             },
+             child: Icon(Icons.arrow_back)),
          backgroundColor: Colors.green,
        ),
          body: ListView(
@@ -119,7 +121,9 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
 
   getListPitch5() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type5).then((value) {
+      setState(() {
         listPitchModel5 = value;
+      });
     });
   }
 
