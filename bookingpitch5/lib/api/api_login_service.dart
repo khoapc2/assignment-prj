@@ -27,6 +27,7 @@ class LoginService {
 
     if(response.statusCode == 200 || response.statusCode == 400){
        responseModel = LoginResponseModel.fromJson(jsonDecode(response.body));
+       print(response.statusCode);
     } else {
       print(response.statusCode);
       throw Exception(Exception);

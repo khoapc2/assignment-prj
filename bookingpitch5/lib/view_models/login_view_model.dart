@@ -5,8 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginViewModel {
   Future<LoginResponseModel> getLoginResponse(LoginRequestModel loginRequestModel)
   async {
+    var response;
     LoginService services = new LoginService();
-    var response = await services.login(loginRequestModel);
+    try {
+      response = await services.login(loginRequestModel);
+    } catch (Exception) {
+      response = null;
+    }
     return response;
   }
 
