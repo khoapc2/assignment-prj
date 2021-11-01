@@ -35,7 +35,6 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
   }
   @override
   Widget build(BuildContext context) {
-    print("2");
     var listSubPitch = SubPitchViewModel.getListSubPitchByPitchId(widget.id);
     //double rateOfPitch = 3;
     //PitchViewModel.getListPitchByName(listSubPitch[0].pitch_name).then((value) =>  rateOfPitch = value[0].rates);
@@ -163,7 +162,6 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
       setState(() {
         namePitch = value.name;
         rate = value.rates;
-        print(namePitch);
       });
 
       });

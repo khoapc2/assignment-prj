@@ -1,6 +1,7 @@
 import 'package:bookingpitch5/home_screen/footer_menu.dart';
 import 'package:bookingpitch5/models/mother_pitch_model.dart';
 import 'package:bookingpitch5/view_models/pitch_view_model.dart';
+import 'package:bookingpitch5/view_models/son_pitch_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -58,8 +59,7 @@ class _BookedPitchState extends State<BookedPitch> {
   initState() {
     // getPitchByOwnerID(listPitch);
     super.initState();
-    listPitch = PitchViewModel.getListPitchByOwnerID();
-
+      listPitch = PitchViewModel.getListPitchByOwnerID();
   }
 
   // @override
@@ -129,6 +129,8 @@ class _BookedPitchState extends State<BookedPitch> {
           }),
     );
   }
+
+
 }
 
 class Pitches extends StatefulWidget {
@@ -168,23 +170,13 @@ class BookedBottomPart extends StatelessWidget {
               )
               ,
               FlatButton(
-                onPressed: () {
-                  isDelete = PitchViewModel.deletePitch(pitchID);
-                  if(isDelete) {
-                    Fluttertoast.showToast(
-                        msg: "Delete Pitch Successful",
-                        fontSize: 18,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.green,
-                        textColor: Colors.white);
-                  }else{
-                    Fluttertoast.showToast(
-                        msg: "Delete Pitch Fail",
-                        fontSize: 18,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white);
-                  }
+                onPressed: () async {
+                    var listSubPitch = await SonPitchViewModel.getSonPitchModel(pitchID);
+                 if(listSubPitch.isEmpty){
+                   showAlertDialogDelete(context);
+                 } else {
+                   showAlertDialog(context);
+                 }
                 },
                 child: const Text("Xóa", style: TextStyle(fontWeight: FontWeight.bold)),
                 color: Colors.red,
@@ -194,6 +186,81 @@ class BookedBottomPart extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      hoverColor: Colors.red,
+      child: Text("OK"),
+      onPressed: () => Navigator.pop(context),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text("You must Delete SubPitch first"),
+      actions: [okButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
+
+
+  showAlertDialogDelete(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      hoverColor: Colors.red,
+      child: Text("OK"),
+    onPressed: () async {
+      isDelete = await PitchViewModel.deletePitch(pitchID);
+      if(isDelete) {
+        Navigator.of(context).pushNamed('/mainScreenHost');
+        Fluttertoast.showToast(
+            msg: "Delete Pitch Successful",
+            fontSize: 18,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white);
+      }else{
+        Fluttertoast.showToast(
+            msg: "Delete Pitch Fail",
+            fontSize: 18,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white);
+      }
+    }
+    );
+
+    Widget cancelBtn = FlatButton(
+      focusColor: Colors.blue,
+      child: Text("Cancel"),
+      onPressed: () => Navigator.pop(context, "Cancel"),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert"),
+      content: Text("Do you want to Delete this pitch"),
+      actions: [okButton,cancelBtn],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
@@ -287,13 +354,10 @@ class _BookedItemState extends State<Pitches> {
           ],
         ),
       );
+
   }
 
-  // getPitchByOwnerID() async {
-  //   // setState(() {
-  //     listPitch = await PitchViewModel.getListPitchByOwnerID();
-  //   // });
-  // }
+
 }
 
 // class BookedBottomPart extends StatelessWidget {
