@@ -11,7 +11,7 @@ class LoginService {
     LoginResponseModel responseModel;
     // String link = "https://10.0.2.2:44322/";
 
-    String link = "https://10.0.2.2:44322/";
+    String link = "https://104.215.186.78/";
     String url = link + "api/v1/user-accounts/login";
 
     final response = await http.post(
