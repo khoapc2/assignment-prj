@@ -31,6 +31,7 @@ import 'detail_pitch/main_screen.dart';
 import 'list_pitch/my_activity.dart';
 
 import 'list_pitch_by_search/my_activity.dart';
+import 'login/screens/create_newPassword.dart';
 import 'main_screen/Homescreen.dart';
 import 'rate_and_feedback_pitch/ratingactivity.dart';
 import 'view_feedback/view_feedback.dart';
@@ -51,6 +52,12 @@ class RouteGenerator{
                   MainScreenDetailPitch(
                       settings.arguments as int
                   ));
+      case '/createNewPassword':
+        return MaterialPageRoute(
+            builder: (_) =>
+                CreateNewPassword(
+                    settings.arguments as String
+                ));
       case '/dateBooking':
         return MaterialPageRoute(
             builder: (_) =>
