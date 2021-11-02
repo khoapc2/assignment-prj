@@ -80,7 +80,7 @@ class _BookedPitchState extends State<BookedPitch> {
                     data.name,
                     data.time_start,
                     data.time_end,
-                    "assets/images/img1.jpg",
+                    data.img_path,
                     data.location,"",
                    ));
               }
@@ -162,7 +162,7 @@ class _BookedItemState extends State<BookedItem> {
             Row(
               children: [
                 Image(
-                  image: AssetImage(widget.img),
+                  image: AssetImage(widget.img != null ? widget.img:"assets/images/img1.jpg"),
                   width: 100,
                   height: 100,
                 ),

@@ -238,13 +238,14 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
             // },
 
             onTap: (){
-
+              print("click dat san");
               var validateTimeModel = MyBookingViewModel.postValidationTime(SubPitchId, selectedTimeStart, selectedTimeEnd, DateFormat('MM-dd-yyyy').format(_selectedDay));
               validateTimeModel.then((value) {
-
+                print("validate thanh cong");
                 setState(() {
                   if(value.timeStartError == "Thời gian bắt đầu đã có người đặt"
                       || value.timeEndError == "Thời gian kết thúc đã có người đặt"){
+                    print("Khung gio da co ng dat");
                     var timeStart = value.timeStartError =="Not Error" ? "": value.timeStartError;
                     var timeEnd = value.timeEndError =="Not Error" ? "": value.timeEndError;
                     showDialog<String>(
