@@ -20,5 +20,15 @@ class BookingHostService {
     }
   }
 
+  Future<bool> paid(id) async {
+    final response =
+        await http.put(Uri.parse(url + "/paid/" + id.toString()));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }
