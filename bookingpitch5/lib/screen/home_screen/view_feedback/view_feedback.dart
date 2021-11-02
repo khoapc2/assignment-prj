@@ -115,7 +115,7 @@ class _ListFeedBackState extends State<ListFeedBack> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text('Đmm chờ chúttt...'),
+                  child: Text('Chờ chút người anh em...'),
                 )
               ];
             }
