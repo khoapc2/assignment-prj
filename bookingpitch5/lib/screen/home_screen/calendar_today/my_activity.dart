@@ -67,19 +67,30 @@ class _BookedPitchState extends State<BookedPitch> {
             List<Widget> children = [];
             BookingModel data;
             if (snapshot.hasData) {
-              for (int i = 0; i < snapshot.data!.length; i++) {
-                data = snapshot.data!.elementAt(i);
-                children.add(BookedItem(
-                    data.id,
-                    data.subPitchType,
-                    data.timeStart,
-                    data.dateBooking,
-                    data.subPitchImageUrl,
-                    data.pitchName,
-                    data.address,
-                    data.subPitchName,
-                    data.price,
-                    BookedBottomPart(data.id)));
+              if (snapshot.data!.length == 0) {
+                children.add(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      children: [Text("Chưa có bất kỳ hoạt động nào")],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      ))
+                  );
+              } else {
+                for (int i = 0; i < snapshot.data!.length; i++) {
+                  data = snapshot.data!.elementAt(i);
+                  children.add(BookedItem(
+                      data.id,
+                      data.subPitchType,
+                      data.timeStart,
+                      data.dateBooking,
+                      data.subPitchImageUrl,
+                      data.pitchName,
+                      data.address,
+                      data.subPitchName,
+                      data.price,
+                      BookedBottomPart(data.id)));
+                }
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -118,8 +129,8 @@ class _BookedPitchState extends State<BookedPitch> {
 class BookedItem extends StatefulWidget {
   var id, type, time, date, img, name, address, price, pitchName, bottomPart;
 
-  BookedItem(this.id, this.type, this.time, this.date, this.img, this.name, this.address,
-      this.pitchName, this.price, this.bottomPart,
+  BookedItem(this.id, this.type, this.time, this.date, this.img, this.name,
+      this.address, this.pitchName, this.price, this.bottomPart,
       {Key? key})
       : super(key: key);
 
@@ -148,7 +159,8 @@ class _BookedItemState extends State<BookedItem> {
             ])
           ]),
           GestureDetector(
-              onTap: () => Navigator.of(context).pushNamed('/checkLocation', arguments: widget.id),
+              onTap: () => Navigator.of(context)
+                  .pushNamed('/checkLocation', arguments: widget.id),
               child: Container(
                   child: Row(
                 children: [
@@ -212,22 +224,33 @@ class _BookingHistoryState extends State<BookingHistory> {
             BookingModel data;
             var bottomPart;
             if (snapshot.hasData) {
-              for (int i = 0; i < snapshot.data!.length; i++) {
+              if (snapshot.data!.length == 0) {
+                children.add(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      children: [Text("Chưa có bất kỳ hoạt động nào")],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      ))
+                  );
+              } else {
+                for (int i = 0; i < snapshot.data!.length; i++) {
                 data = snapshot.data!.elementAt(i);
-                bottomPart = data.status == 'Cancel'
-                    ? CancelBottomPart(data.id)
-                    : CompleteBottomPart(data.id, data.pitchID);
-                children.add(BookedItem(
-                    data.id,
-                    data.subPitchType,
-                    data.timeStart,
-                    data.dateBooking,
-                    data.subPitchImageUrl,
-                    data.pitchName,
-                    data.address,
-                    data.subPitchName,
-                    data.price,
-                    bottomPart));
+                  bottomPart = data.status == 'Cancel'
+                      ? CancelBottomPart(data.id)
+                      : CompleteBottomPart(data.id, data.pitchID);
+                  children.add(BookedItem(
+                      data.id,
+                      data.subPitchType,
+                      data.timeStart,
+                      data.dateBooking,
+                      data.subPitchImageUrl,
+                      data.pitchName,
+                      data.address,
+                      data.subPitchName,
+                      data.price,
+                      bottomPart));
+                }
               }
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -411,7 +434,8 @@ class _CancelFormState extends State<CancelForm> {
 }
 
 class CompleteBottomPart extends StatelessWidget {
-  CompleteBottomPart(this.bookingID, this.pitchID, {Key? key}) : super(key: key);
+  CompleteBottomPart(this.bookingID, this.pitchID, {Key? key})
+      : super(key: key);
   var bookingID, pitchID;
 
   @override
@@ -429,7 +453,9 @@ class CompleteBottomPart extends StatelessWidget {
           children: [
             OutlinedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/ratePitch', arguments: PitchID_BookingID(bookingId: bookingID, pitchId: pitchID));
+                  Navigator.of(context).pushNamed('/ratePitch',
+                      arguments: PitchID_BookingID(
+                          bookingId: bookingID, pitchId: pitchID));
                 },
                 child: const Text("Đánh giá",
                     style: TextStyle(fontWeight: FontWeight.bold)),
