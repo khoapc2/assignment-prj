@@ -7,4 +7,11 @@ class UserAccount{
     var result = await serives.checkAccount(Username);
     return result;
   }
+
+  static Future<bool> updatePassword(String Username, String password)
+  async {
+    UserAccountServices serives = new UserAccountServices();
+    var result = await serives.updateAccount(Username, password);
+    return result;
+  }
 }

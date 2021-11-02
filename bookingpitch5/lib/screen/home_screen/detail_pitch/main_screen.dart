@@ -25,8 +25,6 @@ class MainScreenDetailPitch extends StatefulWidget{
 }
 
 class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
-  List<SubPitchModel> listSubPitch = [];
-
   @override
   void initState() {
     // TODO: implement initState
@@ -35,7 +33,6 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
   }
   @override
   Widget build(BuildContext context) {
-    print("2");
     var listSubPitch = SubPitchViewModel.getListSubPitchByPitchId(widget.id);
     //double rateOfPitch = 3;
     //PitchViewModel.getListPitchByName(listSubPitch[0].pitch_name).then((value) =>  rateOfPitch = value[0].rates);
@@ -59,6 +56,7 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
              RatePitch(10.0, 10.0, rate, widget.id),
 
              TitlePitch(10.0, 10.0, "Các loại sân",20.0),
+             //showDetailPitch(listSubPitch)
              showDetailPitch(listSubPitch)
            ],
          )
@@ -79,52 +77,59 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
                 List<SubPitchModel> listSubPitch7 = [];
                 List<SubPitchModel> listSubPitch11 = [];
                 List<SubPitchModel> listSubPitchFutsal = [];
-                for(var SubPitchModel in snapshot.data!){
-                  if(SubPitchModel.typeOfPitch == "Sân 5"){
+                for (var SubPitchModel in snapshot.data!) {
+                  if (SubPitchModel.typeOfPitch == "Sân 5") {
                     listSubPitch5.add(SubPitchModel);
                   }
-                  if(SubPitchModel.typeOfPitch == "Sân 7"){
+                  if (SubPitchModel.typeOfPitch == "Sân 7") {
                     listSubPitch7.add(SubPitchModel);
                   }
-                  if(SubPitchModel.typeOfPitch == "Sân 11"){
+                  if (SubPitchModel.typeOfPitch == "Sân 11") {
                     listSubPitch11.add(SubPitchModel);
                   }
-                  if(SubPitchModel.typeOfPitch == "Sân futsal"){
+                  if (SubPitchModel.typeOfPitch == "Sân futsal") {
                     listSubPitchFutsal.add(SubPitchModel);
                   }
                 }
-                if(listSubPitch5.length != 0){
-                  children.add(TitlePitch(10.0, 10.0, "Sân 5("+listSubPitch5.length.toString()+")",15.0));
+                if (listSubPitch5.length != 0) {
+                  children.add(TitlePitch(10.0, 10.0,
+                      "Sân 5(" + listSubPitch5.length.toString() + ")", 15.0));
                   children.add(SizedBox(
                     height: 300,
                     child: DetailPitches(listSubPitch5),
                   ));
-
-                  if(listSubPitch7.length != 0){
-                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 7");
-                    children.add(TitlePitch(10.0, 10.0, "Sân 7("+listSubPitch7.length.toString()+")",15.0));
-                    children.add(SizedBox(
-                      height: 300,
-                      child: DetailPitches(listSubPitch7),
-                    ));
-                  }
-                  if(listSubPitch11.length != 0){
-                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 11");
-                    children.add(TitlePitch(10.0, 10.0, "Sân 11("+listSubPitch11.length.toString()+")",15.0));
-                    children.add(SizedBox(
-                      height: 300,
-                      child: DetailPitches(listSubPitch11),
-                    ));
-                  }
-                  if(listSubPitchFutsal.length != 0){
-                    // var listTypePitch = listDetailPitchByType(pitchModel, "Sân fusan");
-                    children.add(TitlePitch(10.0, 10.0, "Sân fusan("+listSubPitchFutsal.length.toString()+")",15.0));
-                    children.add(SizedBox(
-                      height: 300,
-                      child: DetailPitches(listSubPitchFutsal),
-                    ));
-                  }
-                }else if (snapshot.hasError) {
+                }
+                if (listSubPitch7.length != 0) {
+                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 7");
+                  children.add(TitlePitch(10.0, 10.0,
+                      "Sân 7(" + listSubPitch7.length.toString() + ")", 15.0));
+                  children.add(SizedBox(
+                    height: 300,
+                    child: DetailPitches(listSubPitch7),
+                  ));
+                }
+                if (listSubPitch11.length != 0) {
+                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân 11");
+                  children.add(TitlePitch(10.0, 10.0,
+                      "Sân 11(" + listSubPitch11.length.toString() + ")",
+                      15.0));
+                  children.add(SizedBox(
+                    height: 300,
+                    child: DetailPitches(listSubPitch11),
+                  ));
+                }
+                if (listSubPitchFutsal.length != 0) {
+                  // var listTypePitch = listDetailPitchByType(pitchModel, "Sân fusan");
+                  children.add(TitlePitch(10.0, 10.0,
+                      "Sân fusan(" + listSubPitchFutsal.length.toString() + ")",
+                      15.0));
+                  children.add(SizedBox(
+                    height: 300,
+                    child: DetailPitches(listSubPitchFutsal),
+                  ));
+                }
+              }
+                else if (snapshot.hasError) {
                   children = <Widget>[
                     const Icon(
                       Icons.error_outline,
@@ -151,24 +156,28 @@ class _MainScreenDetailPitchState extends State<MainScreenDetailPitch> {
                     )
                   ];
                 }
-
-              }
               return Column(children:children);
-            }));
-  }
+              }));
+
+            }
 
   getTitle() async{
-
-      await PitchViewModel.getPitchById(widget.id).then((value)  {
+    await PitchViewModel.getPitchById(widget.id).then((value)  {
       setState(() {
         namePitch = value.name;
         rate = value.rates;
-        print(namePitch);
       });
 
-      });
+    });
   }
+
 }
+
+  // Widget showDetailPitch (List<SubPitchModel> listSubPitch){
+  //
+  // }
+
+
 
   // List<DetailTypePitchModel> listDetailPitchByType(PitchModel pitchModel, String typePith){
   //   List<DetailTypePitchModel> list = [];
