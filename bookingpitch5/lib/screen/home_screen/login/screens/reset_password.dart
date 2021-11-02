@@ -16,6 +16,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.green[50],
       body: Padding(
         padding: kDefaultPadding,
@@ -54,7 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               height: 40,
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
+              height: MediaQuery.of(context).size.height * 0.07,
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: ()  {
@@ -69,7 +70,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       .checkAccount(searchValueController.text)
                       .then((value) {
                     setState(() {
-                      print("value = " + value.toString());
                       if (value) {
                         Navigator.of(context).pushNamed('/createNewPassword',
                         arguments: searchValueController.text);

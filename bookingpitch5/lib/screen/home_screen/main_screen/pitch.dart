@@ -38,7 +38,7 @@ class Pitch extends StatelessWidget{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset("assets/images/img1.jpg",height: 100.0),
+              Image.asset(_imagePath != null ? _imagePath:"assets/images/img1.jpg",height: 100.0),
               Text(_name, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
               //ListTile(
               //  leading: Icon(Icons.location_on),

@@ -55,6 +55,7 @@ class _BookedPitchState extends State<BookedPitch> {
               for (int i = 0; i < snapshot.data!.length; i++) {
                 data = snapshot.data!.elementAt(i);
                 children.add(BookedItem(
+                  data.id,
                   data.name,
                   data.pitch_name,
                   "",
@@ -97,9 +98,9 @@ class _BookedPitchState extends State<BookedPitch> {
 }
 
 class BookedItem extends StatefulWidget {
-  var type, time, date, img, name, address;
+  var id, type, time, date, img, name, address;
 
-  BookedItem(this.type, this.time, this.date, this.img, this.name, this.address, {Key? key}) : super(key: key);
+  BookedItem(this.id, this.type, this.time, this.date, this.img, this.name, this.address, {Key? key}) : super(key: key);
 
   @override
   State<BookedItem> createState() => _BookedItemState();
@@ -132,7 +133,7 @@ class _BookedItemState extends State<BookedItem> {
         ),
 
     GestureDetector(
-    onTap:() => Navigator.of(context).pushNamed('/checkLocation'),
+    onTap:() => Navigator.of(context).pushNamed('/dateBooking', arguments: widget.id),
     child:
     Container(
     child:

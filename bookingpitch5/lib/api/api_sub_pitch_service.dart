@@ -32,6 +32,8 @@ class SubPitchServce{
   }
 
   Future<List<SubPitchModel>> getListSubPitchByPitchId(int pitchId) async {
+    print("Vô được trong SubPitchService");
+    print("SubPitchId" + pitchId.toString());
     String url = "https://104.215.186.78/api/v1/subPitches?PitchId=" + pitchId.toString();
     List<SubPitchModel> result = List.empty();
     client.badCertificateCallback =
@@ -43,6 +45,7 @@ class SubPitchServce{
     HttpClientResponse response = await request.close();
 
     if(response.statusCode == 200 ){
+      print("mã code là 200 trong getListSubPitch");
       List ds = jsonDecode(await response.transform(utf8.decoder).join());
       result = ds.map((e) => SubPitchModel.fromJson(e)).toList();
       return result;

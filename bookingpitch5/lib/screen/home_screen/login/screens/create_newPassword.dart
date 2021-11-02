@@ -1,4 +1,5 @@
 import 'package:bookingpitch5/screen/home_screen/login/widgets/primary_button.dart';
+import 'package:bookingpitch5/view_models/useraccount_view_model.dart';
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
@@ -16,6 +17,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.green[50],
         body: Padding(
             padding: kDefaultPadding,
@@ -130,22 +132,24 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                           ),
                         );
                       } else {
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Tạo mới thanh công'),
-                            content: Text(
-                                "Quay về màn hình chính"),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, "/login");
-                                } ,
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
+                        UserAccount.updatePassword(widget.userName, newPassword.text).then((value) {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Tạo mới thanh công'),
+                              content: Text(
+                                  "Quay về màn hình chính"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "/login");
+                                  } ,
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        } );
                       }
                     });
                   },

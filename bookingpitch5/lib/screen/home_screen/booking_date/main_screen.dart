@@ -28,7 +28,7 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
     "23:00"
   ];
   List listNumberStart = [];
-  final timeEnds = ["07:00","08:00","09:00","10:00","11:00",
+   var timeEnds = ["07:00","08:00","09:00","10:00","11:00",
     "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00",
     "23:00","24:00"];
 
@@ -154,7 +154,30 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                           onChanged: (value) {
                             if(value == null)
                               return setState(() => selectedTimeStart = "06:00");
-                            return setState(() => selectedTimeStart = value);
+                            return setState(() {
+                              selectedTimeStart = value;
+                              var timeStartHour = int.parse(value.substring(0,2)) + 1;
+                              var timeEndHour = int.parse(value.substring(0,2));
+                              if(timeEndHour < timeStartHour){
+                                 timeEndHour = timeStartHour;
+                                 if(timeEndHour < 10 ){
+                                   selectedTimeEnd = "0" + timeEndHour.toString() + ":00";
+                                 }else{
+                                   selectedTimeEnd = timeEndHour.toString() + ":00";
+                                 }
+                              }
+                              timeEnds = [];
+                              for(var i = timeStartHour; i < 23 ; i ++){
+                                String time = "";
+                                if(i <10){
+                                  time = "0"+ i.toString()+ ":00";
+                                  print(time);
+                                }else{
+                                  time = i.toString()+ ":00";
+                                }
+                                timeEnds.add(time);
+                              }
+                            });
                           }
                       ))])
             ,
@@ -174,7 +197,7 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                         onChanged: (value){
                           if(value == null)
                             return setState(() => {
-                              selectedTimeEnd = "07:00",
+                              selectedTimeEnd = timeEnds[0],
                               //buttonPay = ButtonPay(SubPitchId, _selectedDay, selectedTimeStart, selectedTimeEnd, price);
 
                             });
@@ -215,13 +238,14 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
             // },
 
             onTap: (){
-
+              print("click dat san");
               var validateTimeModel = MyBookingViewModel.postValidationTime(SubPitchId, selectedTimeStart, selectedTimeEnd, DateFormat('MM-dd-yyyy').format(_selectedDay));
               validateTimeModel.then((value) {
-
+                print("validate thanh cong");
                 setState(() {
                   if(value.timeStartError == "Thời gian bắt đầu đã có người đặt"
                       || value.timeEndError == "Thời gian kết thúc đã có người đặt"){
+                    print("Khung gio da co ng dat");
                     var timeStart = value.timeStartError =="Not Error" ? "": value.timeStartError;
                     var timeEnd = value.timeEndError =="Not Error" ? "": value.timeEndError;
                     showDialog<String>(
@@ -262,10 +286,10 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
     if(_selectedDay.year == now.year && _selectedDay.month == now.month
     && _selectedDay.day == now.day){
       list.add(CalendarContainer(_selectedDay));
-      list.add(LineSlot("Người khác đã đặt"));
-      list.add(Wrap(
-        children: listSlot,
-      ));
+      // list.add(LineSlot("Người khác đã đặt"));
+      // list.add(Wrap(
+      //   children: listSlot,
+      // ));
       list.add(LineSlot("Thời gian đặt"
       ));
       list.add(Row(
@@ -288,7 +312,30 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                           onChanged: (value) {
                             if(value == null)
                               return setState(() => selectedTimeStart = "06:00");
-                            return setState(() => selectedTimeStart = value);
+                            return setState(() {
+                              selectedTimeStart = value;
+                              var timeStartHour = int.parse(value.substring(0,2)) + 1;
+                              var timeEndHour = int.parse(value.substring(0,2));
+                              if(timeEndHour < timeStartHour){
+                                timeEndHour = timeStartHour;
+                                if(timeEndHour < 10 ){
+                                  selectedTimeEnd = "0" + timeEndHour.toString() + ":00";
+                                }else{
+                                  selectedTimeEnd = timeEndHour.toString() + ":00";
+                                }
+                              }
+                              timeEnds = [];
+                              for(var i = timeStartHour; i < 23 ; i ++){
+                                String time = "";
+                                if(i <10){
+                                  time = "0"+ i.toString()+ ":00";
+                                  print(time);
+                                }else{
+                                  time = i.toString()+ ":00";
+                                }
+                                timeEnds.add(time);
+                              }
+                            });
                           }
                       ))])
             ,
@@ -307,7 +354,11 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                         items: timeEnds.map(buildMenuItem).toList(),
                         onChanged: (value){
                           if(value == null)
-                            return setState(() => selectedTimeEnd = "07:00");
+                            return setState(() => {
+                              selectedTimeEnd = timeEnds[0],
+                              //buttonPay = ButtonPay(SubPitchId, _selectedDay, selectedTimeStart, selectedTimeEnd, price);
+
+                            });
                           return setState(() => selectedTimeEnd = value);
                         }),
                   )

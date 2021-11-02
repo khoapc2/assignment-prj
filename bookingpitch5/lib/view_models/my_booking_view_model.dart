@@ -43,6 +43,12 @@ class MyBookingViewModel {
 
   static Future<ValidateTimeModel> postValidationTime(int subPitch, String timeStart, String timeEnd, String dateBooking)
   async {
+    print("vô trong postvalidationtime");
+    print("subPitchId " +subPitch.toString());
+    print("timeStart " +timeStart);
+    print("timeEnd " +timeEnd);
+    print("dateBooking " +dateBooking);
+
     BookingService service = new BookingService();
     var response = await service.postValidateTime(subPitch, timeStart, timeEnd, dateBooking);
     return response;
