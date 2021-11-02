@@ -40,7 +40,7 @@ class PitchService {
             'phone' : createPitchModel.phone,
         }),
     );
-    if(response.statusCode == 200 || response.statusCode == 400){
+    if(response.statusCode == 200){
       return true;
     } else {
       return false;
@@ -50,7 +50,7 @@ class PitchService {
     Future<List<GetPitchModel>> getPitchModel(int ownerId) async {
         List<GetPitchModel> listPitch = List.empty();
         String url = link + "api/Pitches?PitchOwnerId=" + ownerId.toString() +
-            "&Status=1&pageIndex=1&pageSize=50";
+            "&Status=1";
 
         final response = await http.get(
             Uri.parse(url),
@@ -59,7 +59,7 @@ class PitchService {
             },
         );
 
-        if (response.statusCode == 200 || response.statusCode == 400) {
+        if (response.statusCode == 200) {
             List data = jsonDecode(response.body);
             listPitch = data.map((e) => GetPitchModel.fromJson(e)).toList();
             return listPitch;

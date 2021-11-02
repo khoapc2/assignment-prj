@@ -67,7 +67,7 @@ class BookingService {
   }
 
   Future<ValidateTimeModel> postValidateTime(int id, String timeStart, String timeEnd, String dateBooking) async {
-    final response = await http.post(Uri.parse("https://104.215.186.78/api/v1/bookings/validate-time"),
+    final response = await http.post(Uri.parse("https://10.0.2.2:44322/api/v1/bookings/validate-time"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -89,7 +89,7 @@ class BookingService {
   Future<BookingModel?> createBooking(int cusomterId, int subPitchId, String price, String timeStart, String
   timeEnd, String dateBooking) async {
     print("ngày đặt sân: "+dateBooking);
-    final response = await http.post(Uri.parse("https://104.215.186.78/api/v1/bookings"),
+    final response = await http.post(Uri.parse("https://10.0.2.2:44322/api/v1/bookings"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -112,7 +112,7 @@ class BookingService {
   }
 
   Future<BookingModel> getBookingById(int id) async {
-    String url = "https://104.215.186.78/api/v1/bookings/" + id.toString();
+    String url = "https://10.0.2.2:44322/api/v1/bookings/" + id.toString();
 
     BookingModel profileModelResponse;
 

@@ -29,21 +29,20 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
   var pitchModel;
   var rates;
   String type5 = "Sân 5";
-
   String type7 = "Sân 7";
-
   String type11 = "Sân 11";
-
   String typeFutsal = "Sân futsal";
 
   @override
   Widget build(BuildContext context) {
-    print(widget.pitchID);
-    getPitchByID();
-    getListPitch5();
-    getListPitch7();
-    getListPitch11();
-    getListPitchFutsal();
+    setState(() {
+      getPitchByID();
+      getListPitch5();
+      getListPitch7();
+      getListPitch11();
+      getListPitchFutsal();
+    });
+
 
     //Test
     // var pitchModel= PitchesModel.getPitchById("1");
@@ -51,6 +50,11 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
        return Scaffold(
        appBar: AppBar(
          title: Text(txtTitle),
+         leading: GestureDetector(
+             onTap: () {
+               Navigator.pop(context);
+             },
+             child: Icon(Icons.arrow_back)),
          backgroundColor: Colors.green,
        ),
          body: ListView(
@@ -108,11 +112,9 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
 
   getPitchByID() async {
     await PitchViewModel.getPitchByPitchID(widget.pitchID).then((value) {
-      setState(() {
         pitchModel = value;
         txtTitle = value.name;
         rates = value.rates;
-      });
        }
     );
   }
@@ -127,35 +129,27 @@ class _MainScreenDetailPitchHostState extends State<MainScreenDetailPitchHost> {
 
   getListPitch7() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type7).then((value) {
-      setState(() {
         listPitchModel7 = value;
-      });
     });
   }
 
   getListPitch11() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, type11).then((value) {
-      setState(() {
         listPitchModel11 = value;
-      });
     });
   }
 
   getListPitchFutsal() async {
     await SonPitchViewModel.getListPitchByCategory(widget.pitchID, typeFutsal).then((
         value) {
-      setState(() {
         listPitchModelFutsal = value;
-      });
     });
   }
 
   getAllSubPitch() async {
     await SonPitchViewModel.getSonPitchModel(widget.pitchID).then((
         value) {
-      setState(() {
         listSubPitch = value;
-      });
     });
   }
 }

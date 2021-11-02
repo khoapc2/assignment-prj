@@ -67,7 +67,7 @@ class FooterMenuHost extends StatelessWidget {
           //       .pushNamed('/screen.home_screen.calendar_today');
           //   break;
           case 1:
-            Navigator.of(context).pushNamed('/calendar');
+            Navigator.of(context).pushNamed('/booking_host');
             break;
           case 2:
             Navigator.of(context).pushNamed('/notificationPitch');
