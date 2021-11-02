@@ -518,6 +518,7 @@ class MapScreenState extends State<ProfilePage>
         role = value;
         if (role== 'customer') {
           menu = FooterMenu(3);
+          avatar = 'assets/images/as.png';
         } else {
           menu = FooterMenuHost(3);
           avatar = 'assets/images/profile_host.jpg';
