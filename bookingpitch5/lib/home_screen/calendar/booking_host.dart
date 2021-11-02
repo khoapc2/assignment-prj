@@ -100,7 +100,7 @@ class _BookedPitchState extends State<BookedPitch> {
                         size: 50.0,
                         color: Colors.black,
                       ),
-                      footer: new Text('Server lag vãi lồn...', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                      footer: new Text('Đang load nè trời...', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                       backgroundColor: Colors.grey[700],
                       progressColor: Colors.green[500],
                     ),                
@@ -249,17 +249,45 @@ class _BookedBottomPartState extends State<BookedBottomPart> {
 
   late List<BookingHostModel> listBookingHost;
   var reason = BookingHostViewModel.reasonList.elementAt(0);
-  var isCancel;
+  var isCancel, isPaid;
   TextEditingController controller = TextEditingController();
   set string(String value) => setState(() => reason = value);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const Text("",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+        FlatButton(
+          onPressed: () async {
+            isPaid = await BookingHostViewModel.paid(widget.bookingID);
+                      if (isPaid) {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Thanh toán thành công'),
+                            content: Text('Thanh toán thành công!!!'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => {
+                                   Navigator.of(context)
+                                    .pushNamed(
+                                        '/booking_host')
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        print(isPaid);
+                      }
+          }, 
+          child: new Text("Thanh toán"),
+          color: Colors.green,
+          textColor: Colors.white),
         FlatButton(
           onPressed: () {
             showDialog<String>(

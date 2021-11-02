@@ -28,4 +28,11 @@ class BookingHostViewModel{
     return result;
   }
 
+    static Future<bool> paid(int id) async {
+    BookingHostService service = new BookingHostService();
+    var result = await service.paid(id);
+    return result;
+    
+  }
+
 }
