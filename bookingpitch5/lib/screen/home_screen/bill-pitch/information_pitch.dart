@@ -184,7 +184,9 @@ class _InformationPitchState extends State<InformationPitch> {
                 SubPitchId = value.subPitchID;
                 timeStart = value.timeStart;
                 timeEnd = value.timeEnd;
-                price = value.price;
+                int pricePerHour = int.parse(value.price);
+                int durion = int.parse(value.timeEnd.substring(0,2)) - int.parse(value.timeStart.substring(0,2));
+                price = (pricePerHour * durion).toString();
                 dateBooking = value.dateBooking;
 
                 SubPitchViewModel.getSubPitchById(SubPitchId).then((value)  {

@@ -35,6 +35,10 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
 
   String selectedTimeStart = "06:00";
   String selectedTimeEnd = "07:00";
+
+  int startHour = 0;
+  int endHour = 0;
+
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime(1967, 10, 12);
   late ButtonPay buttonPay;
@@ -156,10 +160,12 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                               return setState(() => selectedTimeStart = "06:00");
                             return setState(() {
                               selectedTimeStart = value;
+                              startHour = int.parse(value.substring(0,2));
                               var timeStartHour = int.parse(value.substring(0,2)) + 1;
                               var timeEndHour = int.parse(value.substring(0,2));
                               if(timeEndHour < timeStartHour){
                                  timeEndHour = timeStartHour;
+                                 endHour = timeEndHour;
                                  if(timeEndHour < 10 ){
                                    selectedTimeEnd = "0" + timeEndHour.toString() + ":00";
                                  }else{
@@ -201,7 +207,10 @@ class MainScreenBookingDateState extends State<MainScreenBookingDate> {
                               //buttonPay = ButtonPay(SubPitchId, _selectedDay, selectedTimeStart, selectedTimeEnd, price);
 
                             });
-                          return setState(() => selectedTimeEnd = value);
+                          return setState(() {
+                            selectedTimeEnd = value;
+                            endHour = int.parse(value.substring(0,2));
+                          });
                         }),
                   )
                 ])
