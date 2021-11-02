@@ -47,7 +47,7 @@ namespace PitchBooking.Business.Services
         public IEnumerable<PitchModel> getRecommendPitch()
         {
             var listAdvisory = _res.FindBy(x => x.Status == (int)PitchStatus.Active);
-            listAdvisory = listAdvisory.OrderBy(x => Guid.NewGuid()).Take(3);
+            listAdvisory = listAdvisory.OrderBy(x => Guid.NewGuid()).Take(5);
             return _mapper.Map<List<PitchModel>>(listAdvisory.ToList());
         }
 
@@ -55,6 +55,7 @@ namespace PitchBooking.Business.Services
         {
             var advisory = _mapper.Map<Pitch>(request);
             advisory.Status = 1;
+            advisory.Rates = 0;
             await _res.InsertAsync(advisory);
             await _res.SaveAsync();
             return _mapper.Map<PitchModel>(advisory);
@@ -67,7 +68,11 @@ namespace PitchBooking.Business.Services
             {
                 return null;
             }
+
+            double rates = (double)advisory.Rates;
             advisory = _mapper.Map(request, advisory);
+
+            advisory.Rates = rates;
             advisory.Status = 1;
             await _res.UpdateAsync(advisory);
             await _res.SaveAsync();
