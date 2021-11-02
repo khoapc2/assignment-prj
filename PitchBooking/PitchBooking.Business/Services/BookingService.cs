@@ -129,7 +129,8 @@ namespace PitchBooking.Business.Services
                     response.TimeStartError = "Thời gian bắt đầu đã có người đặt";
                     response.TimeEndError = "Thời gian kết thúc đã có người đặt";
                 }
-                if(!string.IsNullOrEmpty(response.TimeStartError) || !string.IsNullOrEmpty(response.TimeEndError))
+                if(!String.Equals(response.TimeEndError, "Not Error") 
+                    || !String.Equals(response.TimeStartError, "Not Error"))
                 {
                     return response;
                 }
